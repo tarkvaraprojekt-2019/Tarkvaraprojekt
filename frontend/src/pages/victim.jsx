@@ -110,6 +110,18 @@ const NewVictim = () => (
           <FormControlLabel value="muu" control={<Checkbox />} label="muu" />
         </FormGroup>
       </Grid>
+
+      <Grid item xs={12}>
+        <FormLabel component="legend">Ohvri vanus</FormLabel>
+
+        <RadioGroup row name="vanus" value="18-24">
+          <FormControlLabel value="LT 18" control={<Radio />} label="alla 18" />
+          <FormControlLabel value="18-24" control={<Radio />} label="18-24" />
+          <FormControlLabel value="25-49" control={<Radio />} label="25-49" />
+          <FormControlLabel value="50-64" control={<Radio />} label="50-64" />
+          <FormControlLabel value="GT 65" control={<Radio />} label="üle 65" />
+        </RadioGroup>
+      </Grid>
     </Grid>
   </React.Fragment>
 );
