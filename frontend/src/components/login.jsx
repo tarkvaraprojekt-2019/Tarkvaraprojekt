@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import withRoot from '../withRoot'
+import { Link } from 'gatsby';
 
 const styles = theme => ({
   layout: {
@@ -31,7 +31,8 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+      .spacing.unit * 3}px`,
   },
   avatar: {
     margin: theme.spacing.unit,
@@ -51,10 +52,8 @@ function SignIn(props) {
 
   return (
     <React.Fragment>
-      <CssBaseline />
       <main className={classes.layout}>
         <Paper className={classes.paper}>
-
           <Avatar className={classes.avatar}>
             <LockIcon />
           </Avatar>
@@ -62,7 +61,6 @@ function SignIn(props) {
           <Typography variant="headline">Sign in</Typography>
 
           <form className={classes.form}>
-
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="email">Email Address</InputLabel>
               <Input id="email" name="email" autoComplete="email" autoFocus />
@@ -77,16 +75,18 @@ function SignIn(props) {
                 autoComplete="current-password"
               />
             </FormControl>
-
-            <Button
+            <Link to="overview/">
+              <Button
                 type="submit"
                 fullWidth
                 variant="raised"
                 color="primary"
                 className={classes.submit}
-            >
+              >
                 Sign in
-            </Button>
+
+              </Button>
+            </Link>
           </form>
         </Paper>
       </main>
