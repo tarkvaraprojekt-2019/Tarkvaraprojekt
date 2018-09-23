@@ -20,9 +20,7 @@ class Index extends React.Component {
 
     return (
       <div className={classes.root}>
-        <h3>
-          Redirect didn't work. 
-        </h3>
+        <LogIn/>
       </div>
     );
   }
