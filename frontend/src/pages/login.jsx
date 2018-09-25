@@ -7,26 +7,26 @@ import withRoot from '../withRoot';
 import LogIn from '../components/login';
 
 const styles = theme => ({
-    root: {
-        textAlign: 'center',
-        paddingTop: theme.spacing.unit * 20,
-    },
+  root: {
+    textAlign: 'center',
+    paddingTop: theme.spacing.unit * 20,
+  },
 });
 
 class Index extends React.Component {
-    render() {
-        const { classes } = this.props;
+  render() {
+    const { classes } = this.props;
 
-        return (
-            <div className={classes.root}>
-                <LogIn />
-            </div>
-        );
-    }
+    return (
+      <div className={classes.root}>
+        <LogIn />
+      </div>
+    );
+  }
 }
 
 Index.propTypes = {
-    classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 export default withRoot(withStyles(styles)(Index));

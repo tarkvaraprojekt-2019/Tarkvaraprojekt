@@ -12,27 +12,17 @@ import {
   FormGroup,
 } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import withRoot from '../withRoot';
 import Layout from '../components/layout';
-import { Link, Router } from '@reach/router';
+import { Router } from '@reach/router';
 
 const styles = theme => ({
   root: {
     textAlign: 'center',
     paddingTop: theme.spacing.unit * 20,
-  },
-  paper: {
-    marginTop: theme.spacing.unit * 4,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
-      .spacing.unit * 3}px`,
   },
   paper: {
     marginTop: theme.spacing.unit * 4,
@@ -131,7 +121,7 @@ const Victim = props => {
   return (
     <React.Fragment>
       <Paper className={classes.victimInfo}>
-        <Typography variant="display1" >Ants Aas</Typography>
+        <Typography variant="display1" >Tiina Kukk</Typography>
         <Grid container spacing={40}>
         <Grid item xs={12} sm={6}>
         
