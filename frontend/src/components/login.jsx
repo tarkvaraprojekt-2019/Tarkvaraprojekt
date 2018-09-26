@@ -57,16 +57,16 @@ function SignIn(props) {
             <LockIcon />
           </Avatar>
 
-          <Typography variant="headline">Sign in</Typography>
+          <Typography variant="headline">Logi sisse</Typography>
 
           <form className={classes.form}>
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Email Address</InputLabel>
+              <InputLabel htmlFor="email">Kasutajatunnus</InputLabel>
               <Input id="email" name="email" autoComplete="email" autoFocus />
             </FormControl>
 
             <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
+              <InputLabel htmlFor="password">Parool</InputLabel>
               <Input
                 name="password"
                 type="password"
@@ -82,7 +82,7 @@ function SignIn(props) {
                 color="primary"
                 className={classes.submit}
               >
-                Sign in
+                Sisene
 
               </Button>
             </Link>
