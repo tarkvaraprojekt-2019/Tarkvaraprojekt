@@ -14,10 +14,11 @@ import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
-import Layout from '../../components/layout';
 import { Button, TextField } from '@material-ui/core';
 import { sampleSize, sumNames, zipWith } from '../../util';
 
+import Layout from '../../components/Layout';
+import UserTable from '../../components/UserTable';
 
 let id = 0;
 function createUser(name, district) {
@@ -65,46 +66,8 @@ const piirkonnad = [
 
 const names = zipWith(sumNames, firstNames, lastNames);
 const districts = sampleSize(piirkonnad, names.length);
-const users = zipWith(createUser, names, districts);
+const currentUsers = zipWith(createUser, names, districts);
 
-const UserTable = props => {
-  const { classes } = props;
-
-  return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Nimi</TableCell>
-            <TableCell>Piirkonnad</TableCell>
-            <TableCell>Muuda</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {users.map(n => {
-            return (
-              <TableRow key={n.id}>
-                <TableCell component="th" scope="row">
-                  {n.name}
-                </TableCell>
-                <TableCell>{n.district}</TableCell>
-                <TableCell>
-                  <Link to={'accounts/' + n.id}>
-                    <EditIcon color="action" />
-                  </Link>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </Paper>
-  );
-};
-
-UserTable.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
 
 const drawerWidth = 240;
 
@@ -141,7 +104,7 @@ class Accounts extends React.Component {
         </div>
 
         <div className={classes.tableContainer}>
-          <UserTable classes={classes} />
+          <UserTable classes={classes} users={currentUsers}/>
         </div>
         <Link to="accounts/new/">
           <Button variant="fab" color="primary">

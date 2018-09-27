@@ -16,7 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import withRoot from '../withRoot';
-import Layout from '../components/layout';
+import Layout from '../components/Layout';
 import { Router } from '@reach/router';
 
 const styles = theme => ({
