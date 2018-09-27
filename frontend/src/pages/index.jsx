@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import withRoot from '../withRoot';
 
-import LogIn from '../components/login';
+import LogIn from '../components/Login';
 
 const styles = theme => ({
   root: {
