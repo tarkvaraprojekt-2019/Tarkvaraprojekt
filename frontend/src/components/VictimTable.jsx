@@ -37,7 +37,7 @@ const VictimTable = props => {
                                 </TableCell>
                                 <TableCell>{n.district}</TableCell>
                                 <TableCell>
-                                    <Link to={'accounts/' + n.id}>
+                                    <Link to={'victims/' + n.id}>
                                         <EditIcon color="action" />
                                     </Link>
                                 </TableCell>
