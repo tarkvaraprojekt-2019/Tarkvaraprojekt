@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import withRoot from '../withRoot';
 
 import Layout from '../components/Layout';
-import UserTable from '../components/UserTable';
+import VictimTable from "../components/VictimTable";
 
 
 let id = 0;
@@ -64,7 +64,7 @@ class Overview extends React.Component {
                         value={this.state.name}
                         onChange={event => this.setState({
                             users: [{
-                                id: 0,
+                                id: 1,
                                 name: event.target.value,
                                 district: "Harjumaa",
                             }]})}
@@ -89,7 +89,7 @@ class Overview extends React.Component {
 
                 </Paper>
 
-                { this.state.users.length != 0 && <UserTable classes={classes} users={this.state.users} /> }
+                { this.state.users.length !== 0 && <VictimTable classes={classes} users={this.state.users} /> }
 
                 <Paper className={classes.paper}>
                     <Link to={"newUser/"}>

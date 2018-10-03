@@ -6,37 +6,41 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import BackupIcon from '@material-ui/icons/Backup';
-import { Link } from '@reach/router';
+import {Link} from '@reach/router';
 
 export const mainListItems = (
-  <div>
-    <Link to="/overview">
-      <ListItem button>
-        <ListItemIcon>
-          <DashboardIcon />
-        </ListItemIcon>
-        <ListItemText primary="Ülevaade" />
-      </ListItem>
-    </Link>
-    <Link to="/accounts">
-      <ListItem button>
-        <ListItemIcon>
-          <PeopleIcon />
-        </ListItemIcon>
-        <ListItemText primary="Kasutajad" />
-      </ListItem>
-    </Link>
-    <ListItem button>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Aruandlus" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <BackupIcon />
-      </ListItemIcon>
-      <ListItemText primary="Varundused" />
-    </ListItem>
-  </div>
+    <div>
+        <Link to="/overview">
+            <ListItem button>
+                <ListItemIcon>
+                    <DashboardIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Ülevaade"/>
+            </ListItem>
+        </Link>
+        <Link to="/accounts">
+            <ListItem button>
+                <ListItemIcon>
+                    <PeopleIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Kasutajad"/>
+            </ListItem>
+        </Link>
+        <Link to="/report">
+            <ListItem button>
+                <ListItemIcon>
+                    <BarChartIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Aruandlus"/>
+            </ListItem>
+        </Link>
+        <Link to="/backup">
+            <ListItem button>
+                <ListItemIcon>
+                    <BackupIcon/>
+                </ListItemIcon>
+                <ListItemText primary="Varundused"/>
+            </ListItem>
+        </Link>
+    </div>
 );
