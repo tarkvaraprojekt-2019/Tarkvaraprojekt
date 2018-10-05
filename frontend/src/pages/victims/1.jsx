@@ -89,7 +89,7 @@ class VictimOne extends React.Component {
                                 value={this.state.victimArea}
                                 onChange={this.handleChange}
                                 inputProps={{
-                                    name: 'victimArea',
+                                    name: 'victimAge',
                                     id: 'victim-area',
                                 }}>
                                 <MenuItem value={"Tartumaa"}>Tartumaa</MenuItem>

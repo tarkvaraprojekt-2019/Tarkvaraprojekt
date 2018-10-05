@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'gatsby';
 
 
 import Table from '@material-ui/core/Table';
@@ -9,6 +10,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+
 
 
 
@@ -33,12 +35,15 @@ const IncidentTable = props => {
 
             </Table>
         </Paper>
-            <Button
-                variant="raised"
-                color="primary"
-            >
-                Uus juhtum
-            </Button>
+            <Link to="/newIncident">
+                <Button
+                    variant="raised"
+                    color="primary"
+                >
+                    Uus juhtum
+                </Button>
+            </Link>
+
         </div>
 
     );
