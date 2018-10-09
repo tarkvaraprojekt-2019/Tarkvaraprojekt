@@ -1,0 +1,17 @@
+CREATE OR REPLACE TABLE sessions
+(id INT AUTO_INCREMENT PRIMARY KEY,
+incident_id INT NOT NULL, FOREIGN KEY (incident_id) REFERENCES incidents (id) ON DELETE CASCADE ON UPDATE CASCADE,
+kuupaev DATE NOT NULL,
+kirjeldus VARCHAR(64) NOT NULL,
+sidevahendid BOOL NOT NULL,
+kriisinoustamine TINYINT NOT NULL,
+juhutuminoustamine TINYINT NOT NULL,
+vorgustikutoo TINYINT NOT NULL,
+psuhhonoustamine TINYINT NOT NULL,
+juuranoustamine TINYINT NOT NULL,
+tegevused_lapsega TINYINT NOT NULL,
+tugiteenused TINYINT NOT NULL,
+naise_majutus TINYINT NOT NULL,
+laste_arv TINYINT NOT NULL,
+laste_majutus TINYINT NOT NULL,
+markused TEXT NOT NULL)
