@@ -14,4 +14,4 @@ tugiteenused TINYINT NOT NULL,
 naise_majutus TINYINT NOT NULL,
 laste_arv TINYINT NOT NULL,
 laste_majutus TINYINT NOT NULL,
-markused TEXT NOT NULL)
+markused TEXT NOT NULL);
