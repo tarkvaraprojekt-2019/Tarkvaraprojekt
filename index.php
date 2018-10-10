@@ -1,1 +1,1 @@
-<img src="/images/nyan_cat.gif">
+<h1>Just Testing</h1>
