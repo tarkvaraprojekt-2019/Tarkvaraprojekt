@@ -4,7 +4,7 @@ include "auth.php";
 
 if (!isset($_SERVER["HTTP_AUTH_TOKEN"])) {
 	http_response_code(401);
-	echo "Auth-token not supplied";
+	echo "Missing auth-token";
 	exit();
 }
 
@@ -26,15 +26,4 @@ if ($timestamp < time()) {
 function verify_access($is_admin) {
 	$token = $_SERVER["HTTP_AUTH_TOKEN"];
 	return verify_token($token, $is_admin);
-}
-
-//TODO: Delete before including this file in others
-if (verify_access(true)) {
-	echo "Verified for admin";
-} else if (verify_access(false)) {
-	echo "Verified for regular";
-} else {
-	http_response_code(401);
-	echo "Access denied";
-	exit();
 }
