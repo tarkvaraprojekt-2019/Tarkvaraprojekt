@@ -1,1 +1,0 @@
-<img src="/images/nyan_cat.gif">
