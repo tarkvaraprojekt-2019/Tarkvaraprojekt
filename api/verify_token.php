@@ -8,7 +8,7 @@ if (!isset($_SERVER["HTTP_AUTH_TOKEN"])) {
 }
 
 $auth_token_exploded = explode(":", $_SERVER["HTTP_AUTH_TOKEN"]);
-if (count($auth_token_exploded) != 2) {
+if (count($auth_token_exploded) !== 2) {
 	echo "Invalid token";
 	exit();
 }
