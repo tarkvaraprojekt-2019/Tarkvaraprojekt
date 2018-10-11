@@ -3,23 +3,23 @@
 include "auth.php";
 
 if (!isset($_SERVER["HTTP_AUTH_TOKEN"])) {
-	echo "Auth-token not supplied";
 	http_response_code(401);
+	echo "Auth-token not supplied";
 	exit();
 }
 
 $auth_token_exploded = explode(":", $_SERVER["HTTP_AUTH_TOKEN"]);
 if (count($auth_token_exploded) !== 2) {
-	echo "Invalid token";
 	http_response_code(401);
+	echo "Invalid token";
 	exit();
 }
 
 list($token, $timestamp) = $auth_token_exploded;
 
 if ($timestamp < time()) {
-	echo "Timestamp expired!";
 	http_response_code(401);
+	echo "Timestamp expired!";
 	exit();
 }
 
@@ -34,7 +34,7 @@ if (verify_access(true)) {
 } else if (verify_access(false)) {
 	echo "Verified for regular";
 } else {
-	echo "Access denied";
 	http_response_code(401);
+	echo "Access denied";
 	exit();
 }
