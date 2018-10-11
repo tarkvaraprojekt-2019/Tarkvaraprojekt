@@ -62,16 +62,22 @@ function create_token($username, $pass, $expiry) {
 	$token_str = $expiry.(bool)$is_admin.$info["SECRET"];
 	$token = password_hash($token_str, PASSWORD_DEFAULT);
 	$token_enc = base64_encode($token);
-	return $token_enc;
+	return $token_enc.":".$expiry;
 }
 
-function verify_token($token, $expiry, $is_admin) {
+function verify_token($token, $is_admin) {
+	$token_exploded = explode(":", $token);
+	if (count($token_exploded) !== 2) {
+		return false;
+	}
+	list($base, $expiry) = $token_exploded;
 	$info = parse_ini_file("../config.ini");
 	$token_str = $expiry.(bool)$is_admin.$info["SECRET"];
-	$token_dec = base64_decode($token);
+	$token_dec = base64_decode($base);
 	if (password_verify($token_str, $token_dec)) {
 		return true;
 	} else if (!$is_admin) {
 		return verify_token($token, $expiry, true);
 	}
+	return false;
 }
