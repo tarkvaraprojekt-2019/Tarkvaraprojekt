@@ -21,4 +21,10 @@ if (isset($_SERVER["HTTP_TIMESTAMP"]) && $_SERVER["HTTP_TIMESTAMP"] < time() + 5
 	$timestamp = $_SERVER["HTTP_TIMESTAMP"];
 }
 
-echo create_token($username, $password, $timestamp);
+$token = create_token($username, $password, $timestamp);
+if (!$token) {
+	echo "Invalid username/password";
+	http_response_code(401);
+} else {
+	echo $token;
+}
