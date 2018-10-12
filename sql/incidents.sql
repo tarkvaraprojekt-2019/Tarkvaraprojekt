@@ -40,4 +40,4 @@ kriminaalkohus_kaasatud BOOL NOT NULL,
 haridusasutus_kaasatud BOOL NOT NULL,
 mtu_kaasatud BOOL NOT NULL,
 tuttavad_kaasatud BOOL NOT NULL,
-rahastus BOOL NOT NULL)
+rahastus BOOL NOT NULL);
