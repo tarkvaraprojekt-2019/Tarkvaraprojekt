@@ -3,6 +3,9 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import getPageContext from './getPageContext';
+import axios from 'axios';
+import { getCurrentToken } from './auth';
+
 
 function withRoot(Component) {
   class WithRoot extends React.Component {
@@ -11,6 +14,13 @@ function withRoot(Component) {
     constructor(props) {
       super(props);
       this.muiPageContext = getPageContext();
+      this.axios = axios.create({
+        baseURL: 'https://andmebaas.naisteabi.com/api/', 
+        timeout: 5000, 
+        headers: {
+          'Auth-token': getCurrentToken()
+        }
+      })
     }
 
     componentDidMount() {

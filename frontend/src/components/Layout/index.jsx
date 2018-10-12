@@ -129,7 +129,7 @@ class Dashboard extends React.Component {
                         </Typography>
                         <IconButton color="inherit">
                             <Link to="login/">
-                                <PowerSettingsNew/>
+                                <PowerSettingsNew color="secondary"/>
                             </Link>
                         </IconButton>
                     </Toolbar>

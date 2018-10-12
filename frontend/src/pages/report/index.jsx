@@ -4,9 +4,10 @@ import { Link } from '@reach/router';
 
 import { withStyles } from '@material-ui/core/styles';
 
-import withRoot from '../withRoot';
+import withRoot from '../../withRoot';
 
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
+//import ReportImg from 'report.png';
 
 
 const styles = theme => ({
@@ -46,7 +47,7 @@ class Report extends React.Component {
 
         return (
             <Layout>
-
+                
             </Layout>
         );
     }

@@ -11,36 +11,65 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete'
+
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+
+import Button from '@material-ui/core/Button'
 
 
+class UserTable extends React.Component {
 
+  state = {
+    checked: false,
+  };
 
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.checked });
+  };
 
-const UserTable = props => {
-    const { classes } = props;
-  
+  render() {
+    const { classes } = this.props;
     return (
       <Paper className={classes.paper}>
         <Table >
           <TableHead>
             <TableRow>
               <TableCell>Nimi</TableCell>
-              <TableCell>Piirkonnad</TableCell>
-              <TableCell>Muuda</TableCell>
+              <TableCell>Parool</TableCell>
+              <TableCell>Admin</TableCell>
+              <TableCell>Kustuta</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.users.map(n => {
+            {this.props.users.map(n => {
               return (
                 <TableRow key={n.id}>
                   <TableCell component="th" scope="row">
                     {n.name}
                   </TableCell>
-                  <TableCell>{n.district}</TableCell>
                   <TableCell>
-                    <Link to={'accounts/' + n.id}>
-                      <EditIcon color="action" />
-                    </Link>
+                    <Button variant="outlined" color="secondary">
+                      Lähtesta
+                      </Button>
+                  </TableCell>
+                  <TableCell>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={this.state.checkedB}
+                          onChange={this.handleChange('checked')}
+                          value="checked"
+                          color="primary"
+                        />
+                      }
+                    />
+                  </TableCell>
+                  <TableCell>
+        
+                      <DeleteIcon color="action" />
+                    
                   </TableCell>
                 </TableRow>
               );
@@ -49,10 +78,12 @@ const UserTable = props => {
         </Table>
       </Paper>
     );
-  };
+  }
   
-  UserTable.propTypes = {
-    classes: PropTypes.object.isRequired,
-  };
+};
 
-  export default UserTable;
+UserTable.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default UserTable;
