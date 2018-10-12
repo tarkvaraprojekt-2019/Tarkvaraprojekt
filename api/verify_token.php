@@ -1,6 +1,6 @@
 <?php
 
-include "auth.php";
+require "auth.php";
 
 if (!isset($_SERVER["HTTP_AUTH_TOKEN"])) {
 	http_response_code(401);

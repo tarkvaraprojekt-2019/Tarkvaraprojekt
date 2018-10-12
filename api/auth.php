@@ -27,7 +27,7 @@ if (verify($username, $pass, false)) {
 function get_user($username) {
 	$pass = NULL;
 	$is_admin = NULL;
-	$db_info = parse_ini_file("../config.ini");
+	$db_info = parse_ini_file("./.conf/config.ini");
 	$db = new mysqli($db_info["DB_ADDR"], $db_info["DB_USER"], $db_info["DB_PASS"], $db_info["DB_NAME"], $db_info["DB_PORT"]);
 	$stmt = $db->prepare("CALL get_user(?, @pass, @is_admin)");
 	$stmt->bind_param("s", $username);
@@ -58,7 +58,7 @@ function create_token($username, $pass, $expiry) {
 	if (!verify($username, $pass, $is_admin)) {
 		return NULL;
 	}
-	$info = parse_ini_file("../config.ini");
+	$info = parse_ini_file("./.conf/config.ini");
 	$token_str = $expiry.(bool)$is_admin.$info["SECRET"];
 	$token = password_hash($token_str, PASSWORD_DEFAULT);
 	$token_enc = base64_encode($token);
@@ -71,7 +71,7 @@ function verify_token($token, $is_admin) {
 		return false;
 	}
 	list($base, $expiry) = $token_exploded;
-	$info = parse_ini_file("../config.ini");
+	$info = parse_ini_file("./.conf/config.ini");
 	$token_str = $expiry.(bool)$is_admin.$info["SECRET"];
 	$token_dec = base64_decode($base);
 	if (password_verify($token_str, $token_dec)) {
