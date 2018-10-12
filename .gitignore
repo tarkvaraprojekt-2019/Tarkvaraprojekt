@@ -1,2 +1,3 @@
 frontend/public.zip
-config.ini
+*/.conf/
+*/config.ini
