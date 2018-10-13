@@ -62,27 +62,30 @@ if ($action === "create") {
 
 //create a non-admin user with given username and password
 function create_user($username, $pass) {
-	require "db_connect.php";
+	$db = get_db();
 	$pass_hashed = password_hash($pass, PASSWORD_DEFAULT);
 	$stmt = $db->prepare("CALL create_user(?, ?)");
 	$stmt->bind_param("ss", $username, $pass_hashed);
 	$stmt->execute() or trigger_error($db->error);
+	$db->close();
 }
 
 //Sets a user's admin status to selected value
 //TODO: Make sure user can't set own status
 function set_admin($username, $admin_status) {
-	require "db_connect.php";
+	$db = get_db();
 	$stmt = $db->prepare("CALL set_user_admin(?, ?)");
 	$stmt->bind_param("ss", $username, $admin_status);
 	$stmt->execute() or trigger_error($db->error);
+	$db->close();
 }
 
 //Deletes the user
 //TODO: Make sure user can't delete themselves (?)
 function delete_user($username) {
-	require "db_connect.php";
+	$db = get_db();
 	$stmt = $db->prepare("CALL delete_user(?)");
 	$stmt->bind_param("s", $username);
 	$stmt->execute() or trigger_error($db->error);
+	$db->close();
 }
