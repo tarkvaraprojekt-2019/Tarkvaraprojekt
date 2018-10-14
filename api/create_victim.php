@@ -13,7 +13,7 @@ $insert_params = array();
 $params = array("first_name", "last_name", "national_id", "phone", "email");
 
 foreach ($params as $param) {
-	if (isset($_POST[$param]) && $_GET[$param] !== "") {
+	if (isset($_POST[$param]) && $_POST[$param] !== "") {
 		$insert_fields[] = $param;
 		$insert_params[] = $_POST[$param];
 	}

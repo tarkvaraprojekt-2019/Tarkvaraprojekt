@@ -20,7 +20,7 @@ $update_params = array();
 $params = array("first_name", "last_name", "national_id", "phone", "email");
 
 foreach ($params as $param) {
-	if (isset($_POST[$param]) && $_GET[$param] !== "") {
+	if (isset($_POST[$param]) && $_POST[$param] !== "") {
 		$update_fields[] = $param;
 		$update_params[] = $_POST[$param];
 	}
