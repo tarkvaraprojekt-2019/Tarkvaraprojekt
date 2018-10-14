@@ -27,17 +27,17 @@ if (isset($_GET["nid"]) && $_GET["nid"] !== "") {
 	$where_params[] = $_GET["nid"];	
 }
 //Phone
-if (isset($_GET["phone"]) && $_GET["firstname"] !== "") {
+if (isset($_GET["phone"]) && $_GET["phone"] !== "") {
 	$where_fields[] = "phone";
 	$where_params[] = $_GET["phone"];
 }
 //Email
-if (isset($_GET["mail"]) && $_GET["firstname"] !== "") {
+if (isset($_GET["mail"]) && $_GET["mail"] !== "") {
 	$where_fields[] = "email";
 	$where_params[] = $_GET["mail"];
 }
 //id
-if (isset($_GET["id"]) && $_GET["firstname"] !== "") {
+if (isset($_GET["id"]) && $_GET["id"] !== "") {
 	$where_fields[] = "id";
 	$where_params[] = $_GET["id"];
 }
