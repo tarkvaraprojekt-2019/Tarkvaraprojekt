@@ -9,6 +9,11 @@ const getToken = () =>
 
 const setToken = token => (window.localStorage.authToken = JSON.stringify(token))
 
+const getBaseUrl = () => {
+  
+  const host = window.location.hostname;
+  const baseurl = host === "localhost" ? "http://localhost" : "https://andmebaas.naisteabi.ee"
+}
 
 export const handleLogin = ({ username, password }) => {
   if (!isBrowser) return false
@@ -16,11 +21,11 @@ export const handleLogin = ({ username, password }) => {
   const user = username || "asdf"
   const pass = password || "asdf"
 
-  const auth = btoa(user + ":" + pass)
+  const auth = btoa(user + ":" + pass
 
   axios({
       method: 'get', 
-      url: '/api/get_token.php', 
+      url: getBaseUrl() + '/api/get_token.php', 
       headers: {
           'Auth': auth,
           'Auth-timestamp': '400000',
