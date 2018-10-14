@@ -44,14 +44,46 @@ class VictimOne extends React.Component {
         classes: PropTypes.object.isRequired,
     };
 
+    constructor(props) {
+        super(props)
+        this.axios = this.props.axios
+    }
+
+    componentWillMount() {
+        this.getIncidents("2013032")
+    }
+
+
+
     handleChange = event => {
         this.setState({[event.target.name]: event.target.value});
     };
 
+
+
     state = {
         victimArea: 'Tartumaa',
         name: 'hai',
+        incidents: [{
+            id: 0,
+            piirkond: "teadmata"
+        }]
     };
+
+    getIncidents = (client_id) => {
+        this.axios.get('get_incidents.php', {
+            params:{
+                kliendi_nr: client_id,
+            }
+        })
+            .then( res => {
+                console.log(res)
+                this.setState({
+                    incidents: res.data
+                })
+            })
+            .catch( err => console.log("search err: ", err))
+    }
 
     render() {
         const {classes} = this.props;
@@ -117,7 +149,7 @@ class VictimOne extends React.Component {
                     </form>
                 </Paper>
                 <Paper className={classes.paper}>
-                    <IncidentTable classes={classes} />
+                    <IncidentTable classes={classes} incidents ={this.state.incidents} />
                 </Paper>
                 <Paper className={classes.paper}>
                     <Link to="/overview">

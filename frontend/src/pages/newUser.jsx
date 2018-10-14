@@ -109,7 +109,7 @@ class newUser extends React.Component {
                     </form>
                 </Paper>
                 <Paper className={classes.paper}>
-                    <IncidentTable classes={classes} />
+                    <IncidentTable classes={classes} incidents = {[]}/>
                 </Paper>
                 <Paper className={classes.paper}>
                     <Link to="/overview">

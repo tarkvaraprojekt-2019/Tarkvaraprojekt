@@ -30,21 +30,18 @@ const IncidentTable = props => {
                     <TableRow>
                         <TableCell>ID</TableCell>
                         <TableCell>Piirkond</TableCell>
-                        <TableCell>Muuda</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    <TableRow>
-                        <TableCell component="th" scope="row">
-                            1
-                        </TableCell>
-                        <TableCell>Tartumaa</TableCell>
-                        <TableCell>
-                            <Link>
-                                MUUDA JUHTUMIT
-                            </Link>
-                        </TableCell>
-                    </TableRow>
+                    {props.incidents.map(n => {
+                        return (
+                            <TableRow>
+                                <TableCell component="th" scope="row">{n.id}</TableCell>
+                                <TableCell>{n.piirkond}</TableCell>
+                            </TableRow>
+
+                        );
+                    })}
                 </TableBody>
 
             </Table>

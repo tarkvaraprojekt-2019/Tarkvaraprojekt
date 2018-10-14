@@ -14,6 +14,7 @@ import EditIcon from '@material-ui/icons/Edit';
 const VictimTable = props => {
     const { classes } = props;
 
+
     return (
         <Paper className={classes.paper}>
             <Table >
