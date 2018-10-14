@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { Link } from '@reach/router';
 
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 import withRoot from '../../withRoot';
 
-import Layout from '../../components/Layout';
+import ReportLayout from '../../components/ReportLayout';
 //import ReportImg from 'report.png';
 
 
@@ -32,7 +33,7 @@ const styles = theme => ({
 
 
 
-class Report extends React.Component {
+class Graphs extends React.Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
     };
@@ -46,11 +47,13 @@ class Report extends React.Component {
         const { classes } = this.props;
 
         return (
-            <Layout>
-                
-            </Layout>
+            <ReportLayout>
+                <Typography variant="h5">
+                    hello advanced
+                </Typography>
+            </ReportLayout>
         );
     }
 }
 
-export default withRoot(withStyles(styles)(Report));
+export default withRoot(withStyles(styles)(Graphs));

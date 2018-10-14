@@ -26,7 +26,7 @@ export const mainListItems = (
                 <ListItemText primary="Kasutajad"/>
             </ListItem>
         </Link>
-        <Link to="/report">
+        <Link to="/report/graphs">
             <ListItem button>
                 <ListItemIcon>
                     <BarChartIcon/>

@@ -9,9 +9,9 @@ import Paper from '@material-ui/core/Paper';
 
 
 
-import withRoot from '../../withRoot';
+import withRoot from '../withRoot';
 
-import Layout from '../../components/Layout';
+import Layout from './Layout';
 //import ReportImg from 'report.png';
 
 
@@ -44,14 +44,14 @@ class ReportLayout extends React.Component {
     }
 
     handleChange = (event, selectedTab) => {
-        const changed = selectedTab === this.state.selectedTab
+        const changed = selectedTab !== this.state.selectedTab
         
         if (changed) {
             this.setState({ selectedTab })
-            if (this.state.selectedTab === 0) {
-                navigate("/report/columnSelection")
-            } else if (this.state.selectedTab === 1) {
-                navigate("/report/graphs")
+            if (selectedTab === 0) {
+                navigate("/report/graphs/")
+            } else if (selectedTab === 1) {
+                navigate("/report/columnSelection/")
             }
         }
     }
@@ -64,7 +64,7 @@ class ReportLayout extends React.Component {
             <Layout>
                 <Paper className={classes.root}>
                     <Tabs
-                        value={this.state.value}
+                        value={this.state.selectedTab}
                         onChange={this.handleChange}
                         indicatorColor="primary"
                         textColor="primary"
