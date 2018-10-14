@@ -8,21 +8,24 @@ if (!verify_access(false)) {
 	exit();
 }
 
-//id
-if (!isset($_POST["id"])) {
+//Unpack post body
+$body = json_decode($_POST[$body], true);
+
+if (!isset($body["id"])) {
 	http_response_code(400);
 	echo "Missing victim id";
 	exit();
 }
 
+//Loop through all parameters to see if they were asked to be updated
 $update_fields = array();
 $update_params = array();
 $params = array("first_name", "last_name", "national_id", "phone", "email");
 
 foreach ($params as $param) {
-	if (isset($_POST[$param]) && $_POST[$param] !== "") {
+	if (isset($body[$param]) && $body[$param] !== "") {
 		$update_fields[] = $param;
-		$update_params[] = $_POST[$param];
+		$update_params[] = $body[$param];
 	}
 }
 
@@ -40,7 +43,7 @@ for ($i = 0; $i < $c; $i++) {
 	$update_query .= $update_fields[$i] . "=?";
 }
 $update_query .= " WHERE id=?";
-$update_params[] = $_POST["id"];
+$update_params[] = $body["id"];
 
 $db = get_db();
 $stmt = mysqli_prepare($db, $update_query);
