@@ -15,7 +15,7 @@ function withRoot(Component) {
       super(props);
       this.muiPageContext = getPageContext();
       this.axios = axios.create({
-        baseURL: 'https://andmebaas.naisteabi.com/api/', 
+        baseURL: 'http://localhost/api/', 
         timeout: 5000, 
         headers: {
           'Auth-token': getCurrentToken()

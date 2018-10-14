@@ -39,15 +39,41 @@ const styles = theme => ({
 class Overview extends React.Component {
     constructor(props) {
         super(props)
+        this.axios = this.props.axios
     }
+
     static propTypes = {
         classes: PropTypes.object.isRequired,
     };
 
+
+    handleChange = event => {
+
+        const key = event.target.id
+        const value = event.target.value
+
+        const fields = {}
+        fields[key] = value
+
+        this.setState((state, props) => 
+            Object.assign({}, state, fields)
+        )
+        console.log(this.state)
+    }
+
+    getData = (searchFields) => {
+        this.axios.get('search_victim.php', {
+            params: searchFields,
+        })
+        .then( res => console.log(res))
+        .catch( err => console.log("search err: ", err))
+    }
+
     state = {
-        id: '',
-        users: [],
-    };
+        id: "",
+        firstname: "", 
+    }
+
 
     render() {
         const { classes } = this.props;
@@ -55,40 +81,39 @@ class Overview extends React.Component {
         return (
             <Layout>
                 <Paper className={classes.paper} >
+
                     <TextField
-                        id="id-field"
+                        id="id"
                         label="ID"
                         className={classes.input}
-                        value={this.state.name}
-                        onChange={event => this.setState({
-                            users: [{
-                                id: 1,
-                                name: event.target.value,
-                                district: "Harjumaa",
-                            }]})}
+                        value={this.state.id}
+                        onChange={this.handleChange}
                         margin="normal"
                     />
-
+                    <TextField
+                        id="firstname"
+                        label="Eesnimi"
+                        className={classes.input}
+                        value={this.state.firstname}
+                        onChange={this.handleChange}
+                        margin="normal"
+                    />
                     <Button
                         type="submit"
                         variant="outlined"
                         color="primary"
                         className={classes.input}
-                        onClick={event => this.setState({
-                            users: [{
-                                id: 0,
-                                name: this.state.id,
-                                district: "Harjumaa",
-                            }]
-                        })}
+                        onClick={ e => this.getData(this.state)}
                     >
                         Otsi
                     </Button>
 
                 </Paper>
 
-                { this.state.users.length !== 0 && <VictimTable classes={classes} users={this.state.users} /> }
-
+                { this.state.users && this.state.users.length !== 0 && <VictimTable classes={classes} users={this.state.users} /> }
+                { this.state.id }
+                <br/>
+                { this.state.firstname }
                 <Paper className={classes.paper}>
                     <Link to={"newUser/"}>
                         <Button
