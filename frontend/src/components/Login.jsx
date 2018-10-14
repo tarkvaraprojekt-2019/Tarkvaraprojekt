@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import { Link } from 'gatsby';
+import { handleLogin } from '../auth';
 
 const styles = theme => ({
   layout: {
@@ -80,6 +81,7 @@ function SignIn(props) {
                 fullWidth
                 variant="raised"
                 color="primary"
+                onClick={handleLogin({username: "", password: ""})}
                 className={classes.submit}
               >
                 Sisene

@@ -13,11 +13,6 @@ import Layout from '../components/Layout';
 import VictimTable from "../components/VictimTable";
 
 
-let id = 0;
-function createUser(name, district) { // TODO refactor?
-    id += 1;
-    return { id, name, district };
-}
 
 const styles = theme => ({
     root: {
@@ -42,6 +37,9 @@ const styles = theme => ({
 
 
 class Overview extends React.Component {
+    constructor(props) {
+        super(props)
+    }
     static propTypes = {
         classes: PropTypes.object.isRequired,
     };
@@ -53,7 +51,7 @@ class Overview extends React.Component {
 
     render() {
         const { classes } = this.props;
-
+        
         return (
             <Layout>
                 <Paper className={classes.paper} >

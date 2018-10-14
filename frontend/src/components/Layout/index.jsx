@@ -17,6 +17,8 @@ import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 
 import {mainListItems} from './listItems';
 
+import {isLoggedIn, getCurrentToken} from '../../auth';
+
 
 const drawerWidth = 240;
 
@@ -127,8 +129,11 @@ class Dashboard extends React.Component {
                         <Typography variant="title" color="inherit" noWrap className={classes.title}>
                             Ülevaade
                         </Typography>
+                        <Typography variant="title" noWrap className={classes.title}>
+                            {getCurrentToken()}
+                        </Typography>
                         <IconButton color="inherit">
-                            <Link to="login/">
+                            <Link to="/">
                                 <PowerSettingsNew color="secondary"/>
                             </Link>
                         </IconButton>

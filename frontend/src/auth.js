@@ -16,11 +16,11 @@ export const handleLogin = ({ username, password }) => {
   const user = username || "asdf"
   const pass = password || "asdf"
 
-  const auth = user + ":" + pass
+  const auth = btoa(user + ":" + pass)
 
   axios({
       method: 'get', 
-      url: '/api/get_token', 
+      url: '/api/get_token.php', 
       headers: {
           'Auth': auth,
           'Auth-timestamp': '400000',
