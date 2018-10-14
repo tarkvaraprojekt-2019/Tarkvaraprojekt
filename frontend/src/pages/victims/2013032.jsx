@@ -67,7 +67,8 @@ class VictimOne extends React.Component {
         incidents: [{
             id: 0,
             piirkond: "teadmata"
-        }]
+        }],
+        editingEnabled : false
     };
 
     getIncidents = (client_id) => {
@@ -93,58 +94,58 @@ class VictimOne extends React.Component {
                 <Typography variant="h4" gutterBottom>
                     Isiku profiil
                 </Typography>
-                <Button
+                {!this.state.editingEnabled ? <Button
                     variant="raised"
                     color="primary"
+                    onClick={ e => this.setState({
+                        editingEnabled: !this.state.editingEnabled
+                    })}
                 >
                     MUUDA ISIKUANDMEID
-                </Button>
+                </Button> : null }
+                {this.state.editingEnabled ? <Button
+                    type="submit"
+                    variant="raised"
+                    color="primary"
+                    onClick={ e => this.setState({
+                        editingEnabled: !this.state.editingEnabled
+                    })}
+                >
+                    SALVESTA
+                </Button> : null}
+                {this.state.editingEnabled ? <Button
+                    variant="raised"
+                    color="primary"
+                    onClick={ e => this.setState({
+                        editingEnabled: !this.state.editingEnabled
+                    })}
+                >
+                    TÜHISTA
+                </Button> : null}
 
                 <Paper className={classes.paper}>
 
                     <form className={classes.form}>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="victimID">ID</InputLabel>
-                            <Input defaultValue="1145"/>
+                            <Input disabled defaultValue="1145"/>
 
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="firstName">Eesnimi</InputLabel>
-                            <Input defaultValue="Mari"/>
+                            <Input disabled = {!this.state.editingEnabled} defaultValue="Mari"/>
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="lastName">Perekonnanimi</InputLabel>
-                            <Input defaultValue="Maasikas"/>
+                            <Input disabled = {!this.state.editingEnabled} defaultValue="Maasikas"/>
                         </FormControl>
                         <FormControl margin="normal" fullWidth>
                             <InputLabel htmlFor="victimTel">Telefoninr</InputLabel>
-                            <Input defaultValue="55889933"/>
+                            <Input disabled = {!this.state.editingEnabled} defaultValue="55889933"/>
                         </FormControl>
                         <FormControl margin="normal" fullWidth>
                             <InputLabel htmlFor="victimEmail">E-maili aadress</InputLabel>
-                            <Input defaultValue="marimaasikas@mail.ee"/>
-                        </FormControl>
-                        <FormControl margin="normal" fullWidth>
-                            <InputLabel htmlFor="victim-area">Piirkond</InputLabel>
-                            <Select
-                                value={this.state.victimArea}
-                                onChange={this.handleChange}
-                                inputProps={{
-                                    name: 'victimAge',
-                                    id: 'victim-area',
-                                }}>
-                                <MenuItem value={"Tartumaa"}>Tartumaa</MenuItem>
-                                <MenuItem value={"Harjumaa"}>Harjumaa</MenuItem>
-                                <MenuItem value={"Pärnumaa"}>Pärnumaa</MenuItem>
-                                <MenuItem value={"Saaremaa"}>Saaremaa</MenuItem>
-                                <MenuItem value={"Hiiumaa"}>Hiiumaa</MenuItem>
-                                <MenuItem value={"Võrumaa"}>Võrumaa</MenuItem>
-                                <MenuItem value={"Ida-Virumaa"}>Ida-Virumaa</MenuItem>
-                                <MenuItem value={"Lääne-Virumaa"}>Lääne-Virumaa</MenuItem>
-                                <MenuItem value={"Põlvamaa"}>Põlvamaa</MenuItem>
-                                <MenuItem value={"Valgamaa"}>Valgamaa</MenuItem>
-
-                            </Select>
+                            <Input disabled = {!this.state.editingEnabled} defaultValue="marimaasikas@mail.ee"/>
                         </FormControl>
                     </form>
                 </Paper>
