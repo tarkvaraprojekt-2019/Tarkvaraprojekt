@@ -12,15 +12,11 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 
-
 import withRoot from '../withRoot';
 
 import Layout from '../components/Layout';
 
-
 import IncidentTable from "../components/IncidentTable";
-
-
 
 const styles = theme => ({
     root: {
@@ -80,7 +76,7 @@ class newUser extends React.Component {
                             <Input/>
                         </FormControl>
                         <FormControl margin="normal" fullWidth>
-                            <InputLabel htmlFor="victimTel">Telefoninr</InputLabel>
+                            <InputLabel htmlFor="victimPhone">Telefoninr</InputLabel>
                             <Input/>
                         </FormControl>
                         <FormControl margin="normal" fullWidth>
