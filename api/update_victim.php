@@ -9,7 +9,7 @@ if (!verify_access(false)) {
 }
 
 //Unpack post body
-$body = json_decode($_POST[$body], true);
+$body = json_decode($_POST["body"], true);
 
 if (!isset($body["id"])) {
 	http_response_code(400);
