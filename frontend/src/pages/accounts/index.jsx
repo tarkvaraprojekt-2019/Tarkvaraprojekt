@@ -97,11 +97,15 @@ class Accounts extends React.Component {
         <div className={classes.tableContainer}>
           <UserTable classes={classes} users={currentUsers}/>
         </div>
+        <div>
+          <br/>
+          <br/>
         <Link to="accounts/new/">
-          <Button variant="fab" color="primary">
-            <AddIcon />
+          <Button variant="contained" color="primary">
+            Lisa kasutaja
           </Button>
         </Link>
+        </div>
       </Layout>
     );
   }

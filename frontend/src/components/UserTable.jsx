@@ -68,7 +68,10 @@ class UserTable extends React.Component {
                   </TableCell>
                   <TableCell>
         
-                      <DeleteIcon color="action" />
+                      <DeleteIcon
+                          color="action"
+                          onClick = {event => window.confirm("Kas oled kindel, et tahad selle kasutaja ära kustatada?")}
+                      />
                     
                   </TableCell>
                 </TableRow>
