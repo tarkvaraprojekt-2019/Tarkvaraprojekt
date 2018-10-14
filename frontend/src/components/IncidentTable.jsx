@@ -15,9 +15,6 @@ import EditIcon from '@material-ui/icons/Edit';
 
 
 
-
-
-
 const IncidentTable = props => {
     const { classes } = props;
 
@@ -30,6 +27,9 @@ const IncidentTable = props => {
                     <TableRow>
                         <TableCell>ID</TableCell>
                         <TableCell>Piirkond</TableCell>
+                        <TableCell>Füüsiline vägivald</TableCell>
+                        <TableCell>Vaimne vägivald</TableCell>
+                        <TableCell>Vägivallatseja sugu</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -38,8 +38,10 @@ const IncidentTable = props => {
                             <TableRow>
                                 <TableCell component="th" scope="row">{n.id}</TableCell>
                                 <TableCell>{n.piirkond}</TableCell>
+                                <TableCell>{n.fuusiline_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
+                                <TableCell>{n.vaimne_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
+                                <TableCell>{n.vagivallatseja_sugu}</TableCell>
                             </TableRow>
-
                         );
                     })}
                 </TableBody>
