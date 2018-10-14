@@ -19,7 +19,7 @@ list($token, $timestamp) = $auth_token_exploded;
 
 if ($timestamp < time()) {
 	http_response_code(401);
-	echo "Timestamp expired!";
+	echo "Token expired!";
 	exit();
 }
 

@@ -25,6 +25,7 @@ function get_incidents($kliendi_nr) {
 	$stmt = $db->prepare("SELECT * FROM incidents WHERE kliendi_nr = ?");
 	$stmt->bind_param("i", $kliendi_nr);
 	$stmt->execute() or trigger_error($db->error);
-	return json_encode(mysqli_fetch_all(mysqli_stmt_get_result($stmt)));
-	$db->close;
+	$json = json_encode($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
+	$db->close();
+	return $json;
 }
