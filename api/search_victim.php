@@ -12,58 +12,33 @@ $where_fields = array();
 $where_params = array();
 
 //First name
-<<<<<<< HEAD
-if (isset($_GET["firstname"]) && !empty($_GET["firstname"])) {
-	$where_fields[] = "first_name =";
-	$where_params[] = $_GET["firstname"];
-}
-//Last name
-if (isset($_GET["lastname"]) && !empty($_GET["lastname"])) {
-	$where_fields[] = "last_name =";
-=======
-if (isset($_GET["firstname"])) {
+if (isset($_GET["firstname"]) && $_GET["firstname"] !== "") {
 	$where_fields[] = "first_name";
 	$where_params[] = $_GET["firstname"];
 }
 //Last name
-if (isset($_GET["lastname"])) {
+if (isset($_GET["lastname"]) && $_GET["lastname"] !== "") {
 	$where_fields[] = "last_name";
->>>>>>> b21c55c80f9d52236bb9f1208a9f0d251ba30d3f
 	$where_params[] = $_GET["lastname"];
 }
 //National id
-if (isset($_GET["nid"]) && !empty($_GET["nid"])) {
+if (isset($_GET["nid"]) && $_GET["nid"] !== "") {
 	$where_fields[] = "national_id";
 	$where_params[] = $_GET["nid"];	
 }
 //Phone
-<<<<<<< HEAD
-if (isset($_GET["phone"]) && !empty($_GET["phone"])) {
-	$where_fields[] = "phone =";
-	$where_params[] = $_GET["phone"];
-}
-//Email
-if (isset($_GET["mail"]) && !empty($_GET["mail"])) {
-	$where_fields[] = "email =";
-	$where_params[] = $_GET["mail"];
-}
-//id
-if (isset($_GET["id"]) && !empty($_GET["id"])) {
-	$where_fields[] = "id =";
-=======
-if (isset($_GET["phone"])) {
+if (isset($_GET["phone"]) && $_GET["firstname"] !== "") {
 	$where_fields[] = "phone";
 	$where_params[] = $_GET["phone"];
 }
 //Email
-if (isset($_GET["mail"])) {
+if (isset($_GET["mail"]) && $_GET["firstname"] !== "") {
 	$where_fields[] = "email";
 	$where_params[] = $_GET["mail"];
 }
 //id
-if (isset($_GET["id"])) {
+if (isset($_GET["id"]) && $_GET["firstname"] !== "") {
 	$where_fields[] = "id";
->>>>>>> b21c55c80f9d52236bb9f1208a9f0d251ba30d3f
 	$where_params[] = $_GET["id"];
 }
 
