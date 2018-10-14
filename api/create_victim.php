@@ -8,14 +8,18 @@ if (!verify_access(false)) {
 	exit();
 }
 
+//Unpack post body
+$body = json_decode($_POST[$body], true);
+
 $insert_fields = array();
 $insert_params = array();
 $params = array("first_name", "last_name", "national_id", "phone", "email");
 
+//Loop through all parameters to see if they were asked to be inserted
 foreach ($params as $param) {
-	if (isset($_POST[$param]) && $_POST[$param] !== "") {
+	if (isset($body[$param]) && $body[$param] !== "") {
 		$insert_fields[] = $param;
-		$insert_params[] = $_POST[$param];
+		$insert_params[] = $body[$param];
 	}
 }
 
