@@ -25,5 +25,5 @@ if ($timestamp < time()) {
 
 function verify_access($is_admin) {
 	$token = $_SERVER["HTTP_AUTH_TOKEN"];
-	return verify_token($token, $is_admin);
+	return verify_token($token, $is_admin); //This is a function from auth.php
 }

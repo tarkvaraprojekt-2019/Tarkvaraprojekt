@@ -127,11 +127,10 @@ class Dashboard extends React.Component {
                         <Typography variant="title" color="inherit" noWrap className={classes.title}>
                             Ülevaade
                         </Typography>
-                        <IconButton color="inherit">
-                            <Link to="login/">
-                                <PowerSettingsNew color="secondary"/>
-                            </Link>
-                        </IconButton>
+                        <Link to="/">
+                            <Typography > Logi välja
+                            </Typography>
+                        </Link>
                     </Toolbar>
                 </AppBar>
                 <Drawer

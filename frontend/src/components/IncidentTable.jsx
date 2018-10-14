@@ -11,6 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
+import EditIcon from '@material-ui/icons/Edit';
 
 
 
@@ -32,6 +33,19 @@ const IncidentTable = props => {
                         <TableCell>Muuda</TableCell>
                     </TableRow>
                 </TableHead>
+                <TableBody>
+                    <TableRow>
+                        <TableCell component="th" scope="row">
+                            1
+                        </TableCell>
+                        <TableCell>Tartumaa</TableCell>
+                        <TableCell>
+                            <Link>
+                                MUUDA JUHTUMIT
+                            </Link>
+                        </TableCell>
+                    </TableRow>
+                </TableBody>
 
             </Table>
         </Paper>

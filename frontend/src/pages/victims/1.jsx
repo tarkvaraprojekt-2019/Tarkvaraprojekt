@@ -59,13 +59,22 @@ class VictimOne extends React.Component {
         return (
             <Layout>
                 <Typography variant="display1" gutterBottom>
-                    Lisa uus isik
+                    Isiku profiil
                 </Typography>
+                <Button
+                    variant="raised"
+                    color="primary"
+                >
+                    MUUDA ISIKUANDMEID
+                </Button>
+
                 <Paper className={classes.paper}>
+
                     <form className={classes.form}>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="victimID">ID</InputLabel>
-                            <Input defaultValue="123"/>
+                            <Input defaultValue="1145"/>
+
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="firstName">Eesnimi</InputLabel>
