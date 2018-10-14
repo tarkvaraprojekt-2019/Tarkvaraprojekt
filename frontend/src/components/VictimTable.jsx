@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'gatsby';
+import { Link, navigate} from 'gatsby';
 
 
 import Table from '@material-ui/core/Table';
@@ -10,10 +10,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
-
-
-
-
 
 const VictimTable = props => {
     const { classes } = props;
@@ -27,24 +23,26 @@ const VictimTable = props => {
                         <TableCell>Eesnimi</TableCell>
                         <TableCell>Perenimi</TableCell>
                         <TableCell>Isikukood</TableCell>
-                        <TableCell>Perenimi</TableCell>
-                        <TableCell>Perenimi</TableCell>
+                        <TableCell>Telefoninumber</TableCell>
+                        <TableCell>E-Mail</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.users.map(n => {
+                    {props.victims.map(n => {
                         return (
-                            <TableRow key={n.id}>
-                                <TableCell component="th" scope="row">
-                                    {n.name}
-                                </TableCell>
-                                <TableCell>{n.district}</TableCell>
-                                <TableCell>
-                                    <Link to={'victims/1'}>
-                                        <EditIcon color="action" />
-                                    </Link>
-                                </TableCell>
-                            </TableRow>
+                                <TableRow 
+                                    hover
+                                    onClick={e => navigate("/victims/" + n.id)}
+                                    key={n.id}
+                                >
+                                    <TableCell component="th" scope="row">{n.id}</TableCell>
+                                    <TableCell>{n.firstname}</TableCell>
+                                    <TableCell>{n.lastname}</TableCell>
+                                    <TableCell>{n.mail}</TableCell>
+                                    <TableCell>{n.nid}</TableCell>
+                                    <TableCell>{n.phone}</TableCell>
+                                </TableRow>
+                            
                         );
                     })}
                 </TableBody>

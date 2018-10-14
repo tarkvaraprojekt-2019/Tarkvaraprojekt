@@ -67,7 +67,10 @@ class Overview extends React.Component {
         this.axios.get('search_victim.php', {
             params: searchFields,
         })
-        .then( res => console.log(res))
+        .then( res => {
+            console.log(res)
+            this.setState({searchResults: res})
+        })
         .catch( err => console.log("search err: ", err))
     }
 
@@ -80,6 +83,16 @@ class Overview extends React.Component {
             nid: "",
             phone: "", 
         },
+        searchResults: [
+            {
+                firstname: "Kristjan",
+                id: "2013032",
+                lastname: "Laht",
+                mail: "",
+                nid: "",
+                phone: "", 
+            }
+        ]
     }
 
 
@@ -120,7 +133,8 @@ class Overview extends React.Component {
 
                 </Paper>
 
-                { this.state.users && this.state.users.length !== 0 && <VictimTable classes={classes} users={this.state.users} /> }
+                <VictimTable classes={classes} victims={this.state.searchResults} />
+
                 { this.state.id }
                 <br/>
                 { this.state.firstname }
