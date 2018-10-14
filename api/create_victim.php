@@ -10,31 +10,13 @@ if (!verify_access(false)) {
 
 $insert_fields = array();
 $insert_params = array();
+$params = array("first_name", "last_name", "national_id", "phone", "email");
 
-//First name
-if (isset($_POST["firstname"])) {
-	$insert_fields[] = "first_name";
-	$insert_params[] = $_POST["firstname"];
-}
-//Last name
-if (isset($_POST["lastname"])) {
-	$insert_fields[] = "last_name";
-	$insert_params[] = $_POST["lastname"];
-}
-//National id
-if (isset($_POST["nid"])) {
-	$insert_fields[] = "national_id";
-	$insert_params[] = $_POST["nid"];	
-}
-//Phone
-if (isset($_POST["phone"])) {
-	$insert_fields[] = "phone";
-	$insert_params[] = $_POST["phone"];
-}
-//Email
-if (isset($_POST["mail"])) {
-	$insert_fields[] = "email";
-	$insert_params[] = $_POST["mail"];
+foreach ($params as $param) {
+	if (isset($_POST[$param]) && $_GET[$param] !== "") {
+		$insert_fields[] = $param;
+		$insert_params[] = $_POST[$param];
+	}
 }
 
 $c = count($insert_fields);

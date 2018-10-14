@@ -8,39 +8,22 @@ if (!verify_access(false)) {
 	exit();
 }
 
-$update_fields = array();
-$update_params = array();
-
 //id
 if (!isset($_POST["id"])) {
 	http_response_code(400);
 	echo "Missing victim id";
 	exit();
 }
-//First name
-if (isset($_POST["firstname"])) {
-	$update_fields[] = "first_name";
-	$update_params[] = $_POST["firstname"];
-}
-//Last name
-if (isset($_POST["lastname"])) {
-	$update_fields[] = "last_name";
-	$update_params[] = $_POST["lastname"];
-}
-//National id
-if (isset($_POST["nid"])) {
-	$update_fields[] = "national_id";
-	$update_params[] = $_POST["nid"];	
-}
-//Phone
-if (isset($_POST["phone"])) {
-	$update_fields[] = "phone";
-	$update_params[] = $_POST["phone"];
-}
-//Email
-if (isset($_POST["mail"])) {
-	$update_fields[] = "email";
-	$update_params[] = $_POST["mail"];
+
+$update_fields = array();
+$update_params = array();
+$params = array("first_name", "last_name", "national_id", "phone", "email");
+
+foreach ($params as $param) {
+	if (isset($_POST[$param]) && $_GET[$param] !== "") {
+		$update_fields[] = $param;
+		$update_params[] = $_POST[$param];
+	}
 }
 
 $c = count($update_fields);

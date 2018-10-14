@@ -10,36 +10,13 @@ if (!verify_access(false)) {
 
 $where_fields = array();
 $where_params = array();
+$params = array("first_name", "last_name", "national_id", "phone", "email", "id");
 
-//First name
-if (isset($_GET["firstname"]) && $_GET["firstname"] !== "") {
-	$where_fields[] = "first_name";
-	$where_params[] = $_GET["firstname"];
-}
-//Last name
-if (isset($_GET["lastname"]) && $_GET["lastname"] !== "") {
-	$where_fields[] = "last_name";
-	$where_params[] = $_GET["lastname"];
-}
-//National id
-if (isset($_GET["nid"]) && $_GET["nid"] !== "") {
-	$where_fields[] = "national_id";
-	$where_params[] = $_GET["nid"];	
-}
-//Phone
-if (isset($_GET["phone"]) && $_GET["phone"] !== "") {
-	$where_fields[] = "phone";
-	$where_params[] = $_GET["phone"];
-}
-//Email
-if (isset($_GET["mail"]) && $_GET["mail"] !== "") {
-	$where_fields[] = "email";
-	$where_params[] = $_GET["mail"];
-}
-//id
-if (isset($_GET["id"]) && $_GET["id"] !== "") {
-	$where_fields[] = "id";
-	$where_params[] = $_GET["id"];
+foreach ($params as $param) {
+	if (isset($_GET[$param]) && $_GET[$param] !== "") {
+		$where_fields[] = $param;
+		$where_params[] = $_GET[$param];
+	}
 }
 
 $where_query = "";
