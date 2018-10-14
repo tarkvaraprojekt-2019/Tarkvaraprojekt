@@ -12,7 +12,7 @@ const setToken = token => (window.localStorage.authToken = JSON.stringify(token)
  export const getBaseUrl = () => {
   if (!isBrowser) return false
   const host = window.location.hostname;
-  const baseurl = host === "localhost" ? "http://localhost" : "https://andmebaas.naisteabi.ee"
+  const baseurl = host === "localhost" ? "http://localhost" : "https://andmebaas.naistetugi.ee"
   return baseurl
 }
 
