@@ -36,10 +36,10 @@ const VictimTable = props => {
                                     key={n.id}
                                 >
                                     <TableCell component="th" scope="row">{n.id}</TableCell>
-                                    <TableCell>{n.firstname}</TableCell>
-                                    <TableCell>{n.lastname}</TableCell>
-                                    <TableCell>{n.mail}</TableCell>
-                                    <TableCell>{n.nid}</TableCell>
+                                    <TableCell>{n.first_name}</TableCell>
+                                    <TableCell>{n.last_name}</TableCell>
+                                    <TableCell>{n.email}</TableCell>
+                                    <TableCell>{n.national_id}</TableCell>
                                     <TableCell>{n.phone}</TableCell>
                                 </TableRow>
                             
