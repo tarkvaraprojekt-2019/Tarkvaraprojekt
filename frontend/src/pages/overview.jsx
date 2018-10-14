@@ -22,6 +22,7 @@ const styles = theme => ({
     paper: {
         margin: theme.spacing.unit * 4,
         display: 'flex',
+        flexWrap: 'wrap',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -30,6 +31,7 @@ const styles = theme => ({
     },
     input: {
         margin: theme.spacing.unit,
+        minWidth: theme.spacing.unit * 20
     },
 });
 
@@ -77,27 +79,29 @@ class Overview extends React.Component {
 
     render() {
         const { classes } = this.props;
+
+        const field = (id, label) => (
+            <TextField
+                        id={id}
+                        label={label}
+                        className={classes.input}
+                        value={this.state.id}
+                        onChange={this.handleChange}
+                        margin="normal"
+            />
+        )
         
         return (
             <Layout>
                 <Paper className={classes.paper} >
 
-                    <TextField
-                        id="id"
-                        label="ID"
-                        className={classes.input}
-                        value={this.state.id}
-                        onChange={this.handleChange}
-                        margin="normal"
-                    />
-                    <TextField
-                        id="firstname"
-                        label="Eesnimi"
-                        className={classes.input}
-                        value={this.state.firstname}
-                        onChange={this.handleChange}
-                        margin="normal"
-                    />
+                    {field("id", "ID")}
+                    {field("firstname", "Eesnimi")}
+                    {field("lastname", "Perenimi")}
+                    {field("nid", "Isikukood")}
+                    {field("phone", "Telefoninumber")}
+                    {field("mail", "E-Mail")}
+                    
                     <Button
                         type="submit"
                         variant="outlined"
