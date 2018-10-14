@@ -9,7 +9,7 @@ if (!verify_access(false)) {
 }
 
 //Unpack post body
-$body = json_decode($_POST[$body], true);
+$body = json_decode($_POST["body"], true);
 
 $insert_fields = array();
 $insert_params = array();
