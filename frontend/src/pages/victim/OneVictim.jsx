@@ -49,12 +49,15 @@ class Victim extends React.Component {
     }
 
     componentWillMount() {
-        this.getIncidents(this.props.victimID)
+        this.getIncidents()
     }
 
 
     handleChange = event => {
-        this.setState({[event.target.name]: event.target.value});
+        const formValues = this.state.formValues
+        formValues[event.target.id] = event.target.value
+        this.setState({ formValues });
+        console.log(this.state)
     };
 
     state = {
@@ -64,13 +67,16 @@ class Victim extends React.Component {
             id: 0,
             piirkond: "teadmata"
         }], 
-        editingEnabled : false
+        editingEnabled : false,
+        formValues: {
+            id: this.props.victimID,
+        },
     };
 
-    getIncidents = (client_id) => {
+    getIncidents = () => {
         this.axios.get('get_incidents.php', {
             params:{
-                kliendi_nr: client_id,
+                kliendi_nr: this.props.victimID,
             }
         })
         .then( res => {
@@ -107,9 +113,15 @@ class Victim extends React.Component {
                         type="submit"
                         variant="raised"
                         color="primary"
-                        onClick={ e => this.setState({
-                            editingEnabled: !this.state.editingEnabled
-                        })}
+                        onClick={ e => {
+
+                            this.setState({
+                                editingEnabled: !this.state.editingEnabled
+                            })
+
+                            this.axios.post("update_victim.php", this.state.formValues)
+                            this.getIncidents()
+                            }}
                     >
                         SALVESTA
                     </Button> : null}
@@ -118,9 +130,12 @@ class Victim extends React.Component {
                     <Button
                         variant="raised"
                         color="primary"
-                        onClick={ e => this.setState({
-                            editingEnabled: !this.state.editingEnabled
-                        })}
+                        onClick={ e => {
+                            this.setState({
+                                editingEnabled: !this.state.editingEnabled
+                            })
+                            this.getIncidents()
+                            }}
                     >
                         TÜHISTA
                     </Button> : null}
@@ -130,24 +145,52 @@ class Victim extends React.Component {
                     <form className={classes.form}>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="victimID">ID</InputLabel>
-                            <Input disabled defaultValue="1145"/>
-
+                            <Input 
+                                id="id" 
+                                disabled 
+                                placeholder="1145" 
+                                value={this.props.victimID} 
+                            />
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="firstName">Eesnimi</InputLabel>
-                            <Input disabled = {!this.state.editingEnabled} defaultValue="Mari"/>
+                            <Input 
+                                id="first_name" 
+                                disabled = {!this.state.editingEnabled} 
+                                placeholder="Mari"
+                                onChange={this.handleChange}
+                                value={this.state.formValues.first_name}
+                            />
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="lastName">Perekonnanimi</InputLabel>
-                            <Input disabled = {!this.state.editingEnabled} defaultValue="Maasikas"/>
+                            <Input 
+                                id="last_name" 
+                                disabled = {!this.state.editingEnabled} 
+                                placeholder="Maasikas" 
+                                onChange={this.handleChange}
+                                value={this.state.formValues.last_name}
+                            />
                         </FormControl>
                         <FormControl margin="normal" fullWidth>
                             <InputLabel htmlFor="victimTel">Telefoninr</InputLabel>
-                            <Input disabled = {!this.state.editingEnabled} defaultValue="55889933"/>
+                            <Input 
+                                id="phone" 
+                                disabled = {!this.state.editingEnabled} 
+                                placeholder="55889933" 
+                                onChange={this.handleChange}
+                                value={this.state.formValues.phone}
+                            />
                         </FormControl>
                         <FormControl margin="normal" fullWidth>
                             <InputLabel htmlFor="victimEmail">E-maili aadress</InputLabel>
-                            <Input disabled = {!this.state.editingEnabled} defaultValue="marimaasikas@mail.ee"/>
+                            <Input 
+                                id="email" 
+                                disabled = {!this.state.editingEnabled} 
+                                placeholder="marimaasikas@mail.ee" 
+                                onChange={this.handleChange}
+                                value={this.state.formValues.email}
+                            />
                         </FormControl>
                     </form>
                 </Paper>
