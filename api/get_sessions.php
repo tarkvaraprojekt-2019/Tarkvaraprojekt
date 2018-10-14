@@ -25,6 +25,7 @@ function get_sessions($incident_id) {
 	$stmt = $db->prepare("SELECT * FROM sessions WHERE incident_id = ?");
 	$stmt->bind_param("i", $incident_id);
 	$stmt->execute() or trigger_error($db->error);
-	return json_encode(mysqli_fetch_all(mysqli_stmt_get_result($stmt)));
-	$db->close;
+	$json = json_encode($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
+	$db->close();
+	return $json;
 }
