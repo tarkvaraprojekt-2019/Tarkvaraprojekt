@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import getPageContext from './getPageContext';
 import axios from 'axios';
-import { getCurrentToken } from './auth';
+import { getCurrentToken, getBaseUrl } from './auth';
 
 
 function withRoot(Component) {
@@ -15,7 +15,7 @@ function withRoot(Component) {
       super(props);
       this.muiPageContext = getPageContext();
       this.axios = axios.create({
-        baseURL: 'http://localhost/api/', 
+        baseURL: getBaseUrl() + '/api/', 
         timeout: 5000, 
         headers: {
           'Auth-token': getCurrentToken()
