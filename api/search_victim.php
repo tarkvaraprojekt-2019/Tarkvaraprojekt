@@ -13,12 +13,12 @@ $where_params = array();
 
 //First name
 if (isset($_GET["firstname"])) {
-	$where_fields[] = "first_name =";
+	$where_fields[] = "first_name";
 	$where_params[] = $_GET["firstname"];
 }
 //Last name
 if (isset($_GET["lastname"])) {
-	$where_fields[] = "last_name =";
+	$where_fields[] = "last_name";
 	$where_params[] = $_GET["lastname"];
 }
 //National id
@@ -28,17 +28,17 @@ if (isset($_GET["nid"])) {
 }
 //Phone
 if (isset($_GET["phone"])) {
-	$where_fields[] = "phone =";
+	$where_fields[] = "phone";
 	$where_params[] = $_GET["phone"];
 }
 //Email
 if (isset($_GET["mail"])) {
-	$where_fields[] = "email =";
+	$where_fields[] = "email";
 	$where_params[] = $_GET["mail"];
 }
 //id
 if (isset($_GET["id"])) {
-	$where_fields[] = "id =";
+	$where_fields[] = "id";
 	$where_params[] = $_GET["id"];
 }
 
@@ -55,7 +55,7 @@ for ($i = 0; $i < $c; $i++) {
 	} else {
 		$where_query .= " AND ";
 	}
-	$where_query .= $where_fields[$i] . " ?";
+	$where_query .= $where_fields[$i] . " = ?";
 }
 
 $db = get_db();
