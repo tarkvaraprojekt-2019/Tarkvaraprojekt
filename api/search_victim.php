@@ -62,5 +62,6 @@ $db = get_db();
 $stmt = mysqli_prepare($db, "SELECT * FROM clients" . $where_query);
 mysqli_stmt_bind_param($stmt, str_repeat("s", $c), ...$where_params);
 mysqli_stmt_execute($stmt);
-$res = mysqli_stmt_get_result($stmt);
+$res = mysqli_fetch_all(mysqli_stmt_get_result($stmt));
+
 echo json_encode($res);
