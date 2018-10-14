@@ -15,9 +15,13 @@ import Paper from '@material-ui/core/Paper';
 
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import withRoot from '../withRoot';
-import Layout from '../components/Layout';
+import withRoot from '../../withRoot';
 import { Router } from '@reach/router';
+
+import Layout from '../../components/Layout';
+
+import NewVictim from './NewVictim';
+import OneVictim from './OneVictim';
 
 const styles = theme => ({
   root: {
@@ -56,17 +60,15 @@ class VictimIndex extends React.Component {
     const { classes } = this.props;
 
     return (
-      <Layout>
         <Router>
-          <Victim path="victim/:victimId" classes={classes} />
+          <OneVictim path="victim/:victimID" classes={classes} />
           <NewVictim path="victim/new" />
         </Router>
-      </Layout>
     );
   }
 }
 
-const NewVictim = () => (
+const OldVictim = () => (
   <React.Fragment>
     <Typography variant="display1" gutterBottom>
       Ohvri andmed
@@ -115,23 +117,5 @@ const NewVictim = () => (
     </Grid>
   </React.Fragment>
 );
-
-const Victim = props => {
-  const classes = props.classes;
-  return (
-    <React.Fragment>
-      <Paper className={classes.victimInfo}>
-        <Typography variant="display1" >Tiina Kukk</Typography>
-        <Grid container spacing={40}>
-        <Grid item xs={12} sm={6}>
-        
-        </Grid>
-        </Grid>
-        <Typography variant="subheading"   >id:</Typography>
-        <Typography variant="body1">{props.victimId}</Typography>
-      </Paper>
-    </React.Fragment>
-  );
-};
 
 export default withRoot(withStyles(styles)(VictimIndex));

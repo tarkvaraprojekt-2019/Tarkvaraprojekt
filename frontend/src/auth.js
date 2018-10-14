@@ -16,15 +16,15 @@ const setToken = token => (window.localStorage.authToken = JSON.stringify(token)
   return baseurl
 }
 
-export const handleLogin = ({ username, password }) => {
+export function handleLogin({ username, password }) {
   if (!isBrowser) return false
 
-  const user = username || "asdf"
-  const pass = password || "asdf"
+  const user = username
+  const pass = password
 
   const auth = btoa(user + ":" + pass)
 
-  axios({
+  return axios({
       method: 'get', 
       url: getBaseUrl() + '/api/get_token.php', 
       headers: {

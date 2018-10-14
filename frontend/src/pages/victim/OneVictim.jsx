@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from '@reach/router';
+import {Link} from '@reach/router';
 
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -12,11 +12,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 
-import withRoot from '../withRoot';
 
-import Layout from '../components/Layout';
+import withRoot from '../../withRoot';
+import IncidentTable from "../../components/IncidentTable";
 
-import IncidentTable from "../components/IncidentTable";
+import Layout from '../../components/Layout';
+
 
 const styles = theme => ({
     root: {
@@ -38,50 +39,87 @@ const styles = theme => ({
 });
 
 
-
-
-class newUser extends React.Component {
+class Victim extends React.Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
     };
 
+    constructor(props) {
+        super(props)
+        this.axios = this.props.axios
+    }
+
+    componentWillMount() {
+        this.getIncidents(this.props.victimID)
+    }
+
+
     handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
+        this.setState({[event.target.name]: event.target.value});
     };
 
     state = {
-        victimArea: '',
+        victimArea: 'Tartumaa',
         name: 'hai',
+        incidents: [{
+            id: 0,
+            piirkond: "teadmata"
+        }]
     };
+
+    getIncidents = (client_id) => {
+        this.axios.get('get_incidents.php', {
+            params:{
+                kliendi_nr: client_id,
+            }
+        })
+        .then( res => {
+            console.log(res)
+            this.setState({
+                incidents: res.data
+            })
+        })
+        .catch( err => console.log("search err: ", err))
+    }
+
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         return (
             <Layout>
-                    <Typography variant="h4" gutterBottom>
-                        Lisa uus isik
-                    </Typography>
+                <Typography variant="h4" gutterBottom>
+                    Isiku profiil
+                </Typography>
+                <Button
+                    variant="raised"
+                    color="primary"
+                >
+                    MUUDA ISIKUANDMEID
+                </Button>
+
                 <Paper className={classes.paper}>
+
                     <form className={classes.form}>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="victimID">ID</InputLabel>
-                            <Input defaultValue="123"/>
+                            <Input defaultValue="1145"/>
+
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="firstName">Eesnimi</InputLabel>
-                            <Input/>
+                            <Input defaultValue="Mari"/>
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
                             <InputLabel htmlFor="lastName">Perekonnanimi</InputLabel>
-                            <Input/>
+                            <Input defaultValue="Maasikas"/>
                         </FormControl>
                         <FormControl margin="normal" fullWidth>
-                            <InputLabel htmlFor="victimPhone">Telefoninr</InputLabel>
-                            <Input/>
+                            <InputLabel htmlFor="victimTel">Telefoninr</InputLabel>
+                            <Input defaultValue="55889933"/>
                         </FormControl>
                         <FormControl margin="normal" fullWidth>
                             <InputLabel htmlFor="victimEmail">E-maili aadress</InputLabel>
-                            <Input/>
+                            <Input defaultValue="marimaasikas@mail.ee"/>
                         </FormControl>
                         <FormControl margin="normal" fullWidth>
                             <InputLabel htmlFor="victim-area">Piirkond</InputLabel>
@@ -89,10 +127,9 @@ class newUser extends React.Component {
                                 value={this.state.victimArea}
                                 onChange={this.handleChange}
                                 inputProps={{
-                                    name: 'victimArea',
+                                    name: 'victimAge',
                                     id: 'victim-area',
-                                }}
-                            >
+                                }}>
                                 <MenuItem value={"Tartumaa"}>Tartumaa</MenuItem>
                                 <MenuItem value={"Harjumaa"}>Harjumaa</MenuItem>
                                 <MenuItem value={"Pärnumaa"}>Pärnumaa</MenuItem>
@@ -109,7 +146,7 @@ class newUser extends React.Component {
                     </form>
                 </Paper>
                 <Paper className={classes.paper}>
-                    <IncidentTable classes={classes} incidents = {[]}/>
+                    <IncidentTable classes={classes} incidents ={this.state.incidents} />
                 </Paper>
                 <Paper className={classes.paper}>
                     <Link to="/overview">
@@ -130,11 +167,9 @@ class newUser extends React.Component {
                         </Button>
                     </Link>
                 </Paper>
-
-
             </Layout>
         );
     }
 }
 
-export default withRoot(withStyles(styles)(newUser));
+export default withRoot(withStyles(styles)(Victim));

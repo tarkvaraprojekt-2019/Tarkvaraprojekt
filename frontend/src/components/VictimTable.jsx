@@ -33,7 +33,7 @@ const VictimTable = props => {
                         return (
                                 <TableRow 
                                     hover
-                                    onClick={e => navigate("/victims/" + n.id)}
+                                    onClick={e => navigate("/victim/" + n.id)}
                                     key={n.id}
                                 >
                                     <TableCell component="th" scope="row">{n.id}</TableCell>

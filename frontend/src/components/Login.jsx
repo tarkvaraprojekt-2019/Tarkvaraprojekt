@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import { Link } from 'gatsby';
+import { navigate } from 'gatsby';
 import { handleLogin } from '../auth';
 
 const styles = theme => ({
@@ -47,53 +47,71 @@ const styles = theme => ({
   },
 });
 
-function SignIn(props) {
-  const { classes } = props;
 
-  return (
-    <React.Fragment>
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockIcon />
-          </Avatar>
+class SignIn extends React.Component {
+  state = {
+    username: "", 
+    password: "",
+  }
 
-          <Typography variant="headline">Logi sisse</Typography>
+  handleUsername = event => {
+    this.setState({ username: event.target.value })
+  }
 
-          <form className={classes.form}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="email">Kasutajatunnus</InputLabel>
-              <Input id="email" name="email" autoComplete="email" autoFocus />
-            </FormControl>
+  handlePassword = event => {
+    this.setState({ password: event.target.value })
+  }
+  handleSubmit = event => {
+    handleLogin({ username: this.state.username, password: this.state.password })
+    .then(() => navigate('/overview'))
+  }
+  render() {
+    const { classes } = this.props;
 
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Parool</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </FormControl>
-            <Link to="overview/">
+    return (
+      <React.Fragment>
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockIcon />
+            </Avatar>
+
+            <Typography variant="headline">Logi sisse</Typography>
+
+            {/* <form className={classes.form}> */}
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="email">Kasutajatunnus</InputLabel>
+                <Input id="email" name="email" autoComplete="email" autoFocus onChange={ this.handleUsername }/>
+              </FormControl>
+
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Parool</InputLabel>
+                <Input
+                  name="password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={this.handlePassword}
+                />
+              </FormControl>
               <Button
-                type="submit"
                 fullWidth
                 variant="raised"
                 color="primary"
-                onClick={handleLogin({username: "", password: ""})}
+                onClick={this.handleSubmit}
                 className={classes.submit}
               >
                 Sisene
 
               </Button>
-            </Link>
-          </form>
-        </Paper>
-      </main>
-    </React.Fragment>
-  );
+            {/* </form> */}
+          </Paper>
+        </main>
+      </React.Fragment>
+    );
+  }
 }
+
 SignIn.propTypes = {
   classes: PropTypes.object.isRequired,
 };

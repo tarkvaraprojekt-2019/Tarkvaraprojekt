@@ -13,7 +13,6 @@ import Layout from '../components/Layout';
 import VictimTable from "../components/VictimTable";
 
 
-
 const styles = theme => ({
     root: {
         textAlign: 'center',
@@ -34,8 +33,6 @@ const styles = theme => ({
         minWidth: theme.spacing.unit * 20
     },
 });
-
-
 
 
 class Overview extends React.Component {
@@ -139,7 +136,7 @@ class Overview extends React.Component {
                 <br/>
                 { this.state.firstname }
                 <Paper className={classes.paper}>
-                    <Link to={"newUser/"}>
+                    <Link to={"victim/new/"}>
                         <Button
                             variant="contained"
                             color="primary"
