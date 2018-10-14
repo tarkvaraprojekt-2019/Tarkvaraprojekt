@@ -68,28 +68,28 @@ class Overview extends React.Component {
             params: searchFields,
         })
         .then( res => {
-            console.log(res)
-            this.setState({searchResults: res})
+            console.log(res.data)
+            this.setState({results: res.data})
         })
         .catch( err => console.log("search err: ", err))
     }
 
     state = {
         searchFields: {
-            firstname: "",
+            first_name: "",
             id: "",
-            lastname: "",
-            mail: "",
-            nid: "",
+            last_name: "",
+            email: "",
+            national_id: "",
             phone: "", 
         },
-        searchResults: [
+        results: [
             {
-                firstname: "Kristjan",
+                first_name: "Kristjan",
                 id: "2013032",
-                lastname: "Laht",
-                mail: "",
-                nid: "",
+                last_name: "Laht",
+                email: "",
+                national_id: "",
                 phone: "", 
             }
         ]
@@ -115,25 +115,25 @@ class Overview extends React.Component {
                 <Paper className={classes.paper} >
 
                     {field("id", "ID")}
-                    {field("firstname", "Eesnimi")}
-                    {field("lastname", "Perenimi")}
-                    {field("nid", "Isikukood")}
+                    {field("first_name", "Eesnimi")}
+                    {field("last_name", "Perenimi")}
+                    {field("national_id", "Isikukood")}
                     {field("phone", "Telefoninumber")}
-                    {field("mail", "E-Mail")}
+                    {field("email", "E-Mail")}
                     
                     <Button
                         type="submit"
                         variant="outlined"
                         color="primary"
                         className={classes.input}
-                        onClick={ e => this.searchVictim(this.state)}
+                        onClick={ e => this.searchVictim(this.state.searchFields)}
                     >
                         Otsi
                     </Button>
 
                 </Paper>
 
-                <VictimTable classes={classes} victims={this.state.searchResults} />
+                <VictimTable classes={classes} victims={this.state.results} />
 
                 { this.state.id }
                 <br/>
