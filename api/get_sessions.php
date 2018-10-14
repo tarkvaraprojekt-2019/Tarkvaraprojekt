@@ -1,7 +1,7 @@
 <?php
 
 require "verify_token.php";
-require_once "db_connect.php"
+require_once "db_connect.php";
 
 //Only accepts GET requests
 //Requires valid token
