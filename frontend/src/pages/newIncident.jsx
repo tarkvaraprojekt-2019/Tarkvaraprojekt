@@ -67,7 +67,7 @@ class newIncident extends React.Component {
 
         return (
             <Layout>
-                <Typography variant="display1" gutterBottom>
+                <Typography variant="h4" gutterBottom>
                     Lisa uus juhtum
                 </Typography>
                 <Paper className={classes.paper}>

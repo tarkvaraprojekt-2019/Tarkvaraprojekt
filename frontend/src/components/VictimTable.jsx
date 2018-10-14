@@ -24,8 +24,11 @@ const VictimTable = props => {
                 <TableHead>
                     <TableRow>
                         <TableCell>ID</TableCell>
-                        <TableCell>Piirkond</TableCell>
-                        <TableCell>Muuda</TableCell>
+                        <TableCell>Eesnimi</TableCell>
+                        <TableCell>Perenimi</TableCell>
+                        <TableCell>Isikukood</TableCell>
+                        <TableCell>Perenimi</TableCell>
+                        <TableCell>Perenimi</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

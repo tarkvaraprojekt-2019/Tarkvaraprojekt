@@ -54,16 +54,16 @@ class Overview extends React.Component {
         const key = event.target.id
         const value = event.target.value
 
-        const fields = {}
-        fields[key] = value
+        const searchFields = this.state.searchFields
+        searchFields[key] = value
 
         this.setState((state, props) => 
-            Object.assign({}, state, fields)
+            Object.assign({}, state, {searchFields})
         )
         console.log(this.state)
     }
 
-    getData = (searchFields) => {
+    searchVictim = (searchFields) => {
         this.axios.get('search_victim.php', {
             params: searchFields,
         })
@@ -72,8 +72,14 @@ class Overview extends React.Component {
     }
 
     state = {
-        id: "",
-        firstname: "", 
+        searchFields: {
+            firstname: "",
+            id: "",
+            lastname: "",
+            mail: "",
+            nid: "",
+            phone: "", 
+        },
     }
 
 
@@ -107,7 +113,7 @@ class Overview extends React.Component {
                         variant="outlined"
                         color="primary"
                         className={classes.input}
-                        onClick={ e => this.getData(this.state)}
+                        onClick={ e => this.searchVictim(this.state)}
                     >
                         Otsi
                     </Button>
@@ -121,7 +127,7 @@ class Overview extends React.Component {
                 <Paper className={classes.paper}>
                     <Link to={"newUser/"}>
                         <Button
-                            variant="raised"
+                            variant="contained"
                             color="primary"
                         >
                             Uus isik

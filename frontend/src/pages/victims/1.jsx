@@ -58,7 +58,7 @@ class VictimOne extends React.Component {
 
         return (
             <Layout>
-                <Typography variant="display1" gutterBottom>
+                <Typography variant="h4" gutterBottom>
                     Isiku profiil
                 </Typography>
                 <Button

@@ -126,10 +126,10 @@ class Dashboard extends React.Component {
                         >
                             <MenuIcon/>
                         </IconButton>
-                        <Typography variant="title" color="inherit" noWrap className={classes.title}>
+                        <Typography variant="h6" color="inherit" noWrap className={classes.title}>
                             Ülevaade
                         </Typography>
-                        <Typography variant="title" noWrap className={classes.title}>
+                        <Typography variant="h6" noWrap className={classes.title}>
                             {getCurrentToken()}
                         </Typography>
                         <IconButton color="inherit">
