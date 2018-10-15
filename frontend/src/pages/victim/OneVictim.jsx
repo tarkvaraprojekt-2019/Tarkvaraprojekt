@@ -165,7 +165,7 @@ class Victim extends React.Component {
                             <Input 
                                 id="id" 
                                 disabled 
-                                placeholder="1145" 
+                                // placeholder="1145" 
                                 value={this.props.victimID} 
                             />
                         </FormControl>
@@ -174,7 +174,7 @@ class Victim extends React.Component {
                             <Input 
                                 id="first_name" 
                                 disabled = {!this.state.editingEnabled} 
-                                placeholder="Mari"
+                                // placeholder="Mari"
                                 onChange={this.handleChange}
                                 value={this.state.formValues.first_name}
                             />
@@ -184,7 +184,7 @@ class Victim extends React.Component {
                             <Input 
                                 id="last_name" 
                                 disabled = {!this.state.editingEnabled} 
-                                placeholder="Maasikas" 
+                                // placeholder="Maasikas" 
                                 onChange={this.handleChange}
                                 value={this.state.formValues.last_name}
                             />
@@ -194,7 +194,7 @@ class Victim extends React.Component {
                             <Input 
                                 id="phone" 
                                 disabled = {!this.state.editingEnabled} 
-                                placeholder="55889933" 
+                                // placeholder="55889933" 
                                 onChange={this.handleChange}
                                 value={this.state.formValues.phone}
                             />
@@ -204,7 +204,7 @@ class Victim extends React.Component {
                             <Input 
                                 id="email" 
                                 disabled = {!this.state.editingEnabled} 
-                                placeholder="marimaasikas@mail.ee" 
+                                // placeholder="marimaasikas@mail.ee" 
                                 onChange={this.handleChange}
                                 value={this.state.formValues.email}
                             />
