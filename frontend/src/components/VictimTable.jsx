@@ -39,9 +39,9 @@ const VictimTable = props => {
                                     <TableCell component="th" scope="row">{n.id}</TableCell>
                                     <TableCell>{n.first_name}</TableCell>
                                     <TableCell>{n.last_name}</TableCell>
-                                    <TableCell>{n.email}</TableCell>
                                     <TableCell>{n.national_id}</TableCell>
                                     <TableCell>{n.phone}</TableCell>
+                                    <TableCell>{n.email}</TableCell>
                                 </TableRow>
                             
                         );
