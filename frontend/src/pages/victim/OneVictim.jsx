@@ -76,7 +76,9 @@ class Victim extends React.Component {
 
     getVictim = () => {
         this.axios.get('search_victim.php', {
-            params: this.state.formValues,
+            params: {
+                id: this.state.formValues.id,
+            },
         })
         .then( res => {
             console.log(res.data)
