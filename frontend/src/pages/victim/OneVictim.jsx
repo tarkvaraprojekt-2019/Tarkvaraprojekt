@@ -71,6 +71,11 @@ class Victim extends React.Component {
         editingEnabled : false,
         formValues: {
             id: this.props.victimID,
+            first_name: "", 
+            last_name: "", 
+            phone: "", 
+            email: "", 
+            national_id: "", 
         },
     };
 
@@ -167,7 +172,7 @@ class Victim extends React.Component {
                             <Input 
                                 id="id" 
                                 disabled 
-                                placeholder=" " 
+                             placeholder="1145" 
                                 value={this.props.victimID} 
                             />
                         </FormControl>
@@ -176,7 +181,7 @@ class Victim extends React.Component {
                             <Input 
                                 id="first_name" 
                                 disabled = {!this.state.editingEnabled} 
-                                placeholder=" "
+                                // placeholder="Mari"
                                 onChange={this.handleChange}
                                 value={this.state.formValues.first_name}
                             />
@@ -186,9 +191,19 @@ class Victim extends React.Component {
                             <Input 
                                 id="last_name" 
                                 disabled = {!this.state.editingEnabled} 
-                                placeholder=" " 
+                                // placeholder="Maasikas" 
                                 onChange={this.handleChange}
                                 value={this.state.formValues.last_name}
+                            />
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="national_id">Isikukood</InputLabel>
+                            <Input 
+                                id="national_id" 
+                                disabled = {!this.state.editingEnabled} 
+                                // placeholder="Maasikas" 
+                                onChange={this.handleChange}
+                                value={this.state.formValues.national_id}
                             />
                         </FormControl>
                         <FormControl margin="normal" fullWidth>
@@ -196,7 +211,7 @@ class Victim extends React.Component {
                             <Input 
                                 id="phone" 
                                 disabled = {!this.state.editingEnabled} 
-                                placeholder=" " 
+                                // placeholder="55889933" 
                                 onChange={this.handleChange}
                                 value={this.state.formValues.phone}
                             />
@@ -206,7 +221,7 @@ class Victim extends React.Component {
                             <Input 
                                 id="email" 
                                 disabled = {!this.state.editingEnabled} 
-                                placeholder=" " 
+                                // placeholder="marimaasikas@mail.ee" 
                                 onChange={this.handleChange}
                                 value={this.state.formValues.email}
                             />
