@@ -151,7 +151,7 @@ class Victim extends React.Component {
                             this.setState({
                                 editingEnabled: !this.state.editingEnabled
                             })
-                            this.getIncidents()
+                            this.updateVictim()
                             }}
                     >
                         TÜHISTA
