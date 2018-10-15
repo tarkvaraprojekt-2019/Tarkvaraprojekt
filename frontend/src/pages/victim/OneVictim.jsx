@@ -50,6 +50,7 @@ class Victim extends React.Component {
 
     componentWillMount() {
         this.getIncidents()
+        this.getVictim()
     }
 
 
@@ -72,6 +73,23 @@ class Victim extends React.Component {
             id: this.props.victimID,
         },
     };
+
+    getVictim = () => {
+        this.axios.get('search_victim.php', {
+            params: this.state.formValues,
+        })
+        .then( res => {
+            console.log(res.data)
+            this.setState({formValues: res.data[0]})
+        })
+        .catch( err => console.log("search err: ", err))
+    }
+
+    updateVictim = () => {
+        this.axios.post("update_victim.php", this.state.formValues)
+        this.getVictim()
+    }
+
 
     getIncidents = () => {
         this.axios.get('get_incidents.php', {
@@ -119,8 +137,7 @@ class Victim extends React.Component {
                                 editingEnabled: !this.state.editingEnabled
                             })
 
-                            this.axios.post("update_victim.php", this.state.formValues)
-                            this.getIncidents()
+                            this.updateVictim()
                             }}
                     >
                         SALVESTA
