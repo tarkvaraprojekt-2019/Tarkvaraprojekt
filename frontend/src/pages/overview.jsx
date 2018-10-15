@@ -81,14 +81,14 @@ class Overview extends React.Component {
             phone: "", 
         },
         results: [
-            {
-                first_name: "Kristjan",
-                id: "2013032",
-                last_name: "Laht",
-                email: "",
-                national_id: "",
-                phone: "", 
-            }
+            // {
+            //     first_name: "Kristjan",
+            //     id: "2013032",
+            //     last_name: "Laht",
+            //     email: "",
+            //     national_id: "",
+            //     phone: "", 
+            // }
         ]
     }
 
