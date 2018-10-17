@@ -17,6 +17,8 @@ import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 
 import {mainListItems} from './listItems';
 
+import {isLoggedIn, getCurrentToken} from '../../auth';
+
 
 const drawerWidth = 240;
 
@@ -91,7 +93,7 @@ const styles = theme => ({
 class Dashboard extends React.Component {
 
     state = {
-        open: true,
+        open: false,
     };
 
     handleDrawerOpen = () => {
@@ -124,13 +126,16 @@ class Dashboard extends React.Component {
                         >
                             <MenuIcon/>
                         </IconButton>
-                        <Typography variant="title" color="inherit" noWrap className={classes.title}>
+                        
+                        <Typography variant="h6" color="inherit" noWrap className={classes.title}>
                             Ülevaade
                         </Typography>
-                        <Link to="/">
-                            <Typography > Logi välja
-                            </Typography>
-                        </Link>
+                        
+                        <IconButton color="inherit">
+                            <Link to="/">
+                                <PowerSettingsNew color="secondary"/>
+                            </Link>
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
                 <Drawer

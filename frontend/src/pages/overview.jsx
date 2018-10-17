@@ -6,18 +6,17 @@ import { withStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+
+import Snackbar from '@material-ui/core/Snackbar';
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from '@material-ui/core/IconButton';
 
 import withRoot from '../withRoot';
 
 import Layout from '../components/Layout';
 import VictimTable from "../components/VictimTable";
 
-
-let id = 0;
-function createUser(name, district) { // TODO refactor?
-    id += 1;
-    return { id, name, district };
-}
 
 const styles = theme => ({
     root: {
@@ -27,6 +26,7 @@ const styles = theme => ({
     paper: {
         margin: theme.spacing.unit * 4,
         display: 'flex',
+        flexWrap: 'wrap',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -35,66 +35,152 @@ const styles = theme => ({
     },
     input: {
         margin: theme.spacing.unit,
+        minWidth: theme.spacing.unit * 20
     },
 });
 
 
-
-
 class Overview extends React.Component {
+    constructor(props) {
+        super(props)
+        this.axios = this.props.axios
+    }
+
     static propTypes = {
         classes: PropTypes.object.isRequired,
     };
 
+
+    handleChange = event => {
+
+        const key = event.target.id
+        const value = event.target.value
+
+        const searchFields = this.state.searchFields
+        searchFields[key] = value
+
+        this.setState((state, props) => 
+            Object.assign({}, state, {searchFields})
+        )
+        console.log(this.state)
+    }
+
+    searchVictim = (searchFields) => {
+        this.axios.get('search_victim.php', {
+            params: searchFields,
+        })
+        .then( res => {
+            console.log(res.data)
+            this.setState({results: res.data})
+        })
+        .catch( err => {
+            console.log("search err: ", err)
+            this.setState({ open: true })
+        })
+    }
+
     state = {
-        id: '',
-        users: [],
-    };
+        searchFields: {
+            first_name: "",
+            id: "",
+            last_name: "",
+            email: "",
+            national_id: "",
+            phone: "", 
+        },
+        results: [
+            // {
+            //     first_name: "Kristjan",
+            //     id: "2013032",
+            //     last_name: "Laht",
+            //     email: "",
+            //     national_id: "",
+            //     phone: "", 
+            // }
+        ], 
+        open: false, 
+    }
+
+    handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        this.setState({ open: false });
+      };
+
 
     render() {
         const { classes } = this.props;
 
+        const field = (id, label) => (
+            <TextField
+                        id={id}
+                        label={label}
+                        className={classes.input}
+                        value={this.state.id}
+                        onChange={this.handleChange}
+                        margin="normal"
+            />
+        )
+        const showVictims = this.state.results.length !== 0
+        console.log("show: ", this.state.results)
         return (
             <Layout>
                 <Paper className={classes.paper} >
-                    <TextField
-                        id="id-field"
-                        label="ID"
-                        className={classes.input}
-                        value={this.state.name}
-                        onChange={event => this.setState({
-                            users: [{
-                                id: 1,
-                                name: event.target.value,
-                                district: "Harjumaa",
-                            }]})}
-                        margin="normal"
-                    />
 
+                    {field("id", "ID")}
+                    {field("first_name", "Eesnimi")}
+                    {field("last_name", "Perenimi")}
+                    {field("national_id", "Isikukood")}
+                    {field("phone", "Telefoninumber")}
+                    {field("email", "E-Mail")}
+                    
                     <Button
                         type="submit"
                         variant="outlined"
                         color="primary"
                         className={classes.input}
-                        onClick={event => this.setState({
-                            users: [{
-                                id: 0,
-                                name: this.state.id,
-                                district: "Harjumaa",
-                            }]
-                        })}
+                        onClick={ e => this.searchVictim(this.state.searchFields)}
                     >
                         Otsi
                     </Button>
 
                 </Paper>
 
-                { this.state.users.length !== 0 && <VictimTable classes={classes} users={this.state.users} /> }
+                { showVictims && <VictimTable classes={classes} victims={this.state.results} />}
 
+                <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'middle',
+                    }}
+                    open={this.state.open}
+                    autoHideDuration={6000}
+                    onClose={this.handleClose}
+                    ContentProps={{
+                        'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">Sellist isikut ei leitud</span>}
+                    action={[
+                        <IconButton
+                        key="close"
+                        aria-label="Close"
+                        color="inherit"
+                        className={classes.close}
+                        onClick={this.handleClose}
+                        >
+                        <CloseIcon />
+                        </IconButton>,
+                    ]}
+                    />
+                { this.state.id }
+                <br/>
+                { this.state.firstname }
                 <Paper className={classes.paper}>
-                    <Link to={"newUser/"}>
+                    <Link to={"victim/new/"}>
                         <Button
-                            variant="raised"
+                            variant="contained"
                             color="primary"
                         >
                             Uus isik

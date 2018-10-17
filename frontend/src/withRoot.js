@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import getPageContext from './getPageContext';
 import axios from 'axios';
-import { getCurrentToken } from './auth';
+import { getCurrentToken, getBaseUrl } from './auth';
 
 
 function withRoot(Component) {
@@ -15,7 +15,7 @@ function withRoot(Component) {
       super(props);
       this.muiPageContext = getPageContext();
       this.axios = axios.create({
-        baseURL: 'https://andmebaas.naisteabi.com/api/', 
+        baseURL: getBaseUrl() + '/api/', 
         timeout: 5000, 
         headers: {
           'Auth-token': getCurrentToken()
@@ -42,7 +42,7 @@ function withRoot(Component) {
           >
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
-            <Component {...this.props} />
+            <Component {...this.props} axios={this.axios} />
           </MuiThemeProvider>
         </JssProvider>
       );

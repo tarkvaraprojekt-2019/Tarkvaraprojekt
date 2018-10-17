@@ -15,9 +15,6 @@ import EditIcon from '@material-ui/icons/Edit';
 
 
 
-
-
-
 const IncidentTable = props => {
     const { classes } = props;
 
@@ -30,21 +27,23 @@ const IncidentTable = props => {
                     <TableRow>
                         <TableCell>ID</TableCell>
                         <TableCell>Piirkond</TableCell>
-                        <TableCell>Muuda</TableCell>
+                        <TableCell>Füüsiline vägivald</TableCell>
+                        <TableCell>Vaimne vägivald</TableCell>
+                        <TableCell>Vägivallatseja sugu</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    <TableRow>
-                        <TableCell component="th" scope="row">
-                            1
-                        </TableCell>
-                        <TableCell>Tartumaa</TableCell>
-                        <TableCell>
-                            <Link>
-                                MUUDA JUHTUMIT
-                            </Link>
-                        </TableCell>
-                    </TableRow>
+                    {props.incidents.map(n => {
+                        return (
+                            <TableRow>
+                                <TableCell component="th" scope="row">{n.id}</TableCell>
+                                <TableCell>{n.piirkond}</TableCell>
+                                <TableCell>{n.fuusiline_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
+                                <TableCell>{n.vaimne_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
+                                <TableCell>{n.vagivallatseja_sugu}</TableCell>
+                            </TableRow>
+                        );
+                    })}
                 </TableBody>
 
             </Table>

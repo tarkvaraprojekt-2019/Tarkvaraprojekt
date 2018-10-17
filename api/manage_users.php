@@ -1,6 +1,7 @@
 <?php
 
 require "verify_token.php";
+require_once "db_connect.php";
 
 //Only accepts POST requests
 //All actions require admin token

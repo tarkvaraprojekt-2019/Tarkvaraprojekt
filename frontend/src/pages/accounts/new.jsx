@@ -57,7 +57,7 @@ class Report extends React.Component {
 
         return (
             <Layout>
-<Typography variant="display1" gutterBottom>
+<Typography variant="h4" gutterBottom>
                         Lisa uus isik
                     </Typography>
                 <Paper className={classes.paper}>
