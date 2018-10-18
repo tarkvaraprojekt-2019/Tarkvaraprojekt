@@ -47,7 +47,7 @@ class Graphs extends React.Component {
         const { classes } = this.props;
 
         return (
-            <ReportLayout>
+            <ReportLayout selectedTab={1}>
                 <Typography variant="h5">
                     hello advanced
                 </Typography>

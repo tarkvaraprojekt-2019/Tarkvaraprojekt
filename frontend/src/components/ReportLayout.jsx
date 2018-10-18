@@ -34,26 +34,22 @@ const styles = theme => ({
 });
 
 class ReportLayout extends React.Component {
+    static defaultProps = {
+        selectedTab: 0,
+    }
+
     static propTypes = {
         classes: PropTypes.object.isRequired,
         children: PropTypes.node.isRequired,
     }
 
-    state = {
-        selectedTab: 0,
-    }
-
     handleChange = (event, selectedTab) => {
-        const changed = selectedTab !== this.state.selectedTab
-        
-        if (changed) {
-            this.setState({ selectedTab })
-            if (selectedTab === 0) {
-                navigate("/report/graphs/")
-            } else if (selectedTab === 1) {
-                navigate("/report/columnSelection/")
-            }
+        if (selectedTab === 0) {
+            navigate("/report/graphs/")
+        } else if (selectedTab === 1) {
+            navigate("/report/columnSelection/")
         }
+
     }
 
     render() {
@@ -64,7 +60,7 @@ class ReportLayout extends React.Component {
             <Layout>
                 <Paper className={classes.root}>
                     <Tabs
-                        value={this.state.selectedTab}
+                        value={this.props.selectedTab}
                         onChange={this.handleChange}
                         indicatorColor="primary"
                         textColor="primary"
