@@ -128,7 +128,7 @@ class Dashboard extends React.Component {
                         </IconButton>
                         
                         <Typography variant="h6" color="inherit" noWrap className={classes.title}>
-                            Ülevaade
+                            {this.props.title}
                         </Typography>
                         
                         <IconButton color="inherit">

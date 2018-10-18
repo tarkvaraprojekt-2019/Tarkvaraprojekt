@@ -56,7 +56,7 @@ class Report extends React.Component {
         const { classes } = this.props;
 
         return (
-            <Layout>
+            <Layout title="Uus kasutaja">
 <Typography variant="h4" gutterBottom>
                         Lisa uus isik
                     </Typography>

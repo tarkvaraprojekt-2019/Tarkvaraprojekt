@@ -66,7 +66,7 @@ class newIncident extends React.Component {
         const {classes} = this.props;
 
         return (
-            <Layout>
+            <Layout title="Uus juhtum">
                 <Typography variant="h4" gutterBottom>
                     Lisa uus juhtum
                 </Typography>

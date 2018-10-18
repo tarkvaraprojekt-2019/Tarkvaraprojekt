@@ -264,7 +264,7 @@ class Backup extends React.Component {
         const { classes } = this.props;
 
         return (
-            <Layout>
+            <Layout title="Varundus">
                 <div  className={classes.cards}>
 
                     <DatabaseBackup classes={classes}/>

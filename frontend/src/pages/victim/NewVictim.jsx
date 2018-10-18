@@ -55,7 +55,7 @@ class NewVictim extends React.Component {
         const { classes } = this.props;
 
         return (
-            <Layout>
+            <Layout title="Uus klient">
                     <Typography variant="h4" gutterBottom>
                         Lisa uus isik
                     </Typography>

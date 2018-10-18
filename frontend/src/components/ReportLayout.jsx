@@ -61,7 +61,7 @@ class ReportLayout extends React.Component {
         const Child = Children.only(this.props.children)
 
         return (
-            <Layout>
+            <Layout {...this.props}>
                 <Paper className={classes.root}>
                     <Tabs
                         value={this.state.selectedTab}

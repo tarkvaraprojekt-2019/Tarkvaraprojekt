@@ -47,7 +47,7 @@ class Graphs extends React.Component {
         const { classes } = this.props;
 
         return (
-            <ReportLayout>
+            <ReportLayout title="Aruandlus">
                 <Typography variant="h5">
                     hello graph
                 </Typography>

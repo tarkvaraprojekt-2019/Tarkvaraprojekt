@@ -126,7 +126,7 @@ class Overview extends React.Component {
         const showVictims = this.state.results.length !== 0
         console.log("show: ", this.state.results)
         return (
-            <Layout>
+            <Layout title="Ülevaade">
                 <Paper className={classes.paper} >
 
                     {field("id", "ID")}

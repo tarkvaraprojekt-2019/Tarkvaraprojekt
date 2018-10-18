@@ -117,7 +117,7 @@ class Victim extends React.Component {
         const {classes} = this.props;
 
         return (
-            <Layout>
+            <Layout title="Klient">
                 <Typography variant="h4" gutterBottom>
                     Isiku profiil
                 </Typography>
