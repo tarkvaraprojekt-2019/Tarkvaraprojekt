@@ -79,6 +79,7 @@ class Overview extends React.Component {
         })
     }
 
+
     state = {
         searchFields: {
             first_name: "",
@@ -99,6 +100,11 @@ class Overview extends React.Component {
             // }
         ], 
         open: false, 
+    }
+
+    handleSearch = event => {
+        event.preventDefault()
+        this.searchVictim(this.state.searchFields)
     }
 
     handleClose = (event, reason) => {
@@ -128,24 +134,25 @@ class Overview extends React.Component {
         return (
             <Layout title="Ülevaade">
                 <Paper className={classes.paper} >
-
-                    {field("id", "ID")}
-                    {field("first_name", "Eesnimi")}
-                    {field("last_name", "Perenimi")}
-                    {field("national_id", "Isikukood")}
-                    {field("phone", "Telefoninumber")}
-                    {field("email", "E-Mail")}
+                    <form onSubmit={this.handleSearch}>
+                        
+                        {field("id", "ID")}
+                        {field("first_name", "Eesnimi")}
+                        {field("last_name", "Perenimi")}
+                        {field("national_id", "Isikukood")}
+                        {field("phone", "Telefoninumber")}
+                        {field("email", "E-Mail")}
+                        
+                        <Button
+                            type="submit"
+                            variant="outlined"
+                            color="primary"
+                            className={classes.input}
+                        >
+                            Otsi
+                        </Button>
                     
-                    <Button
-                        type="submit"
-                        variant="outlined"
-                        color="primary"
-                        className={classes.input}
-                        onClick={ e => this.searchVictim(this.state.searchFields)}
-                    >
-                        Otsi
-                    </Button>
-
+                    </form>
                 </Paper>
 
                 { showVictims && <VictimTable classes={classes} victims={this.state.results} />}
@@ -153,7 +160,7 @@ class Overview extends React.Component {
                 <Snackbar
                     anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'middle',
+                        horizontal: 'center',
                     }}
                     open={this.state.open}
                     autoHideDuration={6000}

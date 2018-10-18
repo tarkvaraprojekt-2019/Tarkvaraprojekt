@@ -62,6 +62,7 @@ class SignIn extends React.Component {
     this.setState({ password: event.target.value })
   }
   handleSubmit = event => {
+    event.preventDefault()
     handleLogin({ username: this.state.username, password: this.state.password })
     .then(() => navigate('/overview'))
   }
@@ -78,7 +79,7 @@ class SignIn extends React.Component {
 
             <Typography variant="headline">Logi sisse</Typography>
 
-            {/* <form className={classes.form}> */}
+            <form className={classes.form} onSubmit={this.handleSubmit}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Kasutajatunnus</InputLabel>
                 <Input id="email" name="email" autoComplete="email" autoFocus onChange={ this.handleUsername }/>
@@ -96,15 +97,15 @@ class SignIn extends React.Component {
               </FormControl>
               <Button
                 fullWidth
+                type="submit"
                 variant="raised"
                 color="primary"
-                onClick={this.handleSubmit}
                 className={classes.submit}
               >
                 Sisene
 
               </Button>
-            {/* </form> */}
+            </form>
           </Paper>
         </main>
       </React.Fragment>
