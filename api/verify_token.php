@@ -8,16 +8,18 @@ if (!isset($_SERVER["HTTP_AUTH_TOKEN"])) {
 	exit();
 }
 
-$auth_token_exploded = explode(":", $_SERVER["HTTP_AUTH_TOKEN"]);
-if (count($auth_token_exploded) !== 2) {
+$auth_token = base64_decode($_SERVER["HTTP_AUTH_TOKEN"]);
+$auth_token_exploded = explode(":", $auth_token);
+
+if (count($auth_token_exploded) !== 4) {
 	http_response_code(401);
 	echo "Invalid token";
 	exit();
 }
 
-list($token, $timestamp) = $auth_token_exploded;
+list($expiry, $admin_str, $username, $hash) = $auth_token_exploded;
 
-if ($timestamp < time()) {
+if ($expiry < time()) {
 	http_response_code(401);
 	echo "Token expired!";
 	exit();

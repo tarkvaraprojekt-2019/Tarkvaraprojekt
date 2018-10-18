@@ -32,30 +32,42 @@ function verify($username, $pass, $is_admin) {
 }
 
 function create_token($username, $pass, $expiry) {
-	$is_admin = get_user($username)["is_admin"];
+	$user = get_user($username);
+	$is_admin = $user["is_admin"];
 	if (!verify($username, $pass, $is_admin)) {
 		return NULL;
 	}
+	if ($is_admin) {
+		$admin_str = "1";
+	} else {
+		$admin_str = "0";
+	}
 	$conf = get_conf();
-	$token_str = $expiry.(bool)$is_admin.$conf["SECRET"];
-	$token = password_hash($token_str, PASSWORD_DEFAULT);
-	$token_enc = base64_encode($token);
-	return $token_enc.":".$expiry;
+	$token_base = $expiry.":".$admin_str.":".$username;
+	$key = $user["pass"].$conf["SECRET"];
+	$hash = hash_hmac("sha512", $token_base, $key);
+	$token = base64_encode($token_base.":".$hash);
+	return $token;
 }
 
-function verify_token($token, $is_admin) {
+function verify_token($token_enc, $is_admin) {
+	$token = base64_decode($token_enc);
 	$token_exploded = explode(":", $token);
-	if (count($token_exploded) !== 2) {
+	if (count($token_exploded) !== 4) {
 		return false;
 	}
-	list($base, $expiry) = $token_exploded;
-	$conf = get_conf();
-	$token_str = $expiry.(bool)$is_admin.$conf["SECRET"];
-	$token_dec = base64_decode($base);
-	if (password_verify($token_str, $token_dec)) {
-		return true;
-	} else if (!$is_admin) {
-		return verify_token($token, $expiry, true);
+	list($expiry, $admin_str, $username, $hash) = $token_exploded;
+	if ($is_admin && !$admin_str) {
+		return false;
 	}
-	return false;
+	$conf = get_conf();
+	$token_base = $expiry.":".$admin_str.":".$username;
+	$user = get_user($username);
+	$key = $user["pass"].$conf["SECRET"];
+	$new_hash = hash_hmac("sha512", $token_base, $key);
+	if (hash_equals($new_hash, $hash)) {
+		return true;
+	} else {
+		return false;
+	}
 }
