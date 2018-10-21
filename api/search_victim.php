@@ -2,12 +2,6 @@
 
 require "verify_token.php";
 
-if (!verify_access(false)) {
-	http_response_code(401);
-	echo "Unauthorized action";
-	exit();
-}
-
 $where_fields = array();
 $where_params = array();
 $params = array("first_name", "last_name", "national_id", "phone", "email", "id");

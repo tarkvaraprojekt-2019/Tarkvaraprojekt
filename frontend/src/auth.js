@@ -29,7 +29,6 @@ export function handleLogin({ username, password }) {
       url: getBaseUrl() + '/api/get_token.php', 
       headers: {
           'Auth': auth,
-          'Auth-timestamp': '400000',
       }
   })
   .then( res => {
