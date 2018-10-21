@@ -27,4 +27,6 @@ laps_ohver BOOL NOT NULL,
 vana_ohver BOOL NOT NULL,
 muu_ohver BOOL NOT NULL,
 politsei BOOL NOT NULL,
-rahastus ENUM('Muu rahastus', 'NTK rahastus') NOT NULL);
+rahastus ENUM('Muu rahastus', 'NTK rahastus') NOT NULL,
+muutja VARCHAR(64),
+muutmisaeg DATE);
