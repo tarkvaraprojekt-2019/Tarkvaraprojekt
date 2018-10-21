@@ -6,7 +6,7 @@ function get_user($username, $db) {
 	$stmt = mysqli_prepare($db, "CALL get_user(?, @pass, @is_admin, @token)");
 	mysqli_stmt_bind_param($stmt, "s", $username);
 	mysqli_stmt_execute($stmt);
-	return mysqli_fetch_assoc(mysqli_query("SELECT @pass, @is_admin, @token"));
+	return mysqli_fetch_assoc(mysqli_query($db, "SELECT @pass, @is_admin, @token"));
 }
 
 function login($username, $password) {
