@@ -17,7 +17,7 @@ if (count($auth_token) < 2) {
 }
 
 list($username, $token, ) = $auth_token;
-$db = get_db()
+$db = get_db();
 $user = get_user($username, $db);
 if ($user["@token"] !== $token) {
 	http_response_code(401);
