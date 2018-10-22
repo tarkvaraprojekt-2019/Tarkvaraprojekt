@@ -49,8 +49,11 @@ class Victim extends React.Component {
     }
 
     componentWillMount() {
+
         this.getIncidents()
         this.getVictim()
+        console.log(typeof this.props.victimID)
+
     }
 
 
@@ -87,6 +90,7 @@ class Victim extends React.Component {
         })
         .then( res => {
             console.log(res.data)
+
             this.setState({formValues: res.data[0]})
         })
         .catch( err => console.log("search err: ", err))
@@ -124,7 +128,7 @@ class Victim extends React.Component {
 
                 { !this.state.editingEnabled ? 
                     <Button
-                        variant="raised"
+                        variant="contained"
                         color="primary"
                         onClick={ e => this.setState({
                             editingEnabled: !this.state.editingEnabled
@@ -136,7 +140,7 @@ class Victim extends React.Component {
                 { this.state.editingEnabled ? 
                     <Button
                         type="submit"
-                        variant="raised"
+                        variant="contained"
                         color="primary"
                         onClick={ e => {
 
@@ -152,7 +156,7 @@ class Victim extends React.Component {
 
                 {this.state.editingEnabled ? 
                     <Button
-                        variant="raised"
+                        variant="contained"
                         color="primary"
                         onClick={ e => {
                             this.setState({
@@ -230,25 +234,6 @@ class Victim extends React.Component {
                 </Paper>
                 <Paper className={classes.paper}>
                     <IncidentTable classes={classes} incidents ={this.state.incidents} />
-                </Paper>
-                <Paper className={classes.paper}>
-                    <Link to="/overview">
-                        <Button
-                            variant="raised"
-                            color="primary"
-                        >
-                            Salvesta
-                        </Button>
-                    </Link>
-                    <Link to="/overview">
-
-                        <Button
-                            variant="raised"
-                            color="primary"
-                        >
-                            Tühista
-                        </Button>
-                    </Link>
                 </Paper>
 
 

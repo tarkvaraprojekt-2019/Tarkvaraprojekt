@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'gatsby';
+import { withStyles } from '@material-ui/core/styles';
 
 
 import Table from '@material-ui/core/Table';
@@ -10,9 +11,15 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+
 
 import EditIcon from '@material-ui/icons/Edit';
-
+const styles = theme => ({
+    root: {
+        flexGrow: 1,
+    },
+})
 
 
 const IncidentTable = props => {
@@ -22,40 +29,52 @@ const IncidentTable = props => {
         <div>
 
         <Paper className={classes.paper}>
-            <Table >
-                <TableHead>
-                    <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell>Piirkond</TableCell>
-                        <TableCell>Füüsiline vägivald</TableCell>
-                        <TableCell>Vaimne vägivald</TableCell>
-                        <TableCell>Vägivallatseja sugu</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {props.incidents.map(n => {
-                        return (
+            <Grid container
+                  direction="column"
+                  justify="center"
+                  alignItems="center"
+                  spacing = "8">
+                <Grid item xs = {12}>
+                    <Table >
+                        <TableHead>
                             <TableRow>
-                                <TableCell component="th" scope="row">{n.id}</TableCell>
-                                <TableCell>{n.piirkond}</TableCell>
-                                <TableCell>{n.fuusiline_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
-                                <TableCell>{n.vaimne_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
-                                <TableCell>{n.vagivallatseja_sugu}</TableCell>
+                                <TableCell>ID</TableCell>
+                                <TableCell>Piirkond</TableCell>
+                                <TableCell>Füüsiline vägivald</TableCell>
+                                <TableCell>Vaimne vägivald</TableCell>
+                                <TableCell>Vägivallatseja sugu</TableCell>
                             </TableRow>
-                        );
-                    })}
-                </TableBody>
+                        </TableHead>
 
-            </Table>
+                        <TableBody>
+                            {props.incidents.map(n => {
+                                return (
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">{n.id}</TableCell>
+                                        <TableCell>{n.piirkond}</TableCell>
+                                        <TableCell>{n.fuusiline_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
+                                        <TableCell>{n.vaimne_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
+                                        <TableCell>{n.vagivallatseja_sugu}</TableCell>
+                                    </TableRow>
+                                );
+                            })}
+                        </TableBody>
+                    </Table>
+                </Grid>
+                <Grid item xs>
+                    <Link to="/newIncident">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                        >
+                            Uus juhtum
+                        </Button>
+                    </Link>
+                </Grid>
+            </Grid>
+
         </Paper>
-            <Link to="/newIncident">
-                <Button
-                    variant="raised"
-                    color="primary"
-                >
-                    Uus juhtum
-                </Button>
-            </Link>
+
 
         </div>
 
@@ -66,4 +85,4 @@ IncidentTable.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default IncidentTable;
+export default withStyles(styles) (IncidentTable);

@@ -16,7 +16,6 @@ import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout';
 
-import IncidentTable from "../../components/IncidentTable";
 
 const styles = theme => ({
     root: {
@@ -44,13 +43,20 @@ class NewVictim extends React.Component {
     };
 
     handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value });
+        const formValues = this.state.formValues
+        formValues[event.target.id] = event.target.value
+        console.log(this.state)
     };
 
     state = {
-        victimArea: '',
-        name: 'hai',
-    };
+        formValues: {
+            first_name: "",
+            last_name: "",
+            phone: "",
+            email: "",
+            national_id: "",
+        },
+    }
     render() {
         const { classes } = this.props;
 
@@ -62,57 +68,31 @@ class NewVictim extends React.Component {
                 <Paper className={classes.paper}>
                     <form className={classes.form}>
                         <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="victimID">ID</InputLabel>
-                            <Input defaultValue="123"/>
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="firstName">Eesnimi</InputLabel>
+                            <InputLabel htmlFor="first_name">Eesnimi</InputLabel>
                             <Input/>
                         </FormControl>
                         <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="lastName">Perekonnanimi</InputLabel>
+                            <InputLabel htmlFor="last_name">Perekonnanimi</InputLabel>
+                            <Input/>
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="national_id">Isikukood</InputLabel>
+                            <Input id="national_id" onChange={this.handleChange} value={this.state.formValues.national_id}/>
+                        </FormControl>
+                        <FormControl margin="normal" fullWidth>
+                            <InputLabel htmlFor="phone">Telefoninr</InputLabel>
                             <Input/>
                         </FormControl>
                         <FormControl margin="normal" fullWidth>
-                            <InputLabel htmlFor="victimPhone">Telefoninr</InputLabel>
+                            <InputLabel htmlFor="email">E-maili aadress</InputLabel>
                             <Input/>
-                        </FormControl>
-                        <FormControl margin="normal" fullWidth>
-                            <InputLabel htmlFor="victimEmail">E-maili aadress</InputLabel>
-                            <Input/>
-                        </FormControl>
-                        <FormControl margin="normal" fullWidth>
-                            <InputLabel htmlFor="victim-area">Piirkond</InputLabel>
-                            <Select
-                                value={this.state.victimArea}
-                                onChange={this.handleChange}
-                                inputProps={{
-                                    name: 'victimArea',
-                                    id: 'victim-area',
-                                }}
-                            >
-                                <MenuItem value={"Tartumaa"}>Tartumaa</MenuItem>
-                                <MenuItem value={"Harjumaa"}>Harjumaa</MenuItem>
-                                <MenuItem value={"Pärnumaa"}>Pärnumaa</MenuItem>
-                                <MenuItem value={"Saaremaa"}>Saaremaa</MenuItem>
-                                <MenuItem value={"Hiiumaa"}>Hiiumaa</MenuItem>
-                                <MenuItem value={"Võrumaa"}>Võrumaa</MenuItem>
-                                <MenuItem value={"Ida-Virumaa"}>Ida-Virumaa</MenuItem>
-                                <MenuItem value={"Lääne-Virumaa"}>Lääne-Virumaa</MenuItem>
-                                <MenuItem value={"Põlvamaa"}>Põlvamaa</MenuItem>
-                                <MenuItem value={"Valgamaa"}>Valgamaa</MenuItem>
-
-                            </Select>
                         </FormControl>
                     </form>
                 </Paper>
                 <Paper className={classes.paper}>
-                    <IncidentTable classes={classes} incidents = {[]}/>
-                </Paper>
-                <Paper className={classes.paper}>
                     <Link to="/overview">
                         <Button
-                            variant="raised"
+                            variant="contained"
                             color="primary"
                         >
                             Salvesta
@@ -121,7 +101,7 @@ class NewVictim extends React.Component {
                     <Link to="/overview">
 
                         <Button
-                            variant="raised"
+                            variant="contained"
                             color="primary"
                         >
                             Tühista

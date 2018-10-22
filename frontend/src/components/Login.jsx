@@ -98,7 +98,7 @@ class SignIn extends React.Component {
               <Button
                 fullWidth
                 type="submit"
-                variant="raised"
+                variant="contained"
                 color="primary"
                 className={classes.submit}
               >
