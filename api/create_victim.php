@@ -44,4 +44,6 @@ for ($i = 0; $i < $c; $i++) {
 $db = get_db();
 $stmt = mysqli_prepare($db, $insert_query);
 mysqli_stmt_bind_param($stmt, str_repeat("s", $c), ...$insert_params);
-echo mysqli_stmt_execute($stmt);
+if (mysqli_stmt_execute($stmt)) {
+	echo mysqli_fetch_row(mysqli_query("SELECT LAST_INSERT_ID()"))[0];
+}
