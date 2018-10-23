@@ -8,22 +8,26 @@ if (!isset($_SERVER["HTTP_AUTH_TOKEN"])) {
 	exit();
 }
 
-$auth_token_exploded = explode(":", $_SERVER["HTTP_AUTH_TOKEN"]);
-if (count($auth_token_exploded) !== 2) {
+$auth_token = explode(":", base64_decode($_SERVER["HTTP_AUTH_TOKEN"]), 3);
+
+if (count($auth_token) < 2) {
 	http_response_code(401);
 	echo "Invalid token";
 	exit();
 }
 
-list($token, $timestamp) = $auth_token_exploded;
-
-if ($timestamp < time()) {
+list($username, $token, ) = $auth_token;
+$db = get_db();
+$user = get_user($username, $db);
+if ($user["@token"] !== $token) {
 	http_response_code(401);
-	echo "Token expired!";
+	echo "Invalid username/password";
 	exit();
 }
+$is_admin = $user["@is_admin"];
+mysqli_close($db);
 
-function verify_access($is_admin) {
-	$token = $_SERVER["HTTP_AUTH_TOKEN"];
-	return verify_token($token, $is_admin); //This is a function from auth.php
+function is_admin() {
+	global $is_admin;
+	return $is_admin;
 }

@@ -62,7 +62,6 @@ class Overview extends React.Component {
         this.setState((state, props) => 
             Object.assign({}, state, {searchFields})
         )
-        console.log(this.state)
     }
 
     searchVictim = (searchFields) => {
@@ -70,8 +69,17 @@ class Overview extends React.Component {
             params: searchFields,
         })
         .then( res => {
-            console.log(res.data)
-            this.setState({results: res.data})
+            let data = res.data;
+            Object.keys(data).forEach(function(key) {
+                let data1 = data[key];
+                Object.keys(data1).forEach(function (key1) {
+                    if(data1[key1] === null) {
+                        data1[key1] = "-";
+                    }
+                })
+            });
+            this.setState({results: data})
+
         })
         .catch( err => {
             console.log("search err: ", err)
@@ -130,7 +138,6 @@ class Overview extends React.Component {
             />
         )
         const showVictims = this.state.results.length !== 0
-        console.log("show: ", this.state.results)
         return (
             <Layout title="Ülevaade">
                 <Paper className={classes.paper} >

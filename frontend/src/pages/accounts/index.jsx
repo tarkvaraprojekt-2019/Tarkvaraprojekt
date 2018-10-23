@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'gatsby';
 import { withStyles } from '@material-ui/core/styles';
+import withRoot from '../../withRoot';
 import Typography from '@material-ui/core/Typography';
 import AddIcon from '@material-ui/icons/Add';
 import SearchIcon from '@material-ui/icons/Search';
@@ -111,4 +112,4 @@ class Accounts extends React.Component {
   }
 }
 
-export default withStyles(styles)(Accounts);
+export default withRoot(withStyles(styles)(Accounts));

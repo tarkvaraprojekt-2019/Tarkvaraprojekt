@@ -2,14 +2,8 @@
 
 require "verify_token.php";
 
-if (!verify_access(false)) {
-	http_response_code(401);
-	echo "Unauthorized action";
-	exit();
-}
-
 //Unpack post body
-$body = json_decode($_POST["body"], true);
+$body = json_decode(file_get_contents("php://input"), true);
 
 $insert_fields = array();
 $insert_params = array();
@@ -23,12 +17,21 @@ foreach ($params as $param) {
 	}
 }
 
+//Add editing user and current date
+$insert_fields[] = "muutja";
+$insert_params[] = $username;
+$insert_fields[] = "muutmisaeg";
+$insert_params[] = date("Y-m-d");
+
+//At least some info has to exist about the victim
 $c = count($insert_fields);
-if ($c == 0) {
+if ($c <= 2) {
 	http_response_code(400);
 	echo "Missing parameters";
 	exit();
 }
+
+//Construct the query
 $insert_query = "INSERT INTO clients SET ";
 for ($i = 0; $i < $c; $i++) {
 	if ($i != 0) {
@@ -37,7 +40,10 @@ for ($i = 0; $i < $c; $i++) {
 	$insert_query .= $insert_fields[$i] . "=?";
 }
 
+//Execute the query
 $db = get_db();
 $stmt = mysqli_prepare($db, $insert_query);
 mysqli_stmt_bind_param($stmt, str_repeat("s", $c), ...$insert_params);
-echo mysqli_stmt_execute($stmt);
+if (mysqli_stmt_execute($stmt)) {
+	echo mysqli_fetch_row(mysqli_query("SELECT LAST_INSERT_ID()"))[0];
+}
