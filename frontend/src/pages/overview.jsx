@@ -70,19 +70,21 @@ class Overview extends React.Component {
         })
         .then( res => {
             let data = res.data;
-
-            // Object.keys(data).forEach(function(key) {
-            //     let data1 = data[key];
-            //     Object.keys(data1).forEach(function (key1) {
-            //         if(data1[key1] === null) {
-            //             data1[key1] = "-";
-            //         }
-            //     })
-            // });
+            console.log("result: ", data)
+            if (!data.length) {
+                throw new Error("NO_CLIENTS_FOUND")
+            }
             this.setState({results: data})
 
         })
         .catch( err => {
+            if (err.message === "Request failed with status code 400") {
+                this.setState({error: "Viga. Proovisid otsida ilma parameetriteta."})
+            } else if (err.message === "NO_CLIENTS_FOUND") {
+                this.setState({error: "Ühtegi sellist kasutajat ei leitud."})
+            } else if (err.message === "Request failed with status code 401") {
+                this.setState({error: "Autentimisviga. Proovi uuesti sisse logida."})
+            }
             console.log("search err: ", err)
             this.setState({ open: true })
         })
@@ -98,17 +100,9 @@ class Overview extends React.Component {
             national_id: "",
             phone: "", 
         },
-        results: [
-            // {
-            //     first_name: "Kristjan",
-            //     id: "2013032",
-            //     last_name: "Laht",
-            //     email: "",
-            //     national_id: "",
-            //     phone: "", 
-            // }
-        ], 
+        results: [], 
         open: false, 
+        error: "", 
     }
 
     handleSearch = event => {
@@ -176,7 +170,7 @@ class Overview extends React.Component {
                     ContentProps={{
                         'aria-describedby': 'message-id',
                     }}
-                    message={<span id="message-id">Sellist isikut ei leitud</span>}
+                    message={<span id="message-id">{this.state.error}</span>}
                     action={[
                         <IconButton
                         key="close"
