@@ -11,6 +11,15 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 
+const mapEmpty = row => {
+    return Object.assign(...Object.entries(row).map(([key, value]) => {
+        if (value === null) {
+            return {[key]: "-"}
+        }
+        return {[key]: value}
+    }))
+}
+
 const VictimTable = props => {
     const { classes } = props;
 
@@ -29,7 +38,8 @@ const VictimTable = props => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.victims.map(n => {
+                    {props.victims.map(row => {
+                        const n = mapEmpty(row)
                         return (
                                 <TableRow 
                                     hover

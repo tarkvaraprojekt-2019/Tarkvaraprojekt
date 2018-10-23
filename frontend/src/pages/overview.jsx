@@ -70,14 +70,15 @@ class Overview extends React.Component {
         })
         .then( res => {
             let data = res.data;
-            Object.keys(data).forEach(function(key) {
-                let data1 = data[key];
-                Object.keys(data1).forEach(function (key1) {
-                    if(data1[key1] === null) {
-                        data1[key1] = "-";
-                    }
-                })
-            });
+
+            // Object.keys(data).forEach(function(key) {
+            //     let data1 = data[key];
+            //     Object.keys(data1).forEach(function (key1) {
+            //         if(data1[key1] === null) {
+            //             data1[key1] = "-";
+            //         }
+            //     })
+            // });
             this.setState({results: data})
 
         })
