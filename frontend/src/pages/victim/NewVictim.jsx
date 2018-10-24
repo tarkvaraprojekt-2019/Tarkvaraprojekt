@@ -9,8 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select'
-import TextField from '@material-ui/core/TextField'
+import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 
 import withRoot from '../../withRoot';
@@ -43,25 +42,11 @@ class NewVictim extends React.Component {
         classes: PropTypes.object.isRequired,
     };
 
-    componentWillMount() {
-        const formValues = window.localStorage.clientFields
-        ? JSON.parse(window.localStorage.clientFields)
-        : {}
-
-        if (formValues !== null) {
-            this.setState((state, props) => 
-                Object.assign({}, state, {formValues}))
-        }
-        
-    }
-
     handleChange = event => {
         const formValues = this.state.formValues
         formValues[event.target.id] = event.target.value
         console.log(this.state)
     };
-
-
 
     state = {
         formValues: {
@@ -75,18 +60,6 @@ class NewVictim extends React.Component {
     render() {
         const { classes } = this.props;
 
-        const field = (id, label) => (
-            <TextField
-                        id={id}
-                        label={label}
-                        className={classes.input}
-                        value={this.state.formValues[id]}
-                        onChange={this.handleChange}
-                        margin="normal"
-                        fullWidth
-            />
-        )
-
         return (
             <Layout title="Uus klient">
                     <Typography variant="h4" gutterBottom>
@@ -94,11 +67,26 @@ class NewVictim extends React.Component {
                     </Typography>
                 <Paper className={classes.paper}>
                     <form className={classes.form}>
-                        {field("first_name", "Eesnimi")}
-                        {field("last_name", "Perenimi")}
-                        {field("national_id", "Isikukood")}
-                        {field("phone", "Telefoninumber")}
-                        {field("email", "E-Mail")}
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="first_name">Eesnimi</InputLabel>
+                            <Input/>
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="last_name">Perekonnanimi</InputLabel>
+                            <Input/>
+                        </FormControl>
+                        <FormControl margin="normal" required fullWidth>
+                            <InputLabel htmlFor="national_id">Isikukood</InputLabel>
+                            <Input id="national_id" onChange={this.handleChange} value={this.state.formValues.national_id}/>
+                        </FormControl>
+                        <FormControl margin="normal" fullWidth>
+                            <InputLabel htmlFor="phone">Telefoninr</InputLabel>
+                            <Input/>
+                        </FormControl>
+                        <FormControl margin="normal" fullWidth>
+                            <InputLabel htmlFor="email">E-maili aadress</InputLabel>
+                            <Input/>
+                        </FormControl>
                     </form>
                 </Paper>
                 <Paper className={classes.paper}>
