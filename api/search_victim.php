@@ -7,7 +7,7 @@ $where_params = array();
 $params = array("first_name", "last_name", "national_id", "phone", "email", "id");
 
 foreach ($params as $param) {
-	if (isset($_GET[$param]) && $_GET[$param] !== "") {
+	if ($_GET[$param] !== "") {
 		$where_fields[] = $param;
 		$where_params[] = $_GET[$param];
 	}
