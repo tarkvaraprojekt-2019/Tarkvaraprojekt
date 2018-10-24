@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const isBrowser = typeof window !== `undefined`
+export const isBrowser = typeof window !== `undefined`
 
 const getToken = () =>
   window.localStorage.authToken

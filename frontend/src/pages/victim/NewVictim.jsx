@@ -16,6 +16,8 @@ import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout';
 
+import { isBrowser } from '../../auth';
+
 
 const styles = theme => ({
     root: {
@@ -41,6 +43,18 @@ class NewVictim extends React.Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
     };
+
+    componentWillMount() {
+        const formValues = isBrowser && window.localStorage.clientFields
+        ? JSON.parse(window.localStorage.clientFields)
+        : {}
+
+        if (formValues !== null) {
+            this.setState((state, props) => 
+                Object.assign({}, state, {formValues}))
+        }
+        
+    }
 
     handleChange = event => {
         const formValues = this.state.formValues
