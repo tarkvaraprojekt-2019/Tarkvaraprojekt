@@ -17,6 +17,8 @@ import withRoot from '../withRoot';
 import Layout from '../components/Layout';
 import VictimTable from "../components/VictimTable";
 
+import { isBrowser } from '../auth';
+
 
 const styles = theme => ({
     root: {
@@ -62,6 +64,7 @@ class Overview extends React.Component {
         this.setState((state, props) => 
             Object.assign({}, state, {searchFields})
         )
+        window.localStorage.clientFields = JSON.stringify(searchFields) // HACK! replace with redux, when feeling like you have time
     }
 
     searchVictim = (searchFields) => {
@@ -127,7 +130,7 @@ class Overview extends React.Component {
                         id={id}
                         label={label}
                         className={classes.input}
-                        value={this.state.id}
+                        value={this.state.searchFields[id]}
                         onChange={this.handleChange}
                         margin="normal"
             />
