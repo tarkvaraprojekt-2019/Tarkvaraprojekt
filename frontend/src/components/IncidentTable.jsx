@@ -15,6 +15,7 @@ import Grid from '@material-ui/core/Grid';
 
 
 import EditIcon from '@material-ui/icons/Edit';
+import {navigate} from "gatsby";
 const styles = theme => ({
     root: {
         flexGrow: 1,
@@ -49,7 +50,17 @@ const IncidentTable = props => {
                         <TableBody>
                             {props.incidents.map(n => {
                                 return (
-                                    <TableRow>
+                                    <TableRow
+                                    hover
+                                    key={n.id}
+                                    onClick={() => {
+                                        navigate(("/victim/" + props.uid + "/" + n.id), {
+                                            state: {
+                                                incident: props.incidents.find(inc => inc.id === n.id)
+                                            }
+                                        })
+                                    }}
+                                    >
                                         <TableCell component="th" scope="row">{n.id}</TableCell>
                                         <TableCell>{n.piirkond}</TableCell>
                                         <TableCell>{n.fuusiline_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
@@ -62,14 +73,13 @@ const IncidentTable = props => {
                     </Table>
                 </Grid>
                 <Grid item xs>
-                    <Link to="/newIncident">
                         <Button
+                            onClick={e => navigate("/victim/" + props.uid + "/newIncident")}
                             variant="contained"
                             color="primary"
                         >
                             Uus juhtum
                         </Button>
-                    </Link>
                 </Grid>
             </Grid>
 

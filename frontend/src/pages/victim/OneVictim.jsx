@@ -52,16 +52,13 @@ class Victim extends React.Component {
 
         this.getIncidents()
         this.getVictim()
-        console.log(typeof this.props.victimID)
 
     }
-
 
     handleChange = event => {
         const formValues = this.state.formValues
         formValues[event.target.id] = event.target.value
         this.setState({ formValues });
-        console.log(this.state)
     };
 
     state = {
@@ -233,7 +230,7 @@ class Victim extends React.Component {
                     </form>
                 </Paper>
                 <Paper className={classes.paper}>
-                    <IncidentTable classes={classes} incidents ={this.state.incidents} />
+                    <IncidentTable classes={classes} uid={this.props.victimID} incidents ={this.state.incidents} />
                 </Paper>
 
 

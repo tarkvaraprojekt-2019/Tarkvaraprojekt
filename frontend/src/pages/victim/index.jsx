@@ -22,6 +22,10 @@ import Layout from '../../components/Layout';
 
 import NewVictim from './NewVictim';
 import OneVictim from './OneVictim';
+import NewIncident from './newIncident';
+import Incident from './Incident';
+
+
 
 const styles = theme => ({
   root: {
@@ -63,6 +67,9 @@ class VictimIndex extends React.Component {
         <Router>
           <OneVictim path="victim/:victimID" classes={classes} />
           <NewVictim path="victim/new" />
+          <NewIncident path="victim/:victimID/newIncident"/>
+            <Incident path="victim/:victimID/:incidentID"/>
+
         </Router>
     );
   }

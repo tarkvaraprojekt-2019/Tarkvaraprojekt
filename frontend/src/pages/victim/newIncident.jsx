@@ -18,12 +18,11 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 
 
-import withRoot from '../withRoot';
+import withRoot from '../../withRoot';
 
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout/index';
 
 
-import IncidentTable from "../components/IncidentTable";
 
 
 const styles = theme => ({
@@ -46,10 +45,24 @@ const styles = theme => ({
 });
 
 
-class newIncident extends React.Component {
+class NewIncident extends React.Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
     };
+    constructor(props) {
+        super(props)
+        this.axios = this.props.axios
+    }
+
+    createIncident = () => {
+        this.axios.get('create_incident.php', {
+            params: this.state.formValues,
+        })
+            .then( res => {
+                console.log(res.data)
+            })
+            .catch( err => console.log("search err: ", err))
+    }
 
     handleSelectChange = event => {
         const formValues = this.state.formValues
@@ -78,7 +91,7 @@ class newIncident extends React.Component {
 
     state = {
         formValues: {
-            id: this.props.victimID,
+            kliendi_nr: this.props.victimID,
             piirkond: "",
             keel: "",
             vanus: "",
@@ -86,24 +99,24 @@ class newIncident extends React.Component {
             lapsed: "",
             rasedus: "",
             elukoht: "",
-            vaimne_vagivald: "",
-            fuusiline_vagivald: "",
-            majanduslik_vagivald: "",
-            seksuaalne_vagivald: "",
-            inimkaubandus: "",
-            teadmata_vagivald: "",
-            partner_vagivallatseja: "",
-            ekspartner_vagivallatseja: "",
-            vanem_vagivallatseja: "",
-            laps_vagivallatseja: "",
-            sugulane_vagivallatseja: "",
-            tookaaslane_vagivallatseja: "",
-            muu_vagivallatseja: "",
+            vaimne_vagivald: 0,
+            fuusiline_vagivald: 0,
+            majanduslik_vagivald: 0,
+            seksuaalne_vagivald: 0,
+            inimkaubandus: 0,
+            teadmata_vagivald: 0,
+            partner_vagivallatseja: 0,
+            ekspartner_vagivallatseja: 0,
+            vanem_vagivallatseja: 0,
+            laps_vagivallatseja: 0,
+            sugulane_vagivallatseja: 0,
+            tookaaslane_vagivallatseja: 0,
+            muu_vagivallatseja: 0,
             vagivallatseja_vanus: "",
             vagivallatseja_sugu: "",
-            laps_ohver: "",
-            vana_ohver: "",
-            muu_ohver: "",
+            laps_ohver: 0,
+            vana_ohver: 0,
+            muu_ohver: 0,
             politsei: "",
             rahastus: ""
 
@@ -155,11 +168,11 @@ class newIncident extends React.Component {
                                 name: 'keel',
                                 id: 'keel',
                             }}>
-                            <MenuItem value={"Eesti"}>Eesti</MenuItem>
-                            <MenuItem value={"Vene"}>Vene</MenuItem>
-                            <MenuItem value={"Inglise"}>Inglise</MenuItem>
-                            <MenuItem value={"Muu"}>Muu</MenuItem>
-                            <MenuItem value={"Teadmata"}>Teadmata</MenuItem>
+                            <MenuItem value={"eesti"}>Eesti</MenuItem>
+                            <MenuItem value={"vene"}>Vene</MenuItem>
+                            <MenuItem value={"inglise"}>Inglise</MenuItem>
+                            <MenuItem value={"muu"}>Muu</MenuItem>
+                            <MenuItem value={"teadmata"}>Teadmata</MenuItem>
 
                         </Select>
                     </FormControl>
@@ -177,7 +190,7 @@ class newIncident extends React.Component {
                             <MenuItem value={"25-49"}>25-49</MenuItem>
                             <MenuItem value={"50-64"}>50-64</MenuItem>
                             <MenuItem value={"üle 65"}>Üle 65</MenuItem>
-                            <MenuItem value={"Teadmata"}>Teadmata</MenuItem>
+                            <MenuItem value={"teadmata"}>Teadmata</MenuItem>
                         </Select>
                     </FormControl>
                     <FormControl margin="normal" fullWidth>
@@ -199,6 +212,7 @@ class newIncident extends React.Component {
                     <FormControl margin="normal" fullWidth>
                         <InputLabel htmlFor="lapsed">Alaealiste laste arv</InputLabel>
                         <Input
+                            type="number"
                             id="lapsed"
                             onChange={this.handleChange}
                             value={this.state.formValues.lapsed}/>
@@ -414,7 +428,7 @@ class newIncident extends React.Component {
                             <MenuItem value={"25-49"}>25-49</MenuItem>
                             <MenuItem value={"50-64"}>50-64</MenuItem>
                             <MenuItem value={"üle 65"}>Üle 65</MenuItem>
-                            <MenuItem value={"Teadmata"}>Teadmata</MenuItem>
+                            <MenuItem value={"teadmata"}>Teadmata</MenuItem>
                         </Select>
                     </FormControl>
                     <FormControl margin="normal" fullWidth>
@@ -507,14 +521,13 @@ class newIncident extends React.Component {
             </Paper>
 
             <Paper className={classes.paper}>
-                <Link to="/overview">
-                    <Button
-                        variant="contained"
-                        color="primary"
-                    >
-                        Salvesta
-                    </Button>
-                </Link>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick = {this.createIncident()}
+                >
+                    Salvesta
+                </Button>
                 <Link to="/overview">
 
                     <Button
@@ -531,4 +544,8 @@ class newIncident extends React.Component {
     }
 }
 
-export default withRoot(withStyles(styles)(newIncident));
+NewIncident.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withRoot(withStyles(styles)(NewIncident));
