@@ -56,11 +56,14 @@ class Incident extends React.Component {
     }
 
     componentWillMount() {
-        console.log(this.props.location.state.incident)
         this.getSessions()
-        this.setState({
-            formValues: this.props.location.state.incident
-        })
+        console.log(this.props.location.state)
+        if(typeof this.props.location.state !== 'undefined'){
+            this.setState({
+                formValues: this.props.location.state["incident"],
+            })
+        }
+
 
     }
 
