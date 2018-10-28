@@ -83,6 +83,11 @@ class Victim extends React.Component {
         this.axios.get('search_victim.php', {
             params: {
                 id: this.state.formValues.id,
+                first_name:  this.state.formValues.first_name,
+                last_name:  this.state.formValues.last_name,
+                phone:  this.state.formValues.phone,
+                email: this.state.formValues.email,
+                national_id:  this.state.formValues.national_id,
             },
         })
         .then( res => {

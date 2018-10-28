@@ -16,6 +16,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
+import SessionTable from "../../components/SessionTable";
 
 
 import withRoot from '../../withRoot';
@@ -56,6 +57,7 @@ class Incident extends React.Component {
 
     componentWillMount() {
         console.log(this.props.location.state.incident)
+        this.getSessions()
         this.setState({
             formValues: this.props.location.state.incident
         })
@@ -99,6 +101,9 @@ class Incident extends React.Component {
     };
 
     state = {
+        sessions: [{
+            id: 0,
+        }],
         formValues: {
             kliendi_nr: this.props.victimID,
             piirkond: "",
@@ -128,10 +133,23 @@ class Incident extends React.Component {
             muu_ohver: 0,
             politsei: "",
             rahastus: ""
-
-
         },
     };
+
+    getSessions = () => {
+        this.axios.get('get_sessions.php', {
+            params:{
+                incident_id: this.props.incidentID,
+            }
+        })
+            .then( res => {
+                console.log(res)
+                this.setState({
+                    sessions: res.data
+                })
+            })
+            .catch( err => console.log("search err: ", err))
+    }
 
 
     render() {
@@ -544,6 +562,9 @@ class Incident extends React.Component {
                     >
                         Tühista
                     </Button>
+            </Paper>
+            <Paper className={classes.paper}>
+                <SessionTable classes={classes} uid={this.props.victimID} incidentID={this.props.incidentID} sessions ={this.state.sessions} />
             </Paper>
 
 

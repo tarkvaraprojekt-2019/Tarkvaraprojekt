@@ -34,7 +34,7 @@ const IncidentTable = props => {
                   direction="column"
                   justify="center"
                   alignItems="center"
-                  spacing = "8">
+                spacing = {8}>
                 <Grid item xs = {12}>
                     <Table >
                         <TableHead>
