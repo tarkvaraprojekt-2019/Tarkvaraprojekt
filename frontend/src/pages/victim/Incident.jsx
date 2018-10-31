@@ -552,21 +552,6 @@ class Incident extends React.Component {
             </Paper>
 
             <Paper className={classes.paper}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick = {this.createIncident()}
-                >
-                    Salvesta
-                </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                    >
-                        Tühista
-                    </Button>
-            </Paper>
-            <Paper className={classes.paper}>
                 <SessionTable classes={classes} uid={this.props.victimID} incidentID={this.props.incidentID} sessions ={this.state.sessions} />
             </Paper>
 
