@@ -23,7 +23,7 @@ const styles = theme => ({
 })
 
 
-const IncidentTable = props => {
+const SessionTable = props => {
     const { classes } = props;
 
     return (
@@ -34,38 +34,30 @@ const IncidentTable = props => {
                   direction="column"
                   justify="center"
                   alignItems="center"
-                spacing = {8}>
+                  spacing = "8">
                 <Grid item xs = {12}>
                     <Table >
                         <TableHead>
                             <TableRow>
                                 <TableCell>ID</TableCell>
-                                <TableCell>Piirkond</TableCell>
-                                <TableCell>Füüsiline vägivald</TableCell>
-                                <TableCell>Vaimne vägivald</TableCell>
-                                <TableCell>Vägivallatseja sugu</TableCell>
+                                <TableCell>Kuupäev</TableCell>
+                                <TableCell>Kirjeldus</TableCell>
                             </TableRow>
                         </TableHead>
 
                         <TableBody>
-                            {props.incidents.map(n => {
+                            {props.sessions.map(n => {
                                 return (
                                     <TableRow
                                     hover
                                     key={n.id}
                                     onClick={() => {
-                                        navigate(("/victim/" + props.uid + "/" + n.id), {
-                                            state: {
-                                                incident: props.incidents.find(inc => inc.id === n.id)
-                                            }
-                                        })
+                                        navigate("/victim/" + props.uid + "/" + props.incidentID + "/" + n.id)
                                     }}
                                     >
                                         <TableCell component="th" scope="row">{n.id}</TableCell>
-                                        <TableCell>{n.piirkond}</TableCell>
-                                        <TableCell>{n.fuusiline_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
-                                        <TableCell>{n.vaimne_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
-                                        <TableCell>{n.vagivallatseja_sugu}</TableCell>
+                                        <TableCell>{n.kuupaev === null || n.kuupaev === "" ? "Teadmata" : n.kuupaev}</TableCell>
+                                        <TableCell>{n.kirjeldus === null || n.kirjeldus === "" ? "Teadmata" : n.kirjeldus}</TableCell>
                                     </TableRow>
                                 );
                             })}
@@ -74,11 +66,11 @@ const IncidentTable = props => {
                 </Grid>
                 <Grid item xs>
                         <Button
-                            onClick={e => navigate("/victim/" + props.uid + "/newIncident")}
+                            onClick={e => navigate("/victim/" + props.uid + "/" + props.incidentID + "/newSession" )}
                             variant="contained"
                             color="primary"
                         >
-                            Uus juhtum
+                            Uus Sessioon
                         </Button>
                 </Grid>
             </Grid>
@@ -91,8 +83,8 @@ const IncidentTable = props => {
     );
 };
 
-IncidentTable.propTypes = {
+SessionTable.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles) (IncidentTable);
+export default withStyles(styles) (SessionTable);

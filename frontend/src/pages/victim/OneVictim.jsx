@@ -52,16 +52,13 @@ class Victim extends React.Component {
 
         this.getIncidents()
         this.getVictim()
-        console.log(typeof this.props.victimID)
 
     }
-
 
     handleChange = event => {
         const formValues = this.state.formValues
         formValues[event.target.id] = event.target.value
         this.setState({ formValues });
-        console.log(this.state)
     };
 
     state = {
@@ -86,6 +83,11 @@ class Victim extends React.Component {
         this.axios.get('search_victim.php', {
             params: {
                 id: this.state.formValues.id,
+                first_name:  this.state.formValues.first_name,
+                last_name:  this.state.formValues.last_name,
+                phone:  this.state.formValues.phone,
+                email: this.state.formValues.email,
+                national_id:  this.state.formValues.national_id,
             },
         })
         .then( res => {
@@ -233,7 +235,7 @@ class Victim extends React.Component {
                     </form>
                 </Paper>
                 <Paper className={classes.paper}>
-                    <IncidentTable classes={classes} incidents ={this.state.incidents} />
+                    <IncidentTable classes={classes} uid={this.props.victimID} incidents ={this.state.incidents} />
                 </Paper>
 
 
