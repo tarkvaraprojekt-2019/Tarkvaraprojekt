@@ -34,7 +34,7 @@ const SessionTable = props => {
                   direction="column"
                   justify="center"
                   alignItems="center"
-                  spacing = "8">
+                  spacing = {8}>
                 <Grid item xs = {12}>
                     <Table >
                         <TableHead>
@@ -52,7 +52,11 @@ const SessionTable = props => {
                                     hover
                                     key={n.id}
                                     onClick={() => {
-                                        navigate("/victim/" + props.uid + "/" + props.incidentID + "/" + n.id)
+                                        navigate("/victim/" + props.uid + "/" + props.incidentID + "/" + n.id, {
+                                            state: {
+                                                session: props.sessions.find(inc => inc.id === n.id)
+                                            }
+                                        })
                                     }}
                                     >
                                         <TableCell component="th" scope="row">{n.id}</TableCell>

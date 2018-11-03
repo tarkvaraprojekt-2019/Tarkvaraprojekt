@@ -47,7 +47,7 @@ const styles = theme => ({
 });
 
 
-class NewSession extends React.Component {
+class Session extends React.Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
     };
@@ -57,7 +57,38 @@ class NewSession extends React.Component {
         super(props)
         this.axios = this.props.axios
 
+        Date.prototype.toDateInputValue = (function() {
+            const local = new Date(this);
+            local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+            return local.toJSON().slice(0,10);
+        });
+
     }
+    componentWillMount() {
+        this.getSession()
+    }
+
+    getSession() {
+        if(typeof this.props.location.state !== 'undefined'){
+            const formValues = this.props.location.state["session"];
+            formValues['id'] = this.props.sessionID;
+            this.setState({
+                formValues: formValues,
+            });
+            console.log("get", this.state.formValues);
+
+        }
+    }
+
+    updateSession = () => {
+        this.axios.post("update_session.php", this.state.formValues);
+        this.props.location.state["session"] = this.state.formValues
+    };
+
+    componentDidMount(){
+        this.state.initialValue = Object.assign({}, this.state.formValues)
+    }
+
 
     handleSelectChange = event => {
         const formValues = this.state.formValues
@@ -65,6 +96,8 @@ class NewSession extends React.Component {
         this.setState({formValues});
         console.log(this.state)
     };
+
+
     handleChange = event => {
         const formValues = this.state.formValues
         formValues[event.target.id] = event.target.value
@@ -91,20 +124,12 @@ class NewSession extends React.Component {
         console.log(this.state)
     };
 
-
-    createSession() {
-        this.axios.post("create_session.php", this.state.formValues)
-
-    }
-    static getDate(){
-        var local = new Date();
-        return local.toJSON().slice(0,10);
-    }
-
     state = {
+        editingEnabled: false,
         formValues: {
             incident_id: this.props.incidentID,
-            kuupaev: NewSession.getDate(),
+            id: this.props.sessionID,
+            kuupaev: "",
             kirjeldus: "",
             sidevahendid: "",
             kriisinoustamine: 0,
@@ -125,7 +150,6 @@ class NewSession extends React.Component {
             naistearst_kaasatud: 0,
             politsei_kaasatud: 0,
             prokuratuur_kaasatud: "",
-            ohvriabi_kaasatud: "",
             lastekaitse_kaasatud: "",
             kov_kaasatud: 0,
             tsiviilkohus_kaasatud: 0,
@@ -135,19 +159,70 @@ class NewSession extends React.Component {
             tuttavad_kaasatud: "",
             markused: ""
         },
+        initialValue: {}
     };
+
+
+
 
     render() {
         const {classes} = this.props;
+        let dateValue = new Date().toDateInputValue();
         return <Layout title="Uus juhtum">
             <Typography variant="h4" gutterBottom>
                 Lisa uus sessioon
             </Typography>
+
+            { !this.state.editingEnabled ?
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={ e => this.setState({
+                        editingEnabled: !this.state.editingEnabled
+                    })}
+                >
+                    MUUDA JUHTUMI ANDMEID
+                </Button> : null }
+
+            { this.state.editingEnabled ?
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    onClick={ e => {
+
+                        this.updateSession();
+                        this.setState({
+                            editingEnabled: !this.state.editingEnabled,
+                            initialValue: Object.assign({}, this.state.formValues)
+                        })
+
+
+                    }}
+                >
+                    SALVESTA
+                </Button> : null}
+            {this.state.editingEnabled ?
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={ e => {
+                        this.setState({
+                            editingEnabled: !this.state.editingEnabled,
+                            formValues: Object.assign({}, this.state.initialValue)
+                        });
+
+
+                    }}
+                >
+                    TÜHISTA
+                </Button> : null}
             <Paper className={classes.paper}>
                 <form className={classes.form}>
                     <FormControl margin="normal">
                         <TextField
-                            value = {this.state.formValues.kuupaev}
+                            value = {this.state.formValues.kuupaev === "" ? dateValue : this.state.formValues.kuupaev}
+                            disabled = {!this.state.editingEnabled}
                             id="kuupaev"
                             label="Kuupäev"
                             type="date"
@@ -171,11 +246,13 @@ class NewSession extends React.Component {
                         <RadioGroup>
                             <FormControlLabel control={
                                 <Radio
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.sidevahendid === 1}
                                     onClick={() => this.radioChange("sidevahendid", 1)}/>
                             } label="Jah"/>
                             <FormControlLabel control={
                                 <Radio
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.sidevahendid === 0}
                                     onClick={() => this.radioChange("sidevahendid", 0)}/>
                             } label="Ei"/>
@@ -188,6 +265,7 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" >
                         <InputLabel htmlFor="kriisinoustamine">Kriisinõustamine</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             type= "number"
                             step="0.01"
                             value={this.state.formValues.kriisinoustamine}
@@ -197,9 +275,10 @@ class NewSession extends React.Component {
                         >
                         </Input>
                     </FormControl>
-                    {parseInt(this.state.formValues.kriisinoustamine) > 0 ?
+                    {this.state.formValues.kriisinoustamine !== 0 ?
                         <FormControl margin="normal">
                             <Select
+                                disabled = {!this.state.editingEnabled}
                                 value={this.state.formValues.kriisinoustamise_aeg}
                                 onChange={this.handleSelectChange}
                                 inputProps={{
@@ -215,9 +294,9 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" >
                         <InputLabel htmlFor="juhutuminoustamine">Juhtumipõhine nõustamine</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             type="number"
                             step="0.01"
-                            min="0.01"
                             value={this.state.formValues.juhutuminoustamine}
                             onKeyPress={this.handleNumChange}
                             onChange={this.handleChange}
@@ -228,6 +307,7 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" >
                         <InputLabel htmlFor="vorgustikutoo">Võrgustikutöö</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             type="number"
                             step="0.01"
                             value={this.state.formValues.vorgustikutoo}
@@ -240,6 +320,7 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" >
                         <InputLabel htmlFor="psuhhonoustamine">Psühholoogiline nõustamine, psühhoteraapia</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             type="number"
                             step="0.01"
                             value={this.state.formValues.psuhhonoustamine}
@@ -252,6 +333,7 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" >
                         <InputLabel htmlFor="juuranoustamine">Juriidiline nõustamine</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             type="number"
                             step="0.01"
                             value={this.state.formValues.juuranoustamine}
@@ -264,6 +346,7 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" >
                         <InputLabel htmlFor="tegevused_lapsega">Tegevused lapsega</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             type="number"
                             step="0.01"
                             value={this.state.formValues.tegevused_lapsega}
@@ -276,6 +359,7 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" >
                         <InputLabel htmlFor="tugiteenused">Tugiteenused</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             type="number"
                             step="0.01"
                             value={this.state.formValues.tugiteenused}
@@ -288,6 +372,7 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" >
                         <InputLabel htmlFor="naise_majutus">Naise majutuspäevade arv</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             type="number"
                             step="0.01"
                             value={this.state.formValues.naise_majutus}
@@ -300,6 +385,7 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" >
                         <InputLabel htmlFor="laste_arv">Kaasasolevate laste arv</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             type="number"
                             step="0.01"
                             value={this.state.formValues.laste_arv}
@@ -312,6 +398,7 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" >
                         <InputLabel htmlFor="laste_majutus">Laste majutuspäevade arv</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             type="number"
                             step="0.01"
                             value={this.state.formValues.laste_majutus}
@@ -327,6 +414,7 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" >
                         <InputLabel htmlFor="umarlaud">Juhtumipõhiste ümarlaudade arv (v.a. MARAC)</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             type="number"
                             step="0.01"
                             value={this.state.formValues.umarlaud}
@@ -341,11 +429,13 @@ class NewSession extends React.Component {
                         <RadioGroup>
                             <FormControlLabel control={
                                 <Radio
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.marac === 1}
                                     onClick={() => this.radioChange("marac", 1)}/>
                             } label="Jah"/>
                             <FormControlLabel control={
                                 <Radio
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.marac === 0}
                                     onClick={() => this.radioChange("marac", 0)}/>
                             } label="Ei"/>
@@ -358,6 +448,7 @@ class NewSession extends React.Component {
                         <div>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.perearst_kaasatud === 1}
                                     onClick={() => {
                                         this.checkboxChange("perearst_kaasatud")
@@ -366,6 +457,7 @@ class NewSession extends React.Component {
                             } label="Perearst"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.emo_kaasatud === 1}
                                     onClick={() => {
                                         this.checkboxChange("emo_kaasatud")
@@ -374,6 +466,7 @@ class NewSession extends React.Component {
                             } label="EMO"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.naistearst_kaasatud === 1}
                                     onClick={() => {
                                         this.checkboxChange("naistearst_kaasatud")
@@ -382,14 +475,7 @@ class NewSession extends React.Component {
                             } label="Naistearst"/>
                             <FormControlLabel control={
                                 <Checkbox
-                                    checked={this.state.formValues.ohvriabi_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("ohvriabi_kaasatud")
-                                    }}
-                                />
-                            } label="Ohvriabi"/>
-                            <FormControlLabel control={
-                                <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.politsei_kaasatud === 1}
                                     onClick={() => {
                                         this.checkboxChange("politsei_kaasatud")
@@ -398,6 +484,7 @@ class NewSession extends React.Component {
                             } label="Politsei"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.prokuratuur_kaasatud === 1}
                                     onClick={() => {
                                         this.checkboxChange("prokuratuur_kaasatud")
@@ -406,6 +493,7 @@ class NewSession extends React.Component {
                             } label="Prokuratuur"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.lastekaitse_kaasatud === 1}
                                     onClick={() => {
                                         this.checkboxChange("lastekaitse_kaasatud")
@@ -414,6 +502,7 @@ class NewSession extends React.Component {
                             } label="Lastekaitse"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.kov_kaasatud === 1}
                                     onClick={() => {
                                         this.checkboxChange("kov_kaasatud")
@@ -422,6 +511,7 @@ class NewSession extends React.Component {
                             } label="KOV sotsiaalabi"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.kriminaalkohus_kaasatud === 1}
                                     onClick={() => {
                                         this.checkboxChange("kriminaalkohus_kaasatud")
@@ -430,6 +520,7 @@ class NewSession extends React.Component {
                             } label="Kohus (kriminaalasjas)"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.tsiviilkohus_kaasatud === 1}
                                     onClick={() => {
                                         this.checkboxChange("tsiviilkohus_kaasatud")
@@ -438,6 +529,7 @@ class NewSession extends React.Component {
                             } label="Kohus (tsiviilasjas)"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.haridusasutus_kaasatud === 1}
                                     onClick={() => {
                                         this.checkboxChange("haridusasutus_kaasatud")
@@ -446,6 +538,7 @@ class NewSession extends React.Component {
                             } label="Haridusasutus"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.mtu_kaasatud === 1}
                                     onClick={() => {
                                         this.checkboxChange("mtu_kaasatud")
@@ -454,6 +547,7 @@ class NewSession extends React.Component {
                             } label="MTÜ-d"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.tuttavad_kaasatud === 1}
                                     onClick={() => {
                                         this.checkboxChange("tuttavad_kaasatud")
@@ -465,6 +559,7 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" fullWidth>
                         <InputLabel htmlFor="markused">Märkused</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             value={this.state.formValues.markused}
                             onChange={this.handleChange}
                             id = "markused"
@@ -476,15 +571,11 @@ class NewSession extends React.Component {
 
             <Paper className={classes.paper}>
                 <Button
-                    onClick={() => {
-                        this.createSession()
-                    }}
                     variant="contained"
                     color="primary"
                 >
                     Salvesta
                 </Button>
-
                     <Button
                         variant="contained"
                         color="primary"
@@ -498,8 +589,8 @@ class NewSession extends React.Component {
     }
 }
 
-NewSession.propTypes = {
+Session.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withRoot(withStyles(styles)(NewSession));
+export default withRoot(withStyles(styles)(Session));
