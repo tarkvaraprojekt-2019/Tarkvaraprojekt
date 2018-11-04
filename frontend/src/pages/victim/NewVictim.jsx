@@ -44,6 +44,16 @@ class NewVictim extends React.Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
     };
+    constructor(props) {
+        super(props)
+        this.axios = this.props.axios
+        console.log(this.props)
+    }
+
+    createVictim(){
+        this.axios.post("create_victim.php", this.state.formValues)
+
+    }
 
     componentWillMount() {
         const formValues = isBrowser && window.localStorage.clientFields
@@ -60,6 +70,8 @@ class NewVictim extends React.Component {
     handleChange = event => {
         const formValues = this.state.formValues
         formValues[event.target.id] = event.target.value
+        this.setState({formValues});
+
         console.log(this.state)
     };
 
@@ -105,6 +117,9 @@ class NewVictim extends React.Component {
                 <Paper className={classes.paper}>
                     <Link to="/overview">
                         <Button
+                            onClick={() => {
+                                this.createVictim()
+                            }}
                             variant="contained"
                             color="primary"
                         >

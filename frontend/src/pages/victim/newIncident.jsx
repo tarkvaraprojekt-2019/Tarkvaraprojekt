@@ -54,14 +54,8 @@ class NewIncident extends React.Component {
         this.axios = this.props.axios
     }
 
-    createIncident = () => {
-        this.axios.get('create_incident.php', {
-            params: this.state.formValues,
-        })
-            .then( res => {
-                console.log(res.data)
-            })
-            .catch( err => console.log("search err: ", err))
+    createIncident(){
+        this.axios.post('create_incident.php', this.state.formValues)
     }
 
     handleSelectChange = event => {
@@ -524,8 +518,9 @@ class NewIncident extends React.Component {
                 <Button
                     variant="contained"
                     color="primary"
-                    onClick = {this.createIncident()}
-                >
+                    onClick={() => {
+                        this.createIncident()
+                    }}                >
                     Salvesta
                 </Button>
                 <Link to="/overview">

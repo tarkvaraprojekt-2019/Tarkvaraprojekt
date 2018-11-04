@@ -51,20 +51,30 @@ class Incident extends React.Component {
         classes: PropTypes.object.isRequired,
     };
     constructor(props) {
-        super(props)
+        super(props);
         this.axios = this.props.axios
+
     }
 
     componentWillMount() {
-        this.getSessions()
-        console.log(this.props.location.state)
+        this.getSessions();
+        this.getIncident()
+
+    }
+    componentDidMount(){
+        this.state.initialValue = Object.assign({}, this.state.formValues)
+    }
+
+    getIncident() {
         if(typeof this.props.location.state !== 'undefined'){
+            const formValues = this.props.location.state["incident"];
+            formValues['id'] = this.props.incidentID;
             this.setState({
-                formValues: this.props.location.state["incident"],
-            })
+                formValues: formValues,
+            });
+            console.log("get", this.state.formValues);
+
         }
-
-
     }
 
 
@@ -76,29 +86,29 @@ class Incident extends React.Component {
                 console.log(res.data)
             })
             .catch( err => console.log("search err: ", err))
-    }
+    };
 
     handleSelectChange = event => {
-        const formValues = this.state.formValues
-        formValues[event.target.name] = event.target.value
+        const formValues = this.state.formValues;
+        formValues[event.target.name] = event.target.value;
         this.setState({formValues});
         console.log(this.state)
     };
     handleChange = event => {
-        const formValues = this.state.formValues
-        formValues[event.target.id] = event.target.value
+        const formValues = this.state.formValues;
+        formValues[event.target.id] = event.target.value;
         this.setState({formValues});
         console.log(this.state)
     };
     checkboxChange = field => {
-        const formValues = this.state.formValues
+        const formValues = this.state.formValues;
         formValues[field] = (formValues[field] === 0 || formValues[field] === "") ? 1 : 0;
         this.setState({formValues});
         console.log(this.state)
     };
     radioChange = (field, value) => {
-        const formValues = this.state.formValues
-        formValues[field] = value
+        const formValues = this.state.formValues;
+        formValues[field] = value;
         this.setState({formValues});
         console.log(this.state)
     };
@@ -107,7 +117,9 @@ class Incident extends React.Component {
         sessions: [{
             id: 0,
         }],
+        editingEnabled: false,
         formValues: {
+            id: this.props.incidentID,
             kliendi_nr: this.props.victimID,
             piirkond: "",
             keel: "",
@@ -137,7 +149,14 @@ class Incident extends React.Component {
             politsei: "",
             rahastus: ""
         },
+        initialValue: {}
     };
+
+    updateVictim = () => {
+        this.axios.post("update_incident.php", this.state.formValues);
+        this.props.location.state["incident"] = this.state.formValues
+    };
+
 
     getSessions = () => {
         this.axios.get('get_sessions.php', {
@@ -146,22 +165,69 @@ class Incident extends React.Component {
             }
         })
             .then( res => {
-                console.log(res)
+                console.log(res);
                 this.setState({
                     sessions: res.data
                 })
             })
             .catch( err => console.log("search err: ", err))
-    }
+    };
 
 
     render() {
         const {classes} = this.props;
 
+
         return <Layout title="Uus juhtum">
             <Typography variant="h4" gutterBottom>
                 Juhtum
             </Typography>
+            { !this.state.editingEnabled ?
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={ e => this.setState({
+                        editingEnabled: !this.state.editingEnabled
+                    })}
+                >
+                    MUUDA JUHTUMI ANDMEID
+                </Button> : null }
+
+            { this.state.editingEnabled ?
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    onClick={ e => {
+
+                        this.updateVictim();
+                        this.setState({
+                            editingEnabled: !this.state.editingEnabled,
+                            initialValue: Object.assign({}, this.state.formValues)
+                        })
+
+
+
+                    }}
+                >
+                    SALVESTA
+                </Button> : null}
+
+            {this.state.editingEnabled ?
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={ e => {
+                        this.setState({
+                            editingEnabled: !this.state.editingEnabled,
+                            formValues: Object.assign({}, this.state.initialValue)
+                        });
+
+
+                    }}
+                >
+                    TÜHISTA
+                </Button> : null}
             <Paper className={classes.paper}>
                 <form className={classes.form}>
                     <FormControl margin="normal" fullWidth>
@@ -169,6 +235,7 @@ class Incident extends React.Component {
                         <Select
                             value={this.state.formValues.piirkond}
                             onChange={this.handleSelectChange}
+                            disabled = {!this.state.editingEnabled}
                             inputProps={{
                                 name: 'piirkond',
                                 id: 'piirkond',
@@ -195,6 +262,7 @@ class Incident extends React.Component {
                         <Select
                             value={this.state.formValues.keel}
                             onChange={this.handleSelectChange}
+                            disabled = {!this.state.editingEnabled}
                             inputProps={{
                                 name: 'keel',
                                 id: 'keel',
@@ -212,6 +280,7 @@ class Incident extends React.Component {
                         <Select
                             value={this.state.formValues.vanus}
                             onChange={this.handleSelectChange}
+                            disabled = {!this.state.editingEnabled}
                             inputProps={{
                                 name: 'vanus',
                                 id: 'vanus',
@@ -226,15 +295,17 @@ class Incident extends React.Component {
                     </FormControl>
                     <FormControl margin="normal" fullWidth>
                         <FormLabel>Puue</FormLabel>
-                        <RadioGroup>
+                        <RadioGroup
+                        >
                             <FormControlLabel control={
                                 <Radio
-
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.puue === 1}
                                     onClick={() => this.radioChange("puue", 1)}/>
                             } label="Jah"/>
                             <FormControlLabel control={
                                 <Radio
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.puue === 0}
                                     onClick={() => this.radioChange("puue", 0)}/>
                             } label="Ei"/>
@@ -243,6 +314,7 @@ class Incident extends React.Component {
                     <FormControl margin="normal" fullWidth>
                         <InputLabel htmlFor="lapsed">Alaealiste laste arv</InputLabel>
                         <Input
+                            disabled = {!this.state.editingEnabled}
                             type="number"
                             id="lapsed"
                             onChange={this.handleChange}
@@ -253,13 +325,14 @@ class Incident extends React.Component {
                         <RadioGroup>
                             <FormControlLabel control={
                                 <Radio
-
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.rasedus === 1}
                                     onClick={() => this.radioChange("rasedus", 1)}
                                 />
                             } label="Jah"/>
                             <FormControlLabel control={
                                 <Radio
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.rasedus === 0}
                                     onClick={() => this.radioChange("rasedus", 0)}
                                 />
@@ -269,6 +342,7 @@ class Incident extends React.Component {
                     <FormControl margin="normal" fullWidth>
                         <InputLabel htmlFor="piirkond">Elukoht</InputLabel>
                         <Select
+                            disabled = {!this.state.editingEnabled}
                             value={this.state.formValues.elukoht}
                             onChange={this.handleSelectChange}
                             inputProps={{
@@ -300,10 +374,10 @@ class Incident extends React.Component {
                         <div>
                             <FormControlLabel control={
                                 <Checkbox
-
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.fuusiline_vagivald === 1}
                                     onClick={() => {
-                                        this.checkboxChange("fuusiline_vagivald")
+                                        this.checkboxChange("fuusiline_vagivald");
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
@@ -315,9 +389,10 @@ class Incident extends React.Component {
                             } label="Füüsiline vägivald"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.vaimne_vagivald === 1}
                                     onClick={() => {
-                                        this.checkboxChange("vaimne_vagivald")
+                                        this.checkboxChange("vaimne_vagivald");
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
@@ -329,9 +404,10 @@ class Incident extends React.Component {
                             } label="Vaimne vägivald"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.majanduslik_vagivald === 1}
                                     onClick={() => {
-                                        this.checkboxChange("majanduslik_vagivald")
+                                        this.checkboxChange("majanduslik_vagivald");
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
@@ -343,9 +419,10 @@ class Incident extends React.Component {
                             } label="Majanduslik vägivald"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.seksuaalne_vagivald === 1}
                                     onClick={() => {
-                                        this.checkboxChange("seksuaalne_vagivald")
+                                        this.checkboxChange("seksuaalne_vagivald");
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
@@ -357,9 +434,10 @@ class Incident extends React.Component {
                             } label="Seksuaalne vägivald"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.inimkaubandus === 1}
                                     onClick={() => {
-                                        this.checkboxChange("inimkaubandus")
+                                        this.checkboxChange("inimkaubandus");
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
@@ -371,9 +449,10 @@ class Incident extends React.Component {
                             } label="Inimkaubandus"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.teadmata_vagivald === 1}
                                     onClick={() => {
-                                        this.checkboxChange("teadmata_vagivald")
+                                        this.checkboxChange("teadmata_vagivald");
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
@@ -396,6 +475,7 @@ class Incident extends React.Component {
                         <div>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.partner_vagivallatseja === 1}
                                     onClick={() => {
                                         this.checkboxChange("partner_vagivallatseja")
@@ -403,6 +483,7 @@ class Incident extends React.Component {
                             } label="Partner"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.ekspartner_vagivallatseja === 1}
                                     onClick={() => {
                                         this.checkboxChange("ekspartner_vagivallatseja")
@@ -410,6 +491,7 @@ class Incident extends React.Component {
                             } label="Ekspartner"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.vanem_vagivallatseja === 1}
                                     onClick={() => {
                                         this.checkboxChange("vanem_vagivallatseja")
@@ -417,6 +499,7 @@ class Incident extends React.Component {
                             } label="Isa/ema*"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.laps_vagivallatseja === 1}
                                     onClick={() => {
                                         this.checkboxChange("laps_vagivallatseja")
@@ -424,6 +507,7 @@ class Incident extends React.Component {
                             } label="Poeg/tütar*"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.sugulane_vagivallatseja === 1}
                                     onClick={() => {
                                         this.checkboxChange("sugulane_vagivallatseja")
@@ -431,6 +515,7 @@ class Incident extends React.Component {
                             } label="Sugulane/hõimlane*"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.tookaaslane_vagivallatseja === 1}
                                     onClick={() => {
                                         this.checkboxChange("tookaaslane_vagivallatseja")
@@ -438,6 +523,7 @@ class Incident extends React.Component {
                             } label="Töö- või õpingukaaslane*"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.muu_vagivallatseja === 1}
                                     onClick={() => {
                                         this.checkboxChange("muu_vagivallatseja")
@@ -448,6 +534,7 @@ class Incident extends React.Component {
                     <FormControl margin="normal" fullWidth>
                         <InputLabel htmlFor="vagivallatseja_vanus">Vägivallatseja vanus</InputLabel>
                         <Select
+                            disabled = {!this.state.editingEnabled}
                             value={this.state.formValues.vagivallatseja_vanus}
                             onChange={this.handleSelectChange}
                             inputProps={{
@@ -467,19 +554,21 @@ class Incident extends React.Component {
                         <RadioGroup>
                             <FormControlLabel control={
                                 <Radio
-
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.vagivallatseja_sugu === "Mees"}
                                     onClick={() => this.radioChange("vagivallatseja_sugu", "Mees")}
                                 />
                             } label="Mees"/>
                             <FormControlLabel control={
                                 <Radio
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.vagivallatseja_sugu === "Naine"}
                                     onClick={() => this.radioChange("vagivallatseja_sugu", "Naine")}
                                 />
                             } label="Naine"/>
                             <FormControlLabel control={
                                 <Radio
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.vagivallatseja_sugu === "teadmata"}
                                     onClick={() => this.radioChange("vagivallatseja_sugu", "teadmata")}
                                 />
@@ -494,6 +583,7 @@ class Incident extends React.Component {
                         <div>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.laps_ohver === 1}
                                     onClick={() => {
                                         this.checkboxChange("laps_ohver")
@@ -501,6 +591,7 @@ class Incident extends React.Component {
                             } label="Alaealised lapsed"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.vana_ohver === 1}
                                     onClick={() => {
                                         this.checkboxChange("vana_ohver")
@@ -508,6 +599,7 @@ class Incident extends React.Component {
                             } label="Eakad (üle 65)"/>
                             <FormControlLabel control={
                                 <Checkbox
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.muu_ohver === 1}
                                     onClick={() => {
                                         this.checkboxChange("muu_ohver")
@@ -520,13 +612,14 @@ class Incident extends React.Component {
                         <RadioGroup>
                             <FormControlLabel control={
                                 <Radio
-
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.politsei === 1}
                                     onClick={() => this.radioChange("politsei", 1)}
                                 />
                             } label="Jah"/>
                             <FormControlLabel control={
                                 <Radio
+                                    disabled = {!this.state.editingEnabled}
                                     checked={this.state.formValues.politsei === 0}
                                     onClick={() => this.radioChange("politsei", 0)}
                                 />
@@ -536,6 +629,7 @@ class Incident extends React.Component {
                     <FormControl margin="normal" fullWidth>
                         <InputLabel htmlFor="rahastus">Rahastuse liik</InputLabel>
                         <Select
+                            disabled = {!this.state.editingEnabled}
                             value={this.state.formValues.rahastus}
                             onChange={this.handleSelectChange}
                             inputProps={{

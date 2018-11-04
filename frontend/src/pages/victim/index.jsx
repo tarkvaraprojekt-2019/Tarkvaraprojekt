@@ -25,6 +25,8 @@ import OneVictim from './OneVictim';
 import NewIncident from './newIncident';
 import Incident from './Incident';
 import NewSession from './newSession';
+import Session from './Session';
+
 
 
 
@@ -72,6 +74,8 @@ class VictimIndex extends React.Component {
           <NewIncident path="victim/:victimID/newIncident"/>
             <Incident path="victim/:victimID/:incidentID"/>
             <NewSession path="victim/:victimID/:incidentID/newSession"/>
+            <Session path="victim/:victimID/:incidentID/:sessionID"/>
+
 
 
         </Router>
