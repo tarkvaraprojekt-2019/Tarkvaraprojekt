@@ -8,8 +8,8 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+import Grid from '@material-ui/core/Grid';
+
 import Typography from '@material-ui/core/Typography';
 
 
@@ -127,116 +127,129 @@ class Victim extends React.Component {
                 <Typography variant="h4" gutterBottom>
                     Isiku profiil
                 </Typography>
-
-                { !this.state.editingEnabled ? 
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={ e => this.setState({
-                            editingEnabled: !this.state.editingEnabled
-                        })}
-                    >
-                        MUUDA ISIKUANDMEID
-                    </Button> : null }
-
-                { this.state.editingEnabled ? 
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        onClick={ e => {
-
-                            this.setState({
-                                editingEnabled: !this.state.editingEnabled
-                            })
-
-                            this.updateVictim()
-                            }}
-                    >
-                        SALVESTA
-                    </Button> : null}
-
-                {this.state.editingEnabled ? 
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={ e => {
-                            this.setState({
-                                editingEnabled: !this.state.editingEnabled
-                            })
-                            this.getVictim()
-                            }}
-                    >
-                        TÜHISTA
-                    </Button> : null}
-
                 <Paper className={classes.paper}>
+                <Grid container
+                      direction="column"
+                      justify="center"
+                      alignItems="center"
+                      spacing = {8}>
+                    <Grid item>
 
-                    <form className={classes.form}>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="victimID">ID</InputLabel>
-                            <Input 
-                                id="id" 
-                                disabled 
-                             placeholder="1145" 
-                                value={this.props.victimID} 
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="firstName">Eesnimi</InputLabel>
-                            <Input 
-                                id="first_name" 
-                                disabled = {!this.state.editingEnabled} 
-                                // placeholder="Mari"
-                                onChange={this.handleChange}
-                                value={this.state.formValues.first_name}
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="lastName">Perekonnanimi</InputLabel>
-                            <Input 
-                                id="last_name" 
-                                disabled = {!this.state.editingEnabled} 
-                                // placeholder="Maasikas" 
-                                onChange={this.handleChange}
-                                value={this.state.formValues.last_name}
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" required fullWidth>
-                            <InputLabel htmlFor="national_id">Isikukood</InputLabel>
-                            <Input 
-                                id="national_id" 
-                                disabled = {!this.state.editingEnabled} 
-                                // placeholder="Maasikas" 
-                                onChange={this.handleChange}
-                                value={this.state.formValues.national_id}
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" fullWidth>
-                            <InputLabel htmlFor="victimTel">Telefoninr</InputLabel>
-                            <Input 
-                                id="phone" 
-                                disabled = {!this.state.editingEnabled} 
-                                // placeholder="55889933" 
-                                onChange={this.handleChange}
-                                value={this.state.formValues.phone}
-                            />
-                        </FormControl>
-                        <FormControl margin="normal" fullWidth>
-                            <InputLabel htmlFor="victimEmail">E-maili aadress</InputLabel>
-                            <Input 
-                                id="email" 
-                                disabled = {!this.state.editingEnabled} 
-                                // placeholder="marimaasikas@mail.ee" 
-                                onChange={this.handleChange}
-                                value={this.state.formValues.email}
-                            />
-                        </FormControl>
-                    </form>
+                            <form className={classes.form}>
+                                <FormControl margin="normal" required fullWidth>
+                                    <InputLabel htmlFor="victimID">ID</InputLabel>
+                                    <Input
+                                        id="id"
+                                        disabled
+                                        placeholder="1145"
+                                        value={this.props.victimID}
+                                    />
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                    <InputLabel htmlFor="firstName">Eesnimi</InputLabel>
+                                    <Input
+                                        id="first_name"
+                                        disabled = {!this.state.editingEnabled}
+                                        // placeholder="Mari"
+                                        onChange={this.handleChange}
+                                        value={this.state.formValues.first_name}
+                                    />
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                    <InputLabel htmlFor="lastName">Perekonnanimi</InputLabel>
+                                    <Input
+                                        id="last_name"
+                                        disabled = {!this.state.editingEnabled}
+                                        // placeholder="Maasikas"
+                                        onChange={this.handleChange}
+                                        value={this.state.formValues.last_name}
+                                    />
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth>
+                                    <InputLabel htmlFor="national_id">Isikukood</InputLabel>
+                                    <Input
+                                        id="national_id"
+                                        disabled = {!this.state.editingEnabled}
+                                        // placeholder="Maasikas"
+                                        onChange={this.handleChange}
+                                        value={this.state.formValues.national_id}
+                                    />
+                                </FormControl>
+                                <FormControl margin="normal" fullWidth>
+                                    <InputLabel htmlFor="victimTel">Telefoninr</InputLabel>
+                                    <Input
+                                        id="phone"
+                                        disabled = {!this.state.editingEnabled}
+                                        // placeholder="55889933"
+                                        onChange={this.handleChange}
+                                        value={this.state.formValues.phone}
+                                    />
+                                </FormControl>
+                                <FormControl margin="normal" fullWidth>
+                                    <InputLabel htmlFor="victimEmail">E-maili aadress</InputLabel>
+                                    <Input
+                                        id="email"
+                                        disabled = {!this.state.editingEnabled}
+                                        // placeholder="marimaasikas@mail.ee"
+                                        onChange={this.handleChange}
+                                        value={this.state.formValues.email}
+                                    />
+                                </FormControl>
+                            </form>
+
+                    </Grid>
+                    <Grid item>
+                        { !this.state.editingEnabled ?
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={ e => this.setState({
+                                    editingEnabled: !this.state.editingEnabled
+                                })}
+                            >
+                                MUUDA ISIKUANDMEID
+                            </Button> : null }
+
+                        { this.state.editingEnabled ?
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                onClick={ e => {
+
+                                    this.setState({
+                                        editingEnabled: !this.state.editingEnabled
+                                    })
+
+                                    this.updateVictim()
+                                }}
+                            >
+                                SALVESTA
+                            </Button> : null}
+
+                        {this.state.editingEnabled ?
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={ e => {
+                                    this.setState({
+                                        editingEnabled: !this.state.editingEnabled
+                                    })
+                                    this.getVictim()
+                                }}
+                            >
+                                TÜHISTA
+                            </Button> : null}
+
+                    </Grid>
+                </Grid>
                 </Paper>
+
                 <Paper className={classes.paper}>
                     <IncidentTable classes={classes} uid={this.props.victimID} incidents ={this.state.incidents} />
                 </Paper>
+
+
 
 
 
