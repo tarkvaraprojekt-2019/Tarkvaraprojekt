@@ -10,6 +10,8 @@ require "verify_token.php";
 //"set_admin" requires "username" and "admin_status"
 //"delete" requires "username"
 
+//TODO: Fix scope issues. $username is defined in verify_token.php, should rewrite to a function
+
 if (!isset($_POST["action"])) {
 	http_response_code(400);
 	echo "Missing action parameter";
@@ -19,7 +21,7 @@ if (!isset($_POST["action"])) {
 $action = $_POST["action"];
 
 if ($action === "create") {
-	if (!verify_access(true)) {
+	if (!is_admin()) {
 		http_response_code(401);
 		echo "Unauthorized action";
 		exit();
@@ -31,7 +33,7 @@ if ($action === "create") {
 	}
 	create_user($_POST["username"], $_POST["password"]);
 } else if ($action === "set_admin") {
-	if (!verify_access(true)) {
+	if (!is_admin()) {
 		http_response_code(401);
 		echo "Unauthorized action";
 		exit();
@@ -41,9 +43,9 @@ if ($action === "create") {
 		echo "Missing parameters";
 		exit();
 	}
-	set_admin($_POST["username"], $_POST["admin_status"]);
+	set_admin($_POST["username"], $_POST["admin_status"], $username);
 } else if ($action === "delete") {
-	if (!verify_access(true)) {
+	if (!is_admin()) {
 		http_response_code(401);
 		echo "Unauthorized action";
 		exit();
@@ -53,7 +55,7 @@ if ($action === "create") {
 		echo "Missing parameters";
 		exit();
 	}
-	delete_user($_POST["username"]);
+	delete_user($_POST["username"], $username);
 } else {
 	http_response_code(400);
 	echo "Invalid action";
@@ -71,21 +73,29 @@ function create_user($username, $pass) {
 }
 
 //Sets a user's admin status to selected value
-//TODO: Make sure user can't set own status
-function set_admin($username, $admin_status) {
+function set_admin($modified_username, $admin_status, $caller_username) {
+	if ($modified_username == $caller_username) {
+		http_response_code(400);
+		echo "Cannot change own admin status";
+		exit();
+	}
 	$db = get_db();
 	$stmt = $db->prepare("CALL set_user_admin(?, ?)");
-	$stmt->bind_param("ss", $username, $admin_status);
+	$stmt->bind_param("ss", $modified_username, $admin_status);
 	$stmt->execute() or trigger_error($db->error);
 	$db->close();
 }
 
 //Deletes the user
-//TODO: Make sure user can't delete themselves (?)
-function delete_user($username) {
+function delete_user($deleted_username, $caller_username) {
+	if ($deleted_username == $caller_username) {
+		http_response_code(400);
+		echo "Cannot delete own account";
+		exit();
+	}
 	$db = get_db();
 	$stmt = $db->prepare("CALL delete_user(?)");
-	$stmt->bind_param("s", $username);
+	$stmt->bind_param("s", $deleted_username);
 	$stmt->execute() or trigger_error($db->error);
 	$db->close();
 }
