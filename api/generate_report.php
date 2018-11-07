@@ -124,7 +124,7 @@ if (isset($_GET["piirkond"])) {
 }
 
 $db = get_db();
-$stmt = mysqli_prepare($db, $incident_query);
+$stmt = mysqli_prepare($db, $final_query);
 mysqli_stmt_bind_param($stmt, str_repeat("s", $c * 2), ...array_merge($where_params, $where_params));
 mysqli_stmt_execute($stmt);
 $res = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
