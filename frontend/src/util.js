@@ -55,6 +55,16 @@ export const zipWith3 = (f, xs, ys, zs) =>
     .map((v, i) => f(xs[i], ys[i], zs[i]));
 
 
+export const range = (n) => 
+  Array.from(Array(n), (_,x) => x);
+
+export const zip = function(ar1, ar2, zipper) {
+    return zipper 
+      ? ar1.map((value, index) => zipper(value, ar2[index]))
+      : ar1.map((value, index) => [value, ar2[index]])
+    ;
+  }
+
 export const piirkonnad = [
   "Tartumaa"
 , "Harjumaa"

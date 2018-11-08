@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 import withRoot from '../../withRoot';
 
-import ReportLayout from '../../components/ReportLayout';
+import ReportLayout from './ReportLayout';
 //import ReportImg from 'report.png';
 
 

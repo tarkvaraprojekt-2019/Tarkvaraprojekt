@@ -11,7 +11,8 @@
     "prop-types": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-jss": "latest"
+    "react-jss": "latest",
+    "recharts": "^1.3.6"
   },
   "scripts": {
     "develop": "gatsby develop",

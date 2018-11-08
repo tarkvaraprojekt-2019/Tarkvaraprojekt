@@ -9,9 +9,9 @@ import Paper from '@material-ui/core/Paper';
 
 
 
-import withRoot from '../withRoot';
+import withRoot from '../../withRoot';
 
-import Layout from './Layout';
+import Layout from '../../components/Layout';
 //import ReportImg from 'report.png';
 
 
@@ -58,7 +58,7 @@ class ReportLayout extends React.Component {
 
         return (
             <Layout {...this.props}>
-                <Paper className={classes.root}>
+                
                     <Tabs
                         value={this.props.selectedTab}
                         onChange={this.handleChange}
@@ -70,7 +70,7 @@ class ReportLayout extends React.Component {
                         <Tab label="Edasijõudnud valikud" />
                     </Tabs>
                     { Child }
-                </Paper>
+                
             </Layout>
         )
     }
