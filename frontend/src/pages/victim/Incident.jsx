@@ -656,10 +656,9 @@ class Incident extends React.Component {
 
             </Paper>
 
-            <Paper className={classes.paper}>
-                <SessionTable classes={classes} uid={this.props.victimID} incidentID={this.props.incidentID}
-                              sessions={this.state.sessions}/>
-            </Paper>
+            <SessionTable classes={classes} uid={this.props.victimID} incidentID={this.props.incidentID}
+                            sessions={this.state.sessions}/>
+           
 
 
         </Layout>;

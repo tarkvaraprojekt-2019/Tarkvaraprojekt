@@ -76,61 +76,9 @@ class VictimIndex extends React.Component {
             <NewSession path="victim/:victimID/:incidentID/newSession"/>
             <Session path="victim/:victimID/:incidentID/:sessionID"/>
 
-
-
         </Router>
     );
   }
 }
-
-const OldVictim = () => (
-  <React.Fragment>
-    <Typography variant="display1" gutterBottom>
-      Ohvri andmed
-    </Typography>
-    <Grid container spacing={24}>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          required
-          id="eesnimi"
-          name="eesnimi"
-          label="Eesnimi"
-          fullWidth
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          required
-          id="perenimi"
-          name="perenimi"
-          label="Perenimi"
-          fullWidth
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <FormLabel component="legend">Suhtluskeel</FormLabel>
-
-        <FormGroup row name="keel">
-          <FormControlLabel value="eesti" control={<Checkbox />} label="eesti" />
-          <FormControlLabel value="vene" control={<Checkbox />} label="vene" />
-          <FormControlLabel value="inglise" control={<Checkbox />} label="inglise" />
-          <FormControlLabel value="muu" control={<Checkbox />} label="muu" />
-        </FormGroup>
-      </Grid>
-
-      <Grid item xs={12}>
-        <FormLabel component="legend">Ohvri vanus</FormLabel>
-
-        <RadioGroup row name="vanus" value="18-24">
-          <FormControlLabel value="LT 18" control={<Radio />} label="alla 18" />
-          <FormControlLabel value="18-24" control={<Radio />} label="18-24" />
-          <FormControlLabel value="25-49" control={<Radio />} label="25-49" />
-          <FormControlLabel value="50-64" control={<Radio />} label="50-64" />
-          <FormControlLabel value="GT 65" control={<Radio />} label="üle 65" />
-        </RadioGroup>
-      </Grid>
-    </Grid>
-  </React.Fragment>
-);
 
 export default withRoot(withStyles(styles)(VictimIndex));

@@ -245,9 +245,8 @@ class Victim extends React.Component {
                 </Grid>
                 </Paper>
 
-                <Paper className={classes.paper}>
                     <IncidentTable classes={classes} uid={this.props.victimID} incidents ={this.state.incidents} />
-                </Paper>
+                
 
 
 

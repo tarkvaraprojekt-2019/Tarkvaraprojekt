@@ -582,10 +582,7 @@ class Session extends React.Component {
 
             </Paper>
             
-
-
         </Layout>
-            ;
     }
 }
 
