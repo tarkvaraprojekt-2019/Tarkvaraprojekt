@@ -20,8 +20,8 @@ SUM(rasedus) AS 'Rasedaid',
 -- Vägivald
 SUM(fuusiline_vagivald) AS 'Füüsiline vägivald',
 SUM(vaimne_vagivald) AS 'Vaimne vägivald',
-SUM(majanduslik_vagivald) AS 'Füüsiline vägivald',
-SUM(seksuaalne_vagivald) AS 'Füüsiline vägivald',
+SUM(majanduslik_vagivald) AS 'Majanduslik vägivald',
+SUM(seksuaalne_vagivald) AS 'Seksuaalne vägivald',
 SUM(inimkaubandus) AS 'Inimkaubandus',
 SUM(teadmata_vagivald) AS 'Teadmata vägivald',
 -- Vägivallatseja
@@ -83,6 +83,6 @@ SUM(tsiviilkohus_kaasatud) AS 'Kohus (tsiviilasjas)',
 SUM(kriminaalkohus_kaasatud) AS 'Kohus (kriminaalasjas)',
 SUM(haridusasutus_kaasatud) AS 'Haridusasutus',
 SUM(mtu_kaasatud) AS 'MTÜ-d',
-SUM(tuttavad_kaasatud) AS 'Sõbrad, sugulased'
+SUM(tuttavad_kaasatud) AS 'Sõbrad sugulased'
 -- From sessions table
 FROM (SELECT piirkond, sessions.id, sidevahendid, kriisinoustamine, kriisinoustamise_aeg, juhtuminoustamine, vorgustikutoo, psuhhonoustamine, juuranoustamine, tegevused_lapsega, tugiteenused, naise_majutus, laste_arv, laste_majutus, umarlaud, marac, perearst_kaasatud, emo_kaasatud, naistearst_kaasatud, politsei_kaasatud, prokuratuur_kaasatud, ohvriabi_kaasatud, lastekaitse_kaasatud, kov_kaasatud, tsiviilkohus_kaasatud, kriminaalkohus_kaasatud, haridusasutus_kaasatud, mtu_kaasatud, tuttavad_kaasatud FROM incidents, sessions WHERE sessions.incident_id=incidents.id) AS new_sessions GROUP BY piirkond

@@ -104,7 +104,7 @@ $session_params = array(
 "kriminaalkohus_kaasatud" => "SUM(kriminaalkohus_kaasatud) AS 'Kohus (kriminaalasjas)'",
 "haridusasutus_kaasatud" => "SUM(haridusasutus_kaasatud) AS 'Haridusasutus'",
 "mtu_kaasatud" => "SUM(mtu_kaasatud) AS 'MTÜ-d'",
-"tuttavad_kaasatud" => "SUM(tuttavad_kaasatud) AS 'Sõbrad, sugulased'"
+"tuttavad_kaasatud" => "SUM(tuttavad_kaasatud) AS 'Sõbrad sugulased'"
 );
 
 $session_query = "SELECT";
@@ -146,10 +146,27 @@ if ($c == 0) {
 	$stmt = mysqli_prepare($db, $final_query);
 	mysqli_stmt_bind_param($stmt, str_repeat("s", $c * 2), ...array_merge($where_params, $where_params));
 	mysqli_stmt_execute($stmt);
-	$query_res = mysqli_stmt_get_result($stmt)
+	$query_res = mysqli_stmt_get_result($stmt);
 }
 $res = mysqli_fetch_all($query_res, MYSQLI_ASSOC);
 
+//Construct csv
+$csv = "";
+//Title row
+foreach ($res[0] as $head => $value) {
+	$csv .= $head . "\t";
+}
+$csv .= "\n";
+//Other rows
+foreach ($res as $line) {
+	foreach ($line as $value) {
+		$csv .= $value . "\t";
+	}
+	$csv .= "\n";
+}
+
+echo $csv;
+
 //Debugging
-echo $final_query . "<br/><br/>";
+echo "<br/><br/>" . $final_query . "<br/><br/>";
 var_dump($res);
