@@ -42,8 +42,8 @@ $incident_params = array(
 "rasedus" => "SUM(rasedus) AS 'Rasedaid'",
 "fuusiline_vagivald" => "SUM(fuusiline_vagivald) AS 'Füüsiline vägivald'",
 "vaimne_vagivald" => "SUM(vaimne_vagivald) AS 'Vaimne vägivald'",
-"majanduslik_vagivald" => "SUM(majanduslik_vagivald) AS 'Füüsiline vägivald'",
-"seksuaalne_vagivald" => "SUM(seksuaalne_vagivald) AS 'Füüsiline vägivald'",
+"majanduslik_vagivald" => "SUM(majanduslik_vagivald) AS 'Majanduslik vägivald'",
+"seksuaalne_vagivald" => "SUM(seksuaalne_vagivald) AS 'Seksuaalne vägivald'",
 "inimkaubandus" => "SUM(inimkaubandus) AS 'Inimkaubandus'",
 "teadmata_vagivald" => "SUM(teadmata_vagivald) AS 'Teadmata vägivald'",
 "partner_vagivallatseja" => "SUM(partner_vagivallatseja) AS 'Partner vägivallatseja'",
@@ -68,6 +68,7 @@ foreach ($incident_params as $param => $value) {
 		$incident_query .= " " . $value . ",";
 	}
 }
+$use_incident_query = !($incident_query == "SELECT");
 $incident_query = substr($incident_query, 0, -1) . " FROM (SELECT piirkond, incidents.id, kliendi_nr, keel, vanus, puue, lapsed, rasedus, fuusiline_vagivald, majanduslik_vagivald, vaimne_vagivald, seksuaalne_vagivald, inimkaubandus, teadmata_vagivald, partner_vagivallatseja, ekspartner_vagivallatseja, vanem_vagivallatseja, laps_vagivallatseja, sugulane_vagivallatseja, tookaaslane_vagivallatseja, muu_vagivallatseja, vagivallatseja_vanus, vagivallatseja_sugu, laps_ohver, vana_ohver, muu_ohver, politsei, rahastus FROM incidents, sessions WHERE sessions.incident_id=incidents.id {$where_query} GROUP BY incidents.id) AS new_incidents";
 if (isset($_GET["piirkond"]) && $_GET["piirkond"] == "all") {
 	$incident_query .= " GROUP BY piirkond";
@@ -112,22 +113,42 @@ foreach ($session_params as $param => $value) {
 		$session_query .= " " . $value . ",";
 	}
 }
+$use_session_query = !($session_query == "SELECT");
 $session_query = substr($session_query, 0, -1) . " FROM (SELECT piirkond, sessions.id, sidevahendid, kriisinoustamine, kriisinoustamise_aeg, juhtuminoustamine, vorgustikutoo, psuhhonoustamine, juuranoustamine, tegevused_lapsega, tugiteenused, naise_majutus, laste_arv, laste_majutus, umarlaud, marac, perearst_kaasatud, emo_kaasatud, naistearst_kaasatud, politsei_kaasatud, prokuratuur_kaasatud, ohvriabi_kaasatud, lastekaitse_kaasatud, kov_kaasatud, tsiviilkohus_kaasatud, kriminaalkohus_kaasatud, haridusasutus_kaasatud, mtu_kaasatud, tuttavad_kaasatud FROM incidents, sessions WHERE sessions.incident_id=incidents.id {$where_query}) AS new_sessions";
 if (isset($_GET["piirkond"]) && $_GET["piirkond"] == "all") {
 	$session_query .= " GROUP BY piirkond";
 }
 
 //Construct final query
-$final_query = "SELECT * FROM ({$incident_query}) AS inci JOIN ({$session_query}) AS sess";
-if (isset($_GET["piirkond"])) {
+$final_query = "SELECT * FROM ";
+if ($use_incident_query) {
+	$final_query .= "({$incident_query}) AS inci";
+}
+if ($use_incident_query && $use_session_query) {
+	$final_query .= " JOIN ";
+}
+if ($use_session_query) {
+	$final_query .= "({$session_query}) AS sess";
+}
+if (isset($_GET["piirkond"]) && $use_incident_query && $use_session_query) {
 	$final_query .= " USING (piirkond)";
+}
+if ($final_query == "SELECT * FROM ") {
+	http_response_code(400);
+	echo "Missing parameters";
+	exit();
 }
 
 $db = get_db();
-$stmt = mysqli_prepare($db, $final_query);
-mysqli_stmt_bind_param($stmt, str_repeat("s", $c * 2), ...array_merge($where_params, $where_params));
-mysqli_stmt_execute($stmt);
-$res = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
+if ($c == 0) {
+	$query_res = mysqli_query($db, $final_query);
+} else {
+	$stmt = mysqli_prepare($db, $final_query);
+	mysqli_stmt_bind_param($stmt, str_repeat("s", $c * 2), ...array_merge($where_params, $where_params));
+	mysqli_stmt_execute($stmt);
+	$query_res = mysqli_stmt_get_result($stmt)
+}
+$res = mysqli_fetch_all($query_res, MYSQLI_ASSOC);
 
 //Debugging
 echo $final_query . "<br/><br/>";
