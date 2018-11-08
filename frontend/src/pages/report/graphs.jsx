@@ -59,7 +59,7 @@ const styles = theme => ({
   chips: {
     display: 'flex',
     flexDirection: 'column',
-  }
+  },
 });
 
 class Graphs extends React.Component {
@@ -75,61 +75,66 @@ class Graphs extends React.Component {
   };
 
   defaultChips = {
-    unique: ['incident_id', 'session_id', 'kliendi_nr', 'rahastus'],
-    service_hours: [
-      'sidevahendid',
-      'kriisinoustamine',
-      'kriisinoustamise_aeg',
-      'juhtuminoustamine',
-      'vorgustikutoo',
-      'psuhhonoustamine',
-      'juuranoustamine',
-      'tegevused_lapsega',
-      'tugiteenused',
-    ],
-    violence: [
-      'fuusiline_vagivald',
-      'vaimne_vagivald',
-      'majanduslik_vagivald',
-      'seksuaalne_vagivald',
-      'inimkaubandus',
-      'teadmata_vagivald',
-      'partner_vagivallatseja',
-      'ekspartner_vagivallatseja',
-      'vanem_vagivallatseja',
-      'laps_vagivallatseja',
-      'sugulane_vagivallatseja',
-      'tookaaslane_vagivallatseja',
-      'muu_vagivallatseja',
-      'vagivallatseja_vanus',
-      'vagivallatseja_sugu',
-      'laps_ohver',
-      'vana_ohver',
-      'muu_ohver',
-      'politsei',
-    ],
-    hosting: ['naise_majutus', 'laste_arv', 'laste_majutus'],
-    participants: [
-      'umarlaud',
-      'marac',
-      'perearst_kaasatud',
-      'emo_kaasatud',
-      'naistearst_kaasatud',
-      'politsei_kaasatud',
-      'prokuratuur_kaasatud',
-      'ohvriabi_kaasatud',
-      'lastekaitse_kaasatud',
-      'kov_kaasatud',
-      'tsiviilkohus_kaasatud',
-      'kriminaalkohus_kaasatud',
-      'haridusasutus_kaasatud',
-      'mtu_kaasatud',
-      'tuttavad_kaasatud',
-    ],
-  };
-  
-  cs = this.defaultChips.unique
-  chipsId = zip(range(this.cs.length), this.cs)
+    unique: {
+        'incident_id': 'Juhtumite arv',
+         'session_id': 'Sessioonide arv',
+          'kliendi_nr': 'Klientide arv',
+           'rahastus': 'NTK rahastus',
+        },
+    service_hours: {
+        "sidevahendid" :'Nõustamisi sidevahenditega',
+         "kriisinoustamine" :'Kriisinõustamiste aeg',
+         "kriisinoustamise_aeg": 'Kriisinõustamisi päeval ja öösel',
+         "juhtuminoustamine" :'Juhtuminõustamiste aeg',
+         "vorgustikutoo" :'Võrgustikutöö aeg',
+         "psuhhonoustamine" :'Psühhonõustamiste aeg',
+         "juuranoustamine" :'Juuranõustamiste aeg',
+         "tegevused_lapsega" :'Lastega tegevuste aeg',
+         "tugiteenused" :'Tugiteenuste aeg', 
+     },
+    violence: {
+        "fuusiline_vagivald" :'Füüsiline vägivald',
+        "vaimne_vagivald" :'Vaimne vägivald',
+        "majanduslik_vagivald" :'Füüsiline vägivald',
+        "seksuaalne_vagivald" :'Füüsiline vägivald',
+        "inimkaubandus" :'Inimkaubandus',
+        "teadmata_vagivald" :'Teadmata vägivald',
+        "partner_vagivallatseja" :'Partner vägivallatseja',
+        "ekspartner_vagivallatseja" :'Ekspartner vägivallatseja',
+        "vanem_vagivallatseja" :'Vanem vägivallatseja',
+        "laps_vagivallatseja" :'Laps vägivallatseja',
+        "sugulane_vagivallatseja" :'Sugulane vagivallatseja',
+        "tookaaslane_vagivallatseja" :'Töökaaslane vägivallatseja',
+        "muu_vagivallatseja" :'Muu vägivallatseja',
+        "vagivallatseja_vanus": 'Vägivallatseja vanus',
+        "vagivallatseja_sugu": 'Vägivallatseja sugu',
+        "laps_ohver" :'Alaealine lisaohvriks',
+        "vana_ohver" :'Eakas lisaohvriks',
+        "muu_ohver" :'Muu lisaohver',
+        "politsei" :'Politsei kaasatud',
+    },
+    hosting: {
+        "naise_majutus" :'Naise majutuspäevade arv',
+        "laste_arv" :'Laste arv majutuses',
+        "laste_majutus" :'Laste majutuspäevade arv',
+    },
+    participants: {
+        "umarlaud" :'Ümarlauad',
+        "marac" :'MARAC',
+        "perearst_kaasatud" :'Perearst',
+        "emo_kaasatud" :'EMO',
+        "naistearst_kaasatud" :'Naistearst',
+        "politsei_kaasatud" :'Politsei',
+        "prokuratuur_kaasatud" :'Prokuratuur',
+        "ohvriabi_kaasatud" :'Riiklik ohvriabi',
+        "lastekaitse_kaasatud" :'Lastekaitse',
+        "kov_kaasatud" :'KOV sotsiaalabi',
+        "tsiviilkohus_kaasatud" :'Kohus (tsiviilasjas)',
+        "kriminaalkohus_kaasatud" :'Kohus (kriminaalasjas)',
+        "haridusasutus_kaasatud" :'Haridusasutus',
+        "mtu_kaasatud" :'MTÜ-d',
+        "tuttavad_kaasatud" :'Sõbrad, sugulased',
+    }}
 
   state = {
     formValues: {
@@ -138,7 +143,7 @@ class Graphs extends React.Component {
       piirkond: 'all',
     },
     data: {},
-    chipData: this.chipsId, 
+    chipData: this.defaultChips.unique, 
   };
 
   componentWillMount() {
@@ -165,11 +170,10 @@ class Graphs extends React.Component {
       .catch(err => console.log('report err: ', err));
   }
 
-  handleDelete = data => () => {
+  handleDelete = key => () => {
     this.setState(state => {
       const chipData = [...state.chipData];
-      const chipToDelete = chipData.indexOf(data);
-      chipData.splice(chipToDelete, 1);
+      delete chipData[key];
       return { chipData };
     });
   };
@@ -196,11 +200,11 @@ class Graphs extends React.Component {
 
     const error = alates && kuni;
 
-    const chips = this.state.chipData.map((data) => (
+    const chips = Object.entries(this.state.chipData).map(([key, label]) => (
             <Chip
-              key={data[0]}
-              label={data[1]}
-              onDelete={this.handleDelete(data)}
+              key={key}
+              label={label}
+              onDelete={this.handleDelete(key)}
               className={classes.input}
             />
     ))
@@ -218,7 +222,7 @@ class Graphs extends React.Component {
                             color="primary"
                             className={classes.formControl}
                         >
-                            Lae tabel alla csv'na
+                            Lae valitud andmed alla csv'na
                         </Button>
             </form>
           </Paper>
@@ -228,9 +232,8 @@ class Graphs extends React.Component {
                 Unikaalseid kliente
               </Typography>
             </ExpansionPanelSummary>
-            <ExpansionPanelDetails classes>
+            <ExpansionPanelDetails>
                 <div className={classes.chips}>
-                    
                     { chips }
                 </div>
               <SimpleLineChart/>
