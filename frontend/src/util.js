@@ -53,3 +53,24 @@ export const zipWith3 = (f, xs, ys, zs) =>
   Array(xs.length)
     .fill('')
     .map((v, i) => f(xs[i], ys[i], zs[i]));
+
+
+export const piirkonnad = [
+  "Tartumaa"
+, "Harjumaa"
+, "Pärnumaa"
+, "Saaremaa"
+, "Hiiumaa"
+, "Võrumaa"
+, "Ida-Virumaa"
+, "Lääne-Virumaa"
+, "Põlvamaa"
+, "Viljandimaa"
+, "Raplamaa"
+, "Jõgevamaa"
+, "Läänemaa"
+, "Järvamaa"
+, "Valgamaa"
+]
+
+

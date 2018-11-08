@@ -22,6 +22,8 @@ import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout/index';
 
+import { piirkonnad } from '../../util';
+
 
 
 
@@ -120,6 +122,7 @@ class NewIncident extends React.Component {
 
     render() {
         const {classes} = this.props;
+        const piirkonnadMenuItems = piirkonnad.map(p => <MenuItem value={p}>{p}</MenuItem>)
 
         return <Layout title="Uus juhtum">
             <Typography variant="h4" gutterBottom>
@@ -136,21 +139,7 @@ class NewIncident extends React.Component {
                                 name: 'piirkond',
                                 id: 'piirkond',
                             }}>
-                            <MenuItem value={"Tartumaa"}>Tartumaa</MenuItem>
-                            <MenuItem value={"Harjumaa"}>Harjumaa</MenuItem>
-                            <MenuItem value={"Pärnumaa"}>Pärnumaa</MenuItem>
-                            <MenuItem value={"Saaremaa"}>Saaremaa</MenuItem>
-                            <MenuItem value={"Hiiumaa"}>Hiiumaa</MenuItem>
-                            <MenuItem value={"Võrumaa"}>Võrumaa</MenuItem>
-                            <MenuItem value={"Ida-Virumaa"}>Ida-Virumaa</MenuItem>
-                            <MenuItem value={"Lääne-Virumaa"}>Lääne-Virumaa</MenuItem>
-                            <MenuItem value={"Põlvamaa"}>Põlvamaa</MenuItem>
-                            <MenuItem value={"Viljandimaa"}>Viljandimaa</MenuItem>
-                            <MenuItem value={"Raplamaa"}>Raplamaa</MenuItem>
-                            <MenuItem value={"Jõgevamaa"}>Jõgevamaa</MenuItem>
-                            <MenuItem value={"Läänemaa"}>Läänemaa</MenuItem>
-                            <MenuItem value={"Järvamaa"}>Järvamaa</MenuItem>
-                            <MenuItem value={"Valgamaa"}>Valgamaa</MenuItem>
+                            { piirkonnadMenuItems }
                         </Select>
                     </FormControl>
                     <FormControl margin="normal" fullWidth>
@@ -238,22 +227,8 @@ class NewIncident extends React.Component {
                                 name: 'elukoht',
                                 id: 'elukoht',
                             }}>
-                            <MenuItem value={"teadmata"}>Teadmata</MenuItem>
-                            <MenuItem value={"Tartumaa"}>Tartumaa</MenuItem>
-                            <MenuItem value={"Harjumaa"}>Harjumaa</MenuItem>
-                            <MenuItem value={"Pärnumaa"}>Pärnumaa</MenuItem>
-                            <MenuItem value={"Saaremaa"}>Saaremaa</MenuItem>
-                            <MenuItem value={"Hiiumaa"}>Hiiumaa</MenuItem>
-                            <MenuItem value={"Võrumaa"}>Võrumaa</MenuItem>
-                            <MenuItem value={"Ida-Virumaa"}>Ida-Virumaa</MenuItem>
-                            <MenuItem value={"Lääne-Virumaa"}>Lääne-Virumaa</MenuItem>
-                            <MenuItem value={"Põlvamaa"}>Põlvamaa</MenuItem>
-                            <MenuItem value={"Viljandimaa"}>Viljandimaa</MenuItem>
-                            <MenuItem value={"Raplamaa"}>Raplamaa</MenuItem>
-                            <MenuItem value={"Jõgevamaa"}>Jõgevamaa</MenuItem>
-                            <MenuItem value={"Läänemaa"}>Läänemaa</MenuItem>
-                            <MenuItem value={"Järvamaa"}>Järvamaa</MenuItem>
-                            <MenuItem value={"Valgamaa"}>Valgamaa</MenuItem>
+                            
+                            { piirkonnadMenuItems }
                         </Select>
                     </FormControl>
                     <FormControl margin="normal" fullWidth>
