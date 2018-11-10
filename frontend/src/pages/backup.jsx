@@ -29,6 +29,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import withRoot from '../withRoot';
 
 import Layout from '../components/Layout';
+import TextField from "@material-ui/core/TextField";
 
 
 const styles = theme => ({
@@ -162,7 +163,11 @@ class DatabaseBackup extends React.Component {
 class CSVBackup extends React.Component {
     state = {
         open: false,
+        alates: new Date().toDateInputValue(),
+        kuni: new Date().toDateInputValue(),
     };
+
+
 
     handleClickOpen = () => {
         this.setState({ open: true })
@@ -183,6 +188,23 @@ class CSVBackup extends React.Component {
 
     render() {
         const { classes } = this.props;
+        const { alates, kuni, open } = this.state;
+
+
+        const makeDateField = (id, label) => (
+            <FormControl required margin="normal" className={classes.formControl}>
+                <TextField
+                    value={this.state[id]}
+                    id={id}
+                    label={label}
+                    type="date"
+                    onChange={this.handleChange}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+            </FormControl>
+        );
 
         return (
             <React.Fragment>
@@ -204,24 +226,18 @@ class CSVBackup extends React.Component {
                                 <SaveIcon className={ classes.leftIcon }/>
                                 Lae alla
                             </Button>
-                            
-                        <FormControl fullWidth >
-                            <InputLabel htmlFor="incidentDate">Kuupäev</InputLabel>
-                            <Input/>
-                        </FormControl>
-                            
+
+                            <form>
+                                {makeDateField('alates', 'Alates')}
+                                {makeDateField('kuni', 'Kuni')}
+                            </form>
+
                             <input
                                 accept="*"
                                 className={classes.input}
                                 id="button-file"
                                 type="file"
                             />
-                            <label htmlFor="button-file">
-                                <Button className={classes.button} component="span" variant="outlined" size="small">
-                                    <CloudUploadIcon className={ classes.leftIcon }/>
-                                    Lae üles
-                                </Button>
-                            </label>
                             
                         </div>
                         
@@ -244,7 +260,7 @@ class CSVBackup extends React.Component {
                         <Button onClick={ this.handleClose } color="primary">
                             Tagasi
                         </Button>
-                        <Button onClick={ this.downloadDatabase } color="secondary">
+                        <Button onClick={ this.downloadCSV } color="secondary">
                             Lae alla
                         </Button>
                     </DialogActions>

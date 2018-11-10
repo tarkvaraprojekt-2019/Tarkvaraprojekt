@@ -190,6 +190,7 @@ class Session extends React.Component {
                             <FormControl margin="normal" fullWidth>
                                 <InputLabel htmlFor="kirjeldus">Kirjeldus</InputLabel>
                                 <Input
+                                    disabled={!this.state.editingEnabled}
                                     value={this.state.formValues.kirjeldus}
                                     onChange={this.handleChange}
                                     id="kirjeldus"
@@ -575,7 +576,10 @@ class Session extends React.Component {
                 </Grid>
 
             </Paper>
-            
+
+
+
+
         </Layout>
     }
 }
