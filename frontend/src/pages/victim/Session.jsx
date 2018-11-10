@@ -127,7 +127,7 @@ class Session extends React.Component {
             kirjeldus: "",
             sidevahendid: "",
             kriisinoustamine: 0,
-            kriisinoustamise_aeg: "",
+            kriisinoustamise_aeg: "teadmata",
             juhutuminoustamine: 0,
             vorgustikutoo: 0,
             psuhhonoustamine: 0,

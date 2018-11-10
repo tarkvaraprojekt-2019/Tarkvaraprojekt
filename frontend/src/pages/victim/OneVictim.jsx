@@ -44,20 +44,20 @@ class Victim extends React.Component {
     };
 
     constructor(props) {
-        super(props)
+        super(props);
         this.axios = this.props.axios
     }
 
     componentWillMount() {
 
-        this.getIncidents()
+        this.getIncidents();
         this.getVictim()
 
     }
 
     handleChange = event => {
-        const formValues = this.state.formValues
-        formValues[event.target.id] = event.target.value
+        const formValues = this.state.formValues;
+        formValues[event.target.id] = event.target.value;
         this.setState({ formValues });
     };
 
@@ -71,7 +71,7 @@ class Victim extends React.Component {
         editingEnabled : false,
         formValues: {
             id: this.props.victimID,
-            first_name: "", 
+            first_name: "",
             last_name: "", 
             phone: "", 
             email: "", 
@@ -82,26 +82,28 @@ class Victim extends React.Component {
     getVictim = () => {
         this.axios.get('search_victim.php', {
             params: {
-                id: this.state.formValues.id,
-                first_name:  this.state.formValues.first_name,
-                last_name:  this.state.formValues.last_name,
-                phone:  this.state.formValues.phone,
-                email: this.state.formValues.email,
-                national_id:  this.state.formValues.national_id,
+                id: this.props.victimID,
+                first_name: "",
+                last_name: "",
+                phone: "",
+                email: "",
+                national_id: "",
             },
         })
         .then( res => {
-            console.log(res.data)
+            console.log(res.data);
 
             this.setState({formValues: res.data[0]})
         })
         .catch( err => console.log("search err: ", err))
-    }
+    };
+
+
 
     updateVictim = () => {
-        this.axios.post("update_victim.php", this.state.formValues)
+        this.axios.post("update_victim.php", this.state.formValues);
         this.getVictim()
-    }
+    };
 
 
     getIncidents = () => {
@@ -111,13 +113,13 @@ class Victim extends React.Component {
             }
         })
         .then( res => {
-            console.log(res)
+            console.log(res);
             this.setState({
                 incidents: res.data
             })
         })
         .catch( err => console.log("search err: ", err))
-    }
+    };
 
     render() {
         const {classes} = this.props;
@@ -219,7 +221,7 @@ class Victim extends React.Component {
 
                                     this.setState({
                                         editingEnabled: !this.state.editingEnabled
-                                    })
+                                    });
 
                                     this.updateVictim()
                                 }}
@@ -234,7 +236,7 @@ class Victim extends React.Component {
                                 onClick={ e => {
                                     this.setState({
                                         editingEnabled: !this.state.editingEnabled
-                                    })
+                                    });
                                     this.getVictim()
                                 }}
                             >

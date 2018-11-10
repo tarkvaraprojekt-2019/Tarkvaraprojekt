@@ -88,13 +88,13 @@ class NewIncident extends React.Component {
     state = {
         formValues: {
             kliendi_nr: this.props.victimID,
-            piirkond: "",
-            keel: "",
-            vanus: "",
+            piirkond: "teadmata",
+            keel: "teadmata",
+            vanus: "teadmata",
             puue: "",
             lapsed: "",
             rasedus: "",
-            elukoht: "",
+            elukoht: "teadmata",
             vaimne_vagivald: 0,
             fuusiline_vagivald: 0,
             majanduslik_vagivald: 0,
@@ -108,13 +108,13 @@ class NewIncident extends React.Component {
             sugulane_vagivallatseja: 0,
             tookaaslane_vagivallatseja: 0,
             muu_vagivallatseja: 0,
-            vagivallatseja_vanus: "",
-            vagivallatseja_sugu: "",
+            vagivallatseja_vanus: "teadmata",
+            vagivallatseja_sugu: "teadmata",
             laps_ohver: 0,
             vana_ohver: 0,
             muu_ohver: 0,
             politsei: "",
-            rahastus: ""
+            rahastus: "Muu rahastus"
 
 
         },
