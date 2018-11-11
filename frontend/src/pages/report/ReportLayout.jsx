@@ -54,7 +54,7 @@ class ReportLayout extends React.Component {
 
     render() {
         const { classes } = this.props;
-        const Child = Children.only(this.props.children)
+        const children = this.props.children
 
         return (
             <Layout {...this.props}>
@@ -69,7 +69,7 @@ class ReportLayout extends React.Component {
                         <Tab label="Ülevaade tegevusest" />
                         <Tab label="Edasijõudnud valikud" />
                     </Tabs>
-                    { Child }
+                    { children }
                 
             </Layout>
         )
