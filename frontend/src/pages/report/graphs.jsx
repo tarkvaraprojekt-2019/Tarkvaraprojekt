@@ -32,6 +32,7 @@ import ReportLayout from './ReportLayout';
 import SimpleLineChart from '../../components/SimpleLineChart';
 
 import { zip, range } from '../../util'
+import { isBrowser } from '../../auth';
 //import ReportImg from 'report.png';
 
 const styles = theme => ({
@@ -151,6 +152,10 @@ class Graphs extends React.Component {
   }
 
   getReport() {
+    if (!isBrowser) {
+      return false;
+    }
+
     const paramValues = Object.assign(
       {},
       this.state.formValues,
@@ -211,7 +216,7 @@ class Graphs extends React.Component {
 
     return (
       <ReportLayout title="Aruandlus" selectedTab={0}>
-        <React.Fragment>
+        <div>
           <Paper className={classes.formControl}>
             <form>
               {makeDateField('alates', 'Alates')}
@@ -293,7 +298,7 @@ class Graphs extends React.Component {
               </Typography>
             </ExpansionPanelDetails>
           </ExpansionPanel>
-        </React.Fragment>
+        </div>
       </ReportLayout>
     );
   }
