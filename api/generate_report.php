@@ -166,7 +166,3 @@ foreach ($res as $line) {
 }
 
 echo $csv;
-
-//Debugging
-echo "<br/><br/>" . $final_query . "<br/><br/>";
-var_dump($res);
