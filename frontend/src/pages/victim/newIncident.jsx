@@ -16,6 +16,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
 
 
 import withRoot from '../../withRoot';
@@ -135,6 +136,12 @@ class NewIncident extends React.Component {
                 Lisa uus juhtum
             </Typography>
             <Paper className={classes.paper}>
+                <Grid container
+                      direction="column"
+                      justify="center"
+                      alignItems="center"
+                      spacing={8}>
+                    <Grid item>
                 <form className={classes.form}>
                     <FormControl margin="normal" fullWidth>
                         <InputLabel htmlFor="piirkond">Piirkond</InputLabel>
@@ -493,26 +500,29 @@ class NewIncident extends React.Component {
 
 
                 </form>
+                    </Grid>
+                    <Grid item>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => {
+                                this.createIncident()
+                            }}                >
+                            Salvesta
+                        </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={e => navigate("/victim/" + this.props.victimID)}
+
+                        >
+                            Tühista
+                        </Button>
+                    </Grid>
+                </Grid>
             </Paper>
 
-            <Paper className={classes.paper}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                        this.createIncident()
-                    }}                >
-                    Salvesta
-                </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={e => navigate("/victim/" + this.props.victimID)}
 
-                    >
-                        Tühista
-                    </Button>
-            </Paper>
 
 
         </Layout>;

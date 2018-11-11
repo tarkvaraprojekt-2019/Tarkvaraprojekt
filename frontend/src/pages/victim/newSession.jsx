@@ -18,6 +18,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
 
 
 import withRoot from '../../withRoot';
@@ -149,6 +150,12 @@ class NewSession extends React.Component {
                 Lisa uus sessioon
             </Typography>
             <Paper className={classes.paper}>
+                <Grid container
+                      direction="column"
+                      justify="center"
+                      alignItems="center"
+                      spacing={8}>
+                    <Grid item>
                 <form className={classes.form}>
                     <FormControl margin="normal">
                         <TextField
@@ -478,28 +485,31 @@ class NewSession extends React.Component {
                         </Input>
                     </FormControl>
                 </form>
+                    </Grid>
+                    <Grid item>
+                        <Button
+                            onClick={() => {
+                                this.createSession()
+                            }}
+                            variant="contained"
+                            color="primary"
+                        >
+                            Salvesta
+                        </Button>
+
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={e => navigate("/victim/" + this.props.victimID)}
+
+                        >
+                            Tühista
+                        </Button>
+                    </Grid>
+                </Grid>
+
             </Paper>
 
-            <Paper className={classes.paper}>
-                <Button
-                    onClick={() => {
-                        this.createSession()
-                    }}
-                    variant="contained"
-                    color="primary"
-                >
-                    Salvesta
-                </Button>
-
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={e => navigate("/victim/" + this.props.victimID)}
-
-                    >
-                        Tühista
-                    </Button>
-            </Paper>
 
 
         </Layout>;
