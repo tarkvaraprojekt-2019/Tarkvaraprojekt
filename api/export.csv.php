@@ -31,7 +31,7 @@ for ($i = 0; $i < $c; $i++) {
 }
 
 //Construct final query
-$final_query = "SELECT * FROM incidents JOIN sessions ON incidents.id = incident_id";
+$final_query = "SELECT * FROM incidents JOIN sessions ON incidents.id = incident_id"; //TODO: COALESCE(incidents.id, incident_id)
 
 $db = get_db();
 if ($c == 0) {
