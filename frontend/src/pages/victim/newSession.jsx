@@ -23,6 +23,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout/index';
+import {navigate} from "gatsby";
 
 
 
@@ -94,7 +95,11 @@ class NewSession extends React.Component {
 
     createSession() {
         this.axios.post("create_session.php", this.state.formValues)
-
+            .then( res => {
+                let data = res.data;
+                console.log("result: ", data)
+                navigate("/victim/" + this.props.victimID)
+            })
     }
     static getDate(){
         var local = new Date();
@@ -489,6 +494,8 @@ class NewSession extends React.Component {
                     <Button
                         variant="contained"
                         color="primary"
+                        onClick={e => navigate("/victim/" + this.props.victimID)}
+
                     >
                         Tühista
                     </Button>

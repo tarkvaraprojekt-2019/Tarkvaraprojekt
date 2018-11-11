@@ -218,6 +218,8 @@ class Incident extends React.Component {
                                     <MenuItem value={"Läänemaa"}>Läänemaa</MenuItem>
                                     <MenuItem value={"Järvamaa"}>Järvamaa</MenuItem>
                                     <MenuItem value={"Valgamaa"}>Valgamaa</MenuItem>
+                                    <MenuItem value={"teadmata"}>Teadmata</MenuItem>
+
                                 </Select>
                             </FormControl>
                             <FormControl margin="normal" fullWidth>

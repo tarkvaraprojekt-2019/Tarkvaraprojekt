@@ -23,6 +23,7 @@ import withRoot from '../../withRoot';
 import Layout from '../../components/Layout/index';
 
 import { piirkonnad } from '../../util';
+import {navigate} from "gatsby";
 
 
 
@@ -57,7 +58,12 @@ class NewIncident extends React.Component {
     }
 
     createIncident(){
-        this.axios.post('create_incident.php', this.state.formValues)
+        this.axios.post("create_incident.php", this.state.formValues)
+            .then( res => {
+                let data = res.data;
+                console.log("result: ", data)
+                navigate("/victim/" + this.props.victimID)
+            })
     }
 
     handleSelectChange = event => {
@@ -91,9 +97,9 @@ class NewIncident extends React.Component {
             piirkond: "teadmata",
             keel: "teadmata",
             vanus: "teadmata",
-            puue: "",
-            lapsed: "",
-            rasedus: "",
+            puue: 0,
+            lapsed: 0,
+            rasedus: 0,
             elukoht: "teadmata",
             vaimne_vagivald: 0,
             fuusiline_vagivald: 0,
@@ -113,7 +119,7 @@ class NewIncident extends React.Component {
             laps_ohver: 0,
             vana_ohver: 0,
             muu_ohver: 0,
-            politsei: "",
+            politsei: 0,
             rahastus: "Muu rahastus"
 
 
@@ -498,15 +504,14 @@ class NewIncident extends React.Component {
                     }}                >
                     Salvesta
                 </Button>
-                <Link to="/overview">
-
                     <Button
                         variant="contained"
                         color="primary"
+                        onClick={e => navigate("/victim/" + this.props.victimID)}
+
                     >
                         Tühista
                     </Button>
-                </Link>
             </Paper>
 
 

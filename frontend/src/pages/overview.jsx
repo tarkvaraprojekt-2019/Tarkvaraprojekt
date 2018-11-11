@@ -127,6 +127,7 @@ class Overview extends React.Component {
 
         const field = (id, label) => (
             <TextField
+                        type={id === "id" || id === "phone" || id === "national_id" ? "number" : "text"}
                         id={id}
                         label={label}
                         className={classes.input}

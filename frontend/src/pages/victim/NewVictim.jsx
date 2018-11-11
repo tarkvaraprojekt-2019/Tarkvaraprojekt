@@ -15,6 +15,7 @@ import withRoot from '../../withRoot';
 import Layout from '../../components/Layout';
 
 import {isBrowser} from '../../auth';
+import {navigate} from "gatsby";
 
 
 const styles = theme => ({
@@ -45,13 +46,18 @@ class NewVictim extends React.Component {
     constructor(props) {
         super(props)
         this.axios = this.props.axios
-        console.log(this.props)
     }
 
     createVictim() {
-        this.axios.post("create_victim.php", this.state.formValues)
+        this.axios.post("create_victim.php",this.state.formValues)
+            .then( res => {
+                let data = res.data;
+                console.log("result: ", data)
+                navigate("/victim/" + data)
+            })
+        }
 
-    }
+
 
     componentWillMount() {
         const formValues = isBrowser && window.localStorage.clientFields
@@ -123,7 +129,6 @@ class NewVictim extends React.Component {
                         </Grid>
 
                         <Grid item>
-                            <Link to="/overview">
                                 <Button
                                     onClick={() => {
                                         this.createVictim()
@@ -133,7 +138,6 @@ class NewVictim extends React.Component {
                                 >
                                     Salvesta
                                 </Button>
-                            </Link>
                             <Link to="/overview">
 
                                 <Button
