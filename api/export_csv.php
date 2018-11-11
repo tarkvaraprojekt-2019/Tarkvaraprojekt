@@ -44,6 +44,12 @@ if ($c == 0) {
 }
 $res = mysqli_fetch_all($query_res, MYSQLI_ASSOC);
 
+if (count($res) == 0) {
+	http_response_code(400);
+	echo "Andmed puuduvad";
+	exit();
+}
+
 //Construct csv
 $csv = "";
 //Title row
