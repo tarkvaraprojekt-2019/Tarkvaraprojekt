@@ -81,7 +81,7 @@ export const piirkonnad = [
 , "Läänemaa"
 , "Järvamaa"
 , "Valgamaa"
-, "teadmata"
+, "Teadmata"
 ]
 
 

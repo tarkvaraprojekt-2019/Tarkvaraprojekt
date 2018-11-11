@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from '@reach/router';
+import {Link} from '@reach/router';
 
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+import Grid from '@material-ui/core/Grid';
+
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField'
 
@@ -17,7 +14,7 @@ import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout';
 
-import { isBrowser } from '../../auth';
+import {isBrowser} from '../../auth';
 
 
 const styles = theme => ({
@@ -44,27 +41,28 @@ class NewVictim extends React.Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
     };
+
     constructor(props) {
         super(props)
         this.axios = this.props.axios
         console.log(this.props)
     }
 
-    createVictim(){
+    createVictim() {
         this.axios.post("create_victim.php", this.state.formValues)
 
     }
 
     componentWillMount() {
         const formValues = isBrowser && window.localStorage.clientFields
-        ? JSON.parse(window.localStorage.clientFields)
-        : {}
+            ? JSON.parse(window.localStorage.clientFields)
+            : {}
 
         if (formValues !== null) {
-            this.setState((state, props) => 
+            this.setState((state, props) =>
                 Object.assign({}, state, {formValues}))
         }
-        
+
     }
 
     handleChange = event => {
@@ -83,61 +81,72 @@ class NewVictim extends React.Component {
             email: "",
             national_id: "",
         },
+        isNum: false
     }
+
     render() {
-        const { classes } = this.props;
+        const {classes} = this.props;
 
         const field = (id, label) => (
             <TextField
-                        id={id}
-                        label={label}
-                        className={classes.input}
-                        value={this.state.formValues[id]}
-                        onChange={this.handleChange}
-                        margin="normal"
-                        fullWidth
+                type={id === "national_id" || id === "phone" ? "number" : "text"}
+                id={id}
+                label={label}
+                className={classes.input}
+                value={this.state.formValues[id]}
+                onChange={this.handleChange}
+                margin="normal"
+                fullWidth
             />
         )
 
         return (
             <Layout title="Uus klient">
-                    <Typography variant="h4" gutterBottom>
-                        Lisa uus isik
-                    </Typography>
+                <Typography variant="h4" gutterBottom>
+                    Lisa uus isik
+                </Typography>
                 <Paper className={classes.paper}>
-                    <form className={classes.form}>
-                        {field("first_name", "Eesnimi")}
-                        {field("last_name", "Perenimi")}
-                        {field("national_id", "Isikukood")}
-                        {field("phone", "Telefoninumber")}
-                        {field("email", "E-Mail")}
-                        
-                    </form>
+                    <Grid container
+                          direction="column"
+                          justify="center"
+                          alignItems="center"
+                          spacing={8}>
+                        <Grid item>
+                            <form className={classes.form}>
+                                {field("first_name", "Eesnimi")}
+                                {field("last_name", "Perenimi")}
+                                {field("national_id", "Isikukood")}
+                                {field("phone", "Telefoninumber")}
+                                {field("email", "E-Mail")}
+
+                            </form>
+                        </Grid>
+
+                        <Grid item>
+                            <Link to="/overview">
+                                <Button
+                                    onClick={() => {
+                                        this.createVictim()
+                                    }}
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    Salvesta
+                                </Button>
+                            </Link>
+                            <Link to="/overview">
+
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    Tühista
+                                </Button>
+                            </Link>
+                        </Grid>
+                    </Grid>
+
                 </Paper>
-                <Paper className={classes.paper}>
-                    <Link to="/overview">
-                        <Button
-                            onClick={() => {
-                                this.createVictim()
-                            }}
-                            variant="contained"
-                            color="primary"
-                        >
-                            Salvesta
-                        </Button>
-                    </Link>
-                    <Link to="/overview">
-
-                        <Button
-                            variant="contained"
-                            color="primary"
-                        >
-                            Tühista
-                        </Button>
-                    </Link>
-                </Paper>
-
-
             </Layout>
         );
     }

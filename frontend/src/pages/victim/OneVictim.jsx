@@ -170,6 +170,7 @@ class Victim extends React.Component {
                                 <FormControl margin="normal" required fullWidth>
                                     <InputLabel htmlFor="national_id">Isikukood</InputLabel>
                                     <Input
+                                        type="number"
                                         id="national_id"
                                         disabled = {!this.state.editingEnabled}
                                         // placeholder="Maasikas"
@@ -180,6 +181,7 @@ class Victim extends React.Component {
                                 <FormControl margin="normal" fullWidth>
                                     <InputLabel htmlFor="victimTel">Telefoninr</InputLabel>
                                     <Input
+                                        type="number"
                                         id="phone"
                                         disabled = {!this.state.editingEnabled}
                                         // placeholder="55889933"

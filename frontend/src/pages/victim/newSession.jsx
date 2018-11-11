@@ -108,7 +108,7 @@ class NewSession extends React.Component {
             kirjeldus: "",
             sidevahendid: "",
             kriisinoustamine: 0,
-            kriisinoustamise_aeg: "",
+            kriisinoustamise_aeg: "teadmata",
             juhutuminoustamine: 0,
             vorgustikutoo: 0,
             psuhhonoustamine: 0,
@@ -199,6 +199,7 @@ class NewSession extends React.Component {
                     </FormControl>
                     {parseInt(this.state.formValues.kriisinoustamine) > 0 ?
                         <FormControl margin="normal">
+                            <InputLabel htmlFor="kriisinoustamise_aeg">Kriisinõustamise aeg</InputLabel>
                             <Select
                                 value={this.state.formValues.kriisinoustamise_aeg}
                                 onChange={this.handleSelectChange}

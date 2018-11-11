@@ -233,6 +233,7 @@ class Session extends React.Component {
                             </FormControl>
                             {this.state.formValues.kriisinoustamine !== 0 ?
                                 <FormControl margin="normal">
+                                    <InputLabel htmlFor="kriisinoustamise_aeg">Kriisinõustamise aeg</InputLabel>
                                     <Select
                                         disabled={!this.state.editingEnabled}
                                         value={this.state.formValues.kriisinoustamise_aeg}
