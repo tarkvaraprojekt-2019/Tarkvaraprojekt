@@ -1,16 +1,23 @@
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Max-Age "1000"
+Header always set Access-Control-Allow-Headers "X-Requested-With, Content-Type, Auth, Auth-timestamp,Auth-token, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding"
+Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
+
 RewriteEngine On
 Options +FollowSymLinks
+
+# Redirect options to the blank file
+RewriteCond %{REQUEST_METHOD} OPTIONS 
+RewriteRule ^(.*)$ blank.php [QSA,L]
 
 # Do not redirect API requests
 RewriteRule "^api\/" "-" [END] 
 
-# Redirect client side routes manually
-RewriteRule "^victim\/(.*)" "public/victim/index.html" [END]
-RewriteRule "^juhtum\/(.*)" "public/juhtum/index.html" [END]
-
 # DO NOT CHANGE OR RISK COMPROMISING THE SYSTEM
 # Redirect everything else to /public/
 RewriteRule "^(?!public\/)(.*)" "public/$1"
+
+# RewriteRule "victim" "/victim/index.html" [END]
 
 # If the requested resource doesn't exist, use index.html
 RewriteCond "%{REQUEST_FILENAME}" "!-f"
