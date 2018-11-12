@@ -36,8 +36,11 @@ try:
     print ("Basic info retrieval - Success!")
 
 except TimeoutException as e:
-    print(driver.get_log("browser"))
-    print(driver.page_source)
+    browser_log = driver.get_log("browser")
+    for entry in browser_log:
+        print(entry)
+    b64_img = driver.get_screenshot_as_base64()
+    print(b64_img)
     raise e
 
 finally:
