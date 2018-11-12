@@ -36,8 +36,9 @@ try:
     print ("Basic info retrieval - Success!")
 
 except TimeoutException as e:
-    print(e.msg)
+    print(driver.get_log("browser"))
     print(driver.page_source)
+    raise e
 
 finally:
     driver.quit()
