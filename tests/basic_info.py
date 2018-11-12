@@ -20,7 +20,10 @@ try:
 
     inputFirstName = driver.find_element_by_id("first_name")
     inputFirstName.send_keys("Pille")
-    inputFirstName.submit()
+    #inputFirstName.submit()
+
+    submitButton = driver.find_element_by_xpath("//button[@type='submit']")
+    submitButton.click()
 
     WebDriverWait(driver, 300).until(EC.presence_of_element_located((By.XPATH, "//td[contains(text(), 'PAGAN')]")))
 
