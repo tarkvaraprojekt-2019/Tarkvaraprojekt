@@ -16,18 +16,18 @@ try:
     inputPassword.send_keys("asdf")
     inputPassword.submit()
 
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "first_name")))
+    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.ID, "first_name")))
 
     inputFirstName = driver.find_element_by_id("first_name")
     inputFirstName.send_keys("Pille")
     inputFirstName.submit()
 
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//td[contains(text(), 'PAGAN')]")))
+    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//td[contains(text(), 'PAGAN')]")))
 
     row = driver.find_element_by_xpath("//td[contains(text(), 'PAGAN')]")
     row.click()
 
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//span[contains(text(), 'MUUDA ISIKUANDMEID')]")))
+    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//span[contains(text(), 'MUUDA ISIKUANDMEID')]")))
 
     editButton = driver.find_element_by_xpath("//span[contains(text(), 'MUUDA ISIKUANDMEID')]")
     editButton.click()
@@ -48,20 +48,20 @@ try:
     inputPassword.send_keys("asdf")
     inputPassword.submit()
 
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "first_name")))
+    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.ID, "first_name")))
 
     inputFirstName = driver.find_element_by_id("first_name")
     inputFirstName.send_keys("Pille")
     inputFirstName.submit()
 
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//td[contains(text(), 'PAGAN')]")))
+    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//td[contains(text(), 'PAGAN')]")))
 
     row = driver.find_element_by_xpath("//td[contains(text(), 'PAGAN')]")
     row.click()
 
     phone = driver.find_element_by_id("phone")
 
-    WebDriverWait(driver, 10).until(EC.text_to_be_present_in_element_value((By.ID, "phone"), "1"))
+    WebDriverWait(driver, 120).until(EC.text_to_be_present_in_element_value((By.ID, "phone"), "1"))
     assert phone.get_attribute("value") == "12345"
     print ("Modifying info - Success!")
 
