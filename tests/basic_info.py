@@ -35,5 +35,9 @@ try:
     assert national_ID.get_attribute("value") == "49901329491"
     print ("Basic info retrieval - Success!")
 
+except TimeoutException as e:
+    print(e.msg)
+    print(driver.page_source)
+
 finally:
     driver.quit()

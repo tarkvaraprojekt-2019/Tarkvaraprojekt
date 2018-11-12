@@ -75,5 +75,9 @@ try:
     submitButton = driver.find_element_by_xpath("//span[contains(text(), 'SALVESTA')]")
     submitButton.click()
 
+except TimeoutException as e:
+    print(e.msg)
+    print(driver.page_source)
+
 finally:
     driver.quit()

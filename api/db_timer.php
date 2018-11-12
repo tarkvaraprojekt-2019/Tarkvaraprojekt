@@ -10,4 +10,4 @@ $user = get_user('asdf', $db);
 
 $end = microtime(true);
 
-echo "Time taken (ms): ".($end-$start);
+echo "Time taken (s): ".($end-$start);
