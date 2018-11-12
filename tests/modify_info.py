@@ -76,9 +76,6 @@ try:
     submitButton.click()
 
 except TimeoutException as e:
-    browser_log = driver.get_log("browser")
-    for entry in browser_log:
-        print(entry)
     b64_img = driver.get_screenshot_as_base64()
     print(b64_img)
     raise e
