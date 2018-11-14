@@ -3,13 +3,11 @@ import axios from 'axios'
 export const isBrowser = typeof window !== `undefined`
 
 const getToken = () =>
-  window.localStorage.authToken
-    ? JSON.parse(window.localStorage.authToken)
-    : {}
+  window.localStorage.authToken || ""
 
-export const setToken = token => (window.localStorage.authToken = JSON.stringify(token))
+export const setToken = token => (window.localStorage.authToken = token)
 
- export const getBaseUrl = () => {
+export const getBaseUrl = () => {
   if (!isBrowser) return false
   const host = window.location.hostname;
   const baseurl = host === "localhost" ? "http://localhost" : "https://andmebaas.naistetugi.ee"
@@ -49,12 +47,12 @@ export const isLoggedIn = () => {
   if (!isBrowser) return false
 
   const token = getToken()
-  return !!token
+  return token !== ""
 }
 
 export const isAdmin = () => {
   if (!isBrowser) return false
-  const token = getToken()
+  const token = atob(getToken())
   const adminString = token.split(":")[2]
   return adminString === "1"
 }

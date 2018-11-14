@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import { navigate } from 'gatsby';
+import { Redirect } from '@reach/router';
 import { handleLogin, setToken, isLoggedIn } from '../auth';
 import { FormHelperText } from '@material-ui/core';
 
@@ -50,7 +51,9 @@ const styles = theme => ({
 
 
 class SignIn extends React.Component {
-  
+  constructor(props) {
+    super(props)
+  }
 
   state = {
     username: "", 
@@ -69,7 +72,7 @@ class SignIn extends React.Component {
     handleLogin({ username: this.state.username, password: this.state.password })
     .then( res => {
       console.log("success: ", res)
-      setToken(atob(res.data))
+      setToken(res.data)
       navigate("/overview")
     })
     .catch ( err => {
@@ -86,6 +89,11 @@ class SignIn extends React.Component {
   }
   render() {
     const { classes } = this.props;
+
+    if (isLoggedIn) {
+      return <Redirect to="/overview" noThrow/>
+    }
+
 
     return (
       <React.Fragment>

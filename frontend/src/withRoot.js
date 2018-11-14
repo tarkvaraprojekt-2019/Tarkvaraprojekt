@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import getPageContext from './getPageContext';
 import axios from 'axios';
-import { getCurrentToken, getBaseUrl, isLoggedIn } from './auth';
+import { getCurrentToken, getBaseUrl, isLoggedIn, logout, isBrowser } from './auth';
 import { navigate } from 'gatsby';
 
 function withRoot(Component) {
@@ -20,6 +20,14 @@ function withRoot(Component) {
         headers: {
           'Auth-token': getCurrentToken()
         }
+      })
+      // Add general redirecting when auth fails
+      this.axios.interceptors.response.use(null, (error) => {
+        if (error.response.status === 401) {
+          logout(() => navigate("/"))
+          return
+        }
+        return Promise.reject(error)
       })
       Date.prototype.toDateInputValue = (function () {
         const local = new Date(this);
@@ -38,7 +46,7 @@ function withRoot(Component) {
     }
 
     render() {
-      if(!isLoggedIn && this.props.location.pathname !== '') {
+      if(!isLoggedIn() && isBrowser && this.props.location.pathname !== '/') {
         navigate("/")
         return null;
       }
