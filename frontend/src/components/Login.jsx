@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import { navigate } from 'gatsby';
-import { handleLogin, setToken } from '../auth';
+import { handleLogin, setToken, isLoggedIn } from '../auth';
 import { FormHelperText } from '@material-ui/core';
 
 const styles = theme => ({
@@ -50,6 +50,8 @@ const styles = theme => ({
 
 
 class SignIn extends React.Component {
+  
+
   state = {
     username: "", 
     password: "",

@@ -61,7 +61,7 @@ export const isAdmin = () => {
 
 export const getCurrentToken = () => isBrowser && getToken()
 
-export const logout = callback => {
+export const logout = (callback) => {
   if (!isBrowser) return
 
   console.log(`Logging out`)

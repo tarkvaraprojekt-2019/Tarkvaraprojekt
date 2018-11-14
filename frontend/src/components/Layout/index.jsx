@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {withStyles} from '@material-ui/core/styles';
-import {Link} from '@reach/router';
+import {navigate} from 'gatsby';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -17,7 +17,7 @@ import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 
 import {mainListItems} from './listItems';
 
-import {isLoggedIn, getCurrentToken} from '../../auth';
+import {isLoggedIn, getCurrentToken, logout} from '../../auth';
 
 
 const drawerWidth = 240;
@@ -131,10 +131,8 @@ class Dashboard extends React.Component {
                             {this.props.title}
                         </Typography>
                         
-                        <IconButton color="inherit">
-                            <Link to="/">
+                        <IconButton color="inherit" onClick={() => logout(() => navigate("/"))}>
                                 <PowerSettingsNew color="secondary"/>
-                            </Link>
                         </IconButton>
                     </Toolbar>
                 </AppBar>
