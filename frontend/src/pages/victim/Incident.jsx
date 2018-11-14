@@ -68,7 +68,7 @@ class Incident extends React.Component {
     }
 
     getIncident() {
-        if (typeof this.props.location.state !== 'undefined') {
+        if (this.props.location && this.props.location.state && this.props.location.state.incident) {
             const formValues = this.props.location.state["incident"];
             formValues['id'] = this.props.incidentID;
             this.setState({
@@ -76,8 +76,35 @@ class Incident extends React.Component {
             });
             console.log("get", this.state.formValues);
 
+        } else {
+            this.props.axios.get('get_incident.php', {
+                params: {
+                    id: this.props.incidentID,
+                }
+            }).then( res => {
+                console.log("get_incident.php", res.data);
+                this.setState({
+                    formValues: res.data[0]
+                })
+            })
+            .catch( err => console.log("search err: ", err))
         }
     }
+
+    getIncidents = () => {
+        this.axios.get('get_incidents.php', {
+            params:{
+                kliendi_nr: this.props.victimID,
+            }
+        })
+        .then( res => {
+            console.log(res);
+            this.setState({
+                incidents: res.data
+            })
+        })
+        .catch( err => console.log("search err: ", err))
+    };
 
 
     createIncident = () => {
