@@ -21,9 +21,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import SaveIcon from '@material-ui/icons/Save'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 
-import withRoot from '../withRoot';
+import withRoot from '../../withRoot';
 
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
 import CSVBackup from "./CSVBackup";
 
 

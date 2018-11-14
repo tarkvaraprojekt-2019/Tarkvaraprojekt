@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import withRoot from "../withRoot";
+import withRoot from "../../withRoot";
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
