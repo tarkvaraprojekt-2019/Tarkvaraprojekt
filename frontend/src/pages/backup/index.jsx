@@ -47,7 +47,7 @@ const styles = theme => ({
     card: {
         maxWidth: 345,
         margin: theme.spacing.unit*2,
-    },
+    }, 
     leftIcon: {
         marginRight: theme.spacing.unit,
     }, 
