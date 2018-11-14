@@ -2,7 +2,6 @@
 
 require "verify_token.php";
 
-//Only accepts POST requests
 //All actions require admin token
 //Request is specified in the "action" parameter
 //Actions are "create", "set_admin", or "delete"
@@ -12,57 +11,60 @@ require "verify_token.php";
 
 //TODO: Fix scope issues. $username is defined in verify_token.php, should rewrite to a function
 
-if (!isset($_POST["action"])) {
+$body = json_decode(file_get_contents("php://input"), true);
+
+if (!isset($body["action"])) {
 	http_response_code(400);
 	echo "Missing action parameter";
 	exit();
 }
 
-$action = $_POST["action"];
+$action = $body["action"];
 
 if ($action === "create") {
 	if (!is_admin()) {
-		http_response_code(401);
+		http_response_code(403);
 		echo "Unauthorized action";
 		exit();
 	}
-	if (!isset($_POST["username"]) || !isset($_POST["password"])) {
+	if (!isset($body["username"]) || !isset($body["password"])) {
 		http_response_code(400);
 		echo "Missing parameters";
 		exit();
 	}
-	create_user($_POST["username"], $_POST["password"]);
+	create_user($body["username"], $body["password"]);
 } else if ($action === "set_admin") {
 	if (!is_admin()) {
-		http_response_code(401);
+		http_response_code(403);
 		echo "Unauthorized action";
 		exit();
 	}
-	if (!isset($_POST["username"]) || !isset($_POST["admin_status"])) {
+	if (!isset($body["username"]) || !isset($body["admin_status"])) {
 		http_response_code(400);
 		echo "Missing parameters";
 		exit();
 	}
-	set_admin($_POST["username"], $_POST["admin_status"], $username);
+	set_admin($body["username"], $body["admin_status"], $username);
 } else if ($action === "delete") {
 	if (!is_admin()) {
-		http_response_code(401);
+		http_response_code(403);
 		echo "Unauthorized action";
 		exit();
 	}
-	if (!isset($_POST["username"])) {
+	if (!isset($body["username"])) {
 		http_response_code(400);
 		echo "Missing parameters";
 		exit();
 	}
-	delete_user($_POST["username"], $username);
+	delete_user($body["username"], $username);
 } else {
 	http_response_code(400);
 	echo "Invalid action";
 	exit();
 }
 
-//create a non-admin user with given username and password
+//Creates a non-admin user with given username and password
+//Can be used to change a user's password
 function create_user($username, $pass) {
 	$db = get_db();
 	$pass_hashed = password_hash($pass, PASSWORD_DEFAULT);
