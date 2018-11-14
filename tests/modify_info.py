@@ -3,6 +3,8 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import sys
+import traceback
 
 driver = webdriver.Firefox()
 
@@ -16,7 +18,7 @@ try:
     inputPassword.send_keys("asdf")
     inputPassword.submit()
 
-    WebDriverWait(driver, 300).until(EC.presence_of_element_located((By.ID, "first_name")))
+    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.ID, "first_name")))
 
     inputFirstName = driver.find_element_by_id("first_name")
     inputFirstName.send_keys("Pille")
@@ -25,12 +27,12 @@ try:
     submitButton = driver.find_element_by_xpath("//button[@type='submit']")
     submitButton.click()
 
-    WebDriverWait(driver, 300).until(EC.presence_of_element_located((By.XPATH, "//td[contains(text(), 'PAGAN')]")))
+    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//td[contains(text(), 'PAGAN')]")))
 
     row = driver.find_element_by_xpath("//td[contains(text(), 'PAGAN')]")
     row.click()
 
-    WebDriverWait(driver, 300).until(EC.presence_of_element_located((By.XPATH, "//span[contains(text(), 'MUUDA ISIKUANDMEID')]")))
+    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//span[contains(text(), 'MUUDA ISIKUANDMEID')]")))
 
     editButton = driver.find_element_by_xpath("//span[contains(text(), 'MUUDA ISIKUANDMEID')]")
     editButton.click()
@@ -51,7 +53,7 @@ try:
     inputPassword.send_keys("asdf")
     inputPassword.submit()
 
-    WebDriverWait(driver, 300).until(EC.presence_of_element_located((By.ID, "first_name")))
+    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.ID, "first_name")))
 
     inputFirstName = driver.find_element_by_id("first_name")
     inputFirstName.send_keys("Pille")
@@ -60,14 +62,14 @@ try:
     submitButton = driver.find_element_by_xpath("//button[@type='submit']")
     submitButton.click()
 
-    WebDriverWait(driver, 300).until(EC.presence_of_element_located((By.XPATH, "//td[contains(text(), 'PAGAN')]")))
+    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//td[contains(text(), 'PAGAN')]")))
 
     row = driver.find_element_by_xpath("//td[contains(text(), 'PAGAN')]")
     row.click()
 
     phone = driver.find_element_by_id("phone")
 
-    WebDriverWait(driver, 300).until(EC.text_to_be_present_in_element_value((By.ID, "phone"), "1"))
+    WebDriverWait(driver, 120).until(EC.text_to_be_present_in_element_value((By.ID, "phone"), "1"))
     assert phone.get_attribute("value") == "12345"
     print ("Modifying info - Success!")
 
@@ -82,10 +84,10 @@ try:
     submitButton.click()
 
 except TimeoutException as e:
-    print(e.stacktrace)
+    print(traceback.print_tb(e.__traceback__))
     b64_img = driver.get_screenshot_as_base64()
     print(b64_img)
-    sys.exit()
+    sys.exit(1)
 
 finally:
     driver.quit()
