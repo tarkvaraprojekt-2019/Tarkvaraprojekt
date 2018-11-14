@@ -7,7 +7,7 @@ const getToken = () =>
     ? JSON.parse(window.localStorage.authToken)
     : {}
 
-const setToken = token => (window.localStorage.authToken = JSON.stringify(token))
+export const setToken = token => (window.localStorage.authToken = JSON.stringify(token))
 
  export const getBaseUrl = () => {
   if (!isBrowser) return false
@@ -31,14 +31,6 @@ export function handleLogin({ username, password }) {
           'Auth': auth,
       }
   })
-  .then( res => {
-      console.log("success: ", res)
-      setToken(res.data)
-  })
-  .catch ( err => {
-      console.log("error: ", err)
-      setToken("")
-  })
   
       
 //   if (username === `gatsby` && password === `demo`) {
@@ -57,8 +49,14 @@ export const isLoggedIn = () => {
   if (!isBrowser) return false
 
   const token = getToken()
-
   return !!token
+}
+
+export const isAdmin = () => {
+  if (!isBrowser) return false
+  const token = getToken()
+  const adminString = token.split(":")[2]
+  return adminString === "1"
 }
 
 export const getCurrentToken = () => isBrowser && getToken()

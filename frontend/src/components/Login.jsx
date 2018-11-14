@@ -12,7 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import { navigate } from 'gatsby';
-import { handleLogin } from '../auth';
+import { handleLogin, setToken } from '../auth';
+import { FormHelperText } from '@material-ui/core';
 
 const styles = theme => ({
   layout: {
@@ -64,7 +65,22 @@ class SignIn extends React.Component {
   handleSubmit = event => {
     event.preventDefault()
     handleLogin({ username: this.state.username, password: this.state.password })
-    .then(() => navigate('/overview'))
+    .then( res => {
+      console.log("success: ", res)
+      setToken(atob(res.data))
+      navigate("/overview")
+    })
+    .catch ( err => {
+      if (err.message === "Request failed with status code 400") {
+        this.setState({error: "Viga. Proovisid otsida ilma parameetriteta."})
+    } else if (err.message === "NO_CLIENTS_FOUND") {
+        this.setState({error: "Ühtegi sellist kasutajat ei leitud."})
+    } else if (err.message === "Request failed with status code 401") {
+        this.setState({error: "Sisselogimine ebaõnnestus. Vale kasutajatunnus või parool. "})
+    }
+      console.log("error: ", err)
+      setToken("")
+  })
   }
   render() {
     const { classes } = this.props;
@@ -80,6 +96,9 @@ class SignIn extends React.Component {
             <Typography variant="headline">Logi sisse</Typography>
 
             <form className={classes.form} onSubmit={this.handleSubmit}>
+              <FormHelperText>
+                {this.state.error}
+              </FormHelperText>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Kasutajatunnus</InputLabel>
                 <Input id="email" name="email" autoComplete="email" autoFocus onChange={ this.handleUsername }/>

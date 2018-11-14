@@ -4,8 +4,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import getPageContext from './getPageContext';
 import axios from 'axios';
-import { getCurrentToken, getBaseUrl } from './auth';
-
+import { getCurrentToken, getBaseUrl, isLoggedIn } from './auth';
+import { navigate } from 'gatsby';
 
 function withRoot(Component) {
   class WithRoot extends React.Component {
@@ -25,7 +25,8 @@ function withRoot(Component) {
         const local = new Date(this);
         local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
         return local.toJSON().slice(0, 10);
-    });
+      });
+      
     }
 
     componentDidMount() {
@@ -37,6 +38,11 @@ function withRoot(Component) {
     }
 
     render() {
+      if(!isLoggedIn && this.props.location.pathname !== '') {
+        navigate("/")
+        return null;
+      }
+
       return (
         <JssProvider generateClassName={this.muiPageContext.generateClassName}>
           {/* MuiThemeProvider makes the theme available down the React
