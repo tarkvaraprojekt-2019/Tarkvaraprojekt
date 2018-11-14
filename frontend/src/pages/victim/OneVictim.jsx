@@ -80,7 +80,7 @@ class Victim extends React.Component {
     };
 
     getVictim = () => {
-        this.axios.get('search_victim.php', {
+        this.axios.get('get_victim.php', {
             params: {
                 id: this.props.victimID,
                 first_name: "",

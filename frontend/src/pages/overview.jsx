@@ -68,7 +68,7 @@ class Overview extends React.Component {
     }
 
     searchVictim = (searchFields) => {
-        this.axios.get('search_victim.php', {
+        this.axios.get('get_victim.php', {
             params: searchFields,
         })
         .then( res => {
