@@ -90,7 +90,7 @@ class SignIn extends React.Component {
   render() {
     const { classes } = this.props;
 
-    if (isLoggedIn) {
+    if (isLoggedIn()) {
       return <Redirect to="/overview" noThrow/>
     }
 
