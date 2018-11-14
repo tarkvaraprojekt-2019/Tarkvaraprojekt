@@ -3,6 +3,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import sys
 
 driver = webdriver.Firefox()
 
@@ -39,9 +40,10 @@ try:
     print ("Basic info retrieval - Success!")
 
 except TimeoutException as e:
+    print(e.stacktrace)
     b64_img = driver.get_screenshot_as_base64()
     print(b64_img)
-    raise e
+    sys.exit()
 
 finally:
     driver.quit()

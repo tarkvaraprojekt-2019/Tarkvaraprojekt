@@ -82,9 +82,10 @@ try:
     submitButton.click()
 
 except TimeoutException as e:
+    print(e.stacktrace)
     b64_img = driver.get_screenshot_as_base64()
     print(b64_img)
-    raise e
+    sys.exit()
 
 finally:
     driver.quit()
