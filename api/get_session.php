@@ -14,7 +14,7 @@ if (!isset($_GET["id"])) {
 
 echo get_sessions($_GET["id"]);
 
-function get_sessions($iid) {
+function get_sessions($id) {
 	$db = get_db();
 	$stmt = $db->prepare("SELECT * FROM sessions WHERE id = ?");
 	$stmt->bind_param("i", $id);
