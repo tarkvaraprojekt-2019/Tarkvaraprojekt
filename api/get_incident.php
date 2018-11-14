@@ -12,11 +12,11 @@ if (!isset($_GET["id"])) {
 	exit();
 }
 
-echo get_incidents($_GET["id"]);
+echo get_incident($_GET["id"]);
 
-function get_incidents($id) {
+function get_incident($id) {
 	$db = get_db();
-	$stmt = $db->prepare("SELECT * FROM incidents WHERE incident_id = ?");
+	$stmt = $db->prepare("SELECT * FROM incidents WHERE id = ?");
 	$stmt->bind_param("i", $id);
 	$stmt->execute() or trigger_error($db->error);
 	$json = json_encode($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
