@@ -17,12 +17,12 @@ sudo apt-get install -y php7.2-mysql
 sudo apt-get install -y git
 sudo apt-get install -y curl
 curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
-sudo apt-get update && sudo apt-get install -y nodejs
+sudo apt-get update ; sudo apt-get install -y nodejs
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-sudo apt-get update && sudo apt-get install -y yarn
-cd /home && sudo git clone https://github.com/tarkvaraprojekt-2019/Tarkvaraprojekt.git
-cd /home/Tarkvaraprojekt/frontend && sudo yarn install && sudo yarn build && sudo cp -r public/ ../
+sudo apt-get update ; sudo apt-get install -y yarn
+cd /home ; sudo git clone https://github.com/tarkvaraprojekt-2019/Tarkvaraprojekt.git
+cd /home/Tarkvaraprojekt/frontend ; sudo yarn install ; sudo yarn build ; sudo cp -r public/ ../
 sudo cp /home/Tarkvaraprojekt/test_conf/testsite.conf /etc/apache2/sites-available
 sudo a2enmod rewrite
 sudo a2enmod headers
