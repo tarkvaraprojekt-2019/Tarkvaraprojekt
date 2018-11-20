@@ -13,7 +13,7 @@ sudo cp ./.htconf ../
 sudo apt-get install -y apache2
 sudo apt-get install -y php7.2
 #sudo apt-get install -y libapache2-mod-php7.2
-sudo apt-get isntall -y php7.2-mysql
+sudo apt-get install -y php7.2-mysql
 sudo apt-get install -y git
 sudo apt-get install -y curl
 curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
