@@ -1,0 +1,43 @@
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Max-Age "1000"
+Header always set Access-Control-Allow-Headers "X-Requested-With, Content-Type, Auth, Auth-timestamp,Auth-token, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding"
+Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
+
+RewriteEngine On
+Options +FollowSymLinks
+
+# Redirect options to the blank file
+RewriteCond %{REQUEST_METHOD} OPTIONS 
+RewriteRule ^(.*)$ blank.php [QSA,L]
+
+# Do not redirect API requests
+RewriteRule "^api\/" "-" [END] 
+
+# DO NOT CHANGE OR RISK COMPROMISING THE SYSTEM
+# Redirect everything else to /public/
+RewriteRule "^(?!public\/)(.*)" "public/$1"
+
+# RewriteRule "victim" "/victim/index.html" [END]
+
+# If the requested resource doesn't exist, use index.html
+RewriteCond "%{REQUEST_FILENAME}" "!-f"
+RewriteCond "%{REQUEST_FILENAME}" "!-d"
+RewriteRule "(.*)" "$1/index.html" [END]
+
+SetOutputFilter DEFLATE
+AddOutputFilterByType DEFLATE text/html text/plain text/xml application/json application/ld+json
+
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/jpg "access 1 month"
+ExpiresByType image/jpeg "access 1 month"
+ExpiresByType image/gif "access 1 month"
+ExpiresByType image/png "access 1 month"
+ExpiresByType image/vnd.microsoft.icon "access 1 year"
+ExpiresByType font/ttf "access 1 month"
+ExpiresByType font/woff "access 1 month"
+ExpiresByType font/woff2 "access 1 month"
+ExpiresByType image/svg+xml "access 1 month"
+ExpiresByType text/css "access 1 month"
+ExpiresByType application/javascript "access 1 month"
+</IfModule>
