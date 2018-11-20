@@ -1,8 +1,12 @@
 #!/bin/bash
 
 sudo apt-get update
-sudo apt-get upgrade
-#sudo apt-get install -y mysql-server
+sudo apt-get upgrade -y
+sudo apt-get install -y mysql-server
+sudo mysql < testdb.sql
+echo "CREATE USER 'db_user'@'localhost' IDENTIFIED BY 'db_pass';" | sudo mysql;
+echo "GRANT ALL PRIVILEGES ON test.* TO 'db_user'@'localhost';" | sudo mysql;
+sudo cp ./.htconf ../
 #gpg --recv-keys 5072E1F5
 #sudo bash -c "gpg --export 5072E1F5 > /etc/apt/trusted.gpg.d/5072E1F5.gpg"
 #sudo bash -c  "echo deb http://repo.mysql.com/apt/ubuntu/ vivid mysql-5.7 > /etc/apt/sources.list.d/mysql.list"
