@@ -1,7 +1,11 @@
 #!/bin/bash
 
 sudo apt-get update
-sudo apt-get install mysql-client-core-5.7mysql
+sudo apt-get upgrade
+#sudo apt-get install -y mysql-server
+#gpg --recv-keys 5072E1F5
+#sudo bash -c "gpg --export 5072E1F5 > /etc/apt/trusted.gpg.d/5072E1F5.gpg"
+#sudo bash -c  "echo deb http://repo.mysql.com/apt/ubuntu/ vivid mysql-5.7 > /etc/apt/sources.list.d/mysql.list"
 sudo apt-get install -y apache2
 sudo apt-get install -y php7.2
 #sudo apt-get install -y libapache2-mod-php7.2
@@ -16,7 +20,7 @@ sudo apt-get update && sudo apt-get install -y yarn
 cd /home && sudo git clone https://github.com/tarkvaraprojekt-2019/Tarkvaraprojekt.git
 cd /home/Tarkvaraprojekt/frontend && sudo yarn install && sudo yarn build && sudo cp -r public/ ../
 sudo cp /home/Tarkvaraprojekt/test_conf/testsite.conf /etc/apache2/sites-available
-sudo a2enmod rewrites
+sudo a2enmod rewrite
 sudo a2enmod headers
 sudo a2enmod deflate
 sudo a2dissite 000-default.conf
