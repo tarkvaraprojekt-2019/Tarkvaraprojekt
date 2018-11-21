@@ -22,7 +22,9 @@ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt-get update ; sudo apt-get install -y yarn
 #cd /home ; sudo git clone https://github.com/tarkvaraprojekt-2019/Tarkvaraprojekt.git
+origin=$PWD
 cd $PWD/../frontend ; sudo yarn install ; sudo yarn build ; sudo cp -r public/ ../
+cd $origin
 parent="$(dirname $(pwd))"
 sudo sed -i "18s/\/home\/Tarkvaraprojekt/${parent////\\/}/" testsite.conf
 sudo cp ./testsite.conf /etc/apache2/sites-available
