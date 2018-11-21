@@ -9,7 +9,7 @@
 1. Clone repository
 1. Execute test_conf/install.sh
 
-This will automatically set up yarn, node, and build the project
+This will automatically set up yarn, node, and build the project.  
 To update installed project, execute update.sh
 
 #### Backend installation instructions (Windows):
