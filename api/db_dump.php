@@ -14,7 +14,7 @@ if (!is_admin()) {
 
 $conf = parse_ini_file("../.htconf");
 
-$dump = `mysqldump -h {$conf["DB_ADDR"]} -u {$conf["DB_USER"]} -p{$conf["DB_PASS"]} {$conf["DB_NAME"]} 2>&1 | grep -v "Warning: Using a password"`;
+$dump = `mysqldump -h {$conf["DB_ADDR"]} -u {$conf["DB_USER"]} -p{$conf["DB_PASS"]} {$conf["DB_NAME"]} 2>&1 | grep -v "Using a password"`;
 $dump = "USE {$conf["DB_NAME"]};\n" . $dump;
 
 $body = json_decode(file_get_contents("php://input"), true);
