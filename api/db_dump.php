@@ -22,5 +22,5 @@ $body = json_decode(file_get_contents("php://input"), true);
 if ($body !== "false" && isset($body["raw"]) && $body["raw"]) {
 	echo $dump;
 } else {
-	echo "{\"dump:" . json_encode($dump) . "}";
+	echo "{\"dump:\"" . json_encode($dump) . "\"}";
 }
