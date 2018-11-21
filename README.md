@@ -10,7 +10,8 @@
 1. Execute test_conf/install.sh
 
 This will automatically set up yarn, node, and build the project.  
-To update installed project, execute update.sh
+To update installed project, execute update.sh  
+Site will be hosted on localhost, default username and password are "asdf"
 
 #### Backend installation instructions (Windows):
 
