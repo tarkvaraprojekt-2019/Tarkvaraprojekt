@@ -6,18 +6,11 @@ import { withStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-
-import Snackbar from '@material-ui/core/Snackbar';
-import CloseIcon from '@material-ui/icons/Close';
-import IconButton from '@material-ui/core/IconButton';
 
 import withRoot from '../withRoot';
 
 import Layout from '../components/Layout';
-import VictimTable from "../components/VictimTable";
-
-import { isBrowser } from '../auth';
+import VictimTable from '../components/VictimTable';
 
 
 const styles = theme => ({
@@ -40,7 +33,6 @@ const styles = theme => ({
         minWidth: theme.spacing.unit * 20
     },
 });
-
 
 class Overview extends React.Component {
     constructor(props) {
@@ -82,14 +74,15 @@ class Overview extends React.Component {
         })
         .catch( err => {
             if (err.message === "Request failed with status code 400") {
-                this.setState({error: "Viga. Proovisid otsida ilma parameetriteta."})
+              this.setState({ error: 'Viga. Proovisid otsida ilma parameetriteta.' });
             } else if (err.message === "NO_CLIENTS_FOUND") {
-                this.setState({error: "Ühtegi sellist kasutajat ei leitud."})
+              this.setState({ error: 'Ühtegi sellist kasutajat ei leitud.' });
             } else if (err.message === "Request failed with status code 401") {
-                this.setState({error: "Autentimisviga. Proovi uuesti sisse logida."})
+              this.setState({ error: 'Autentimisviga. Proovi uuesti sisse logida.' });
             }
+          setTimeout(() => this.setState({ error: '' }), 6000);
             console.log("search err: ", err)
-            this.setState({ open: true })
+          this.setState({ drawerOpen: true });
         })
     }
 
@@ -103,23 +96,14 @@ class Overview extends React.Component {
             national_id: "",
             phone: "", 
         },
-        results: [], 
-        open: false, 
-        error: "", 
+      results: [],
+      error: '',
     }
 
     handleSearch = event => {
         event.preventDefault()
         this.searchVictim(this.state.searchFields)
     }
-
-    handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-    
-        this.setState({ open: false });
-      };
 
 
     render() {
@@ -138,69 +122,42 @@ class Overview extends React.Component {
         )
         const showVictims = this.state.results.length !== 0
         return (
-            <Layout title="Ülevaade">
-                <Paper className={classes.paper} >
-                    <form onSubmit={this.handleSearch}>
-                        
-                        {field("id", "ID")}
-                        {field("first_name", "Eesnimi")}
-                        {field("last_name", "Perenimi")}
-                        {field("national_id", "Isikukood")}
-                        {field("phone", "Telefoninumber")}
-                        {field("email", "E-Mail")}
-                        
-                        <Button
-                            type="submit"
-                            variant="outlined"
-                            color="primary"
-                            className={classes.input}
-                        >
-                            Otsi
-                        </Button>
-                    
-                    </form>
-                </Paper>
+          <Layout title="Ülevaade" error={this.state.error}>
+            <Paper className={classes.paper}>
+              <form onSubmit={this.handleSearch}>
 
-                { showVictims && <VictimTable classes={classes} victims={this.state.results} />}
+                {field('id', 'ID')}
+                {field('first_name', 'Eesnimi')}
+                {field('last_name', 'Perenimi')}
+                {field('national_id', 'Isikukood')}
+                {field('phone', 'Telefoninumber')}
+                {field('email', 'E-Mail')}
 
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'center',
-                    }}
-                    open={this.state.open}
-                    autoHideDuration={6000}
-                    onClose={this.handleClose}
-                    ContentProps={{
-                        'aria-describedby': 'message-id',
-                    }}
-                    message={<span id="message-id">{this.state.error}</span>}
-                    action={[
-                        <IconButton
-                        key="close"
-                        aria-label="Close"
-                        color="inherit"
-                        className={classes.close}
-                        onClick={this.handleClose}
-                        >
-                        <CloseIcon />
-                        </IconButton>,
-                    ]}
-                    />
-                { this.state.id }
-                <br/>
-                { this.state.firstname }
-                <Paper className={classes.paper}>
-                    <Link to={"victim/new/"}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                        >
-                            Uus isik
-                    </Button>
-                    </Link>
+                <Button
+                  type="submit"
+                  variant="outlined"
+                  color="primary"
+                  className={classes.input}
+                >
+                  Otsi
+                </Button>
 
-                </Paper>
+              </form>
+            </Paper>
+
+            {showVictims && <VictimTable classes={classes} victims={this.state.results}/>}
+
+            <Paper className={classes.paper}>
+              <Link to={'victim/new/'}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                >
+                  Uus isik
+                </Button>
+              </Link>
+
+            </Paper>
 
             </Layout>
         );

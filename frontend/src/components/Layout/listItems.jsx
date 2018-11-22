@@ -6,7 +6,9 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import BackupIcon from '@material-ui/icons/Backup';
-import {Link} from '@reach/router';
+import { Link } from 'gatsby';
+
+import { isAdmin } from '../../auth';
 
 export const mainListItems = (
     <div>
@@ -18,14 +20,17 @@ export const mainListItems = (
                 <ListItemText primary="Ülevaade"/>
             </ListItem>
         </Link>
+      {isAdmin() && (
         <Link to="/accounts">
-            <ListItem button>
-                <ListItemIcon>
-                    <PeopleIcon/>
-                </ListItemIcon>
-                <ListItemText primary="Kasutajad"/>
-            </ListItem>
-        </Link>
+          <ListItem button>
+            <ListItemIcon>
+              <PeopleIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Kasutajad"/>
+          </ListItem>
+        </Link>)
+      }
+      {isAdmin() &&
         <Link to="/report/graphs">
             <ListItem button>
                 <ListItemIcon>
@@ -34,13 +39,17 @@ export const mainListItems = (
                 <ListItemText primary="Aruandlus"/>
             </ListItem>
         </Link>
-        <Link to="/backup">
-            <ListItem button>
-                <ListItemIcon>
-                    <BackupIcon/>
-                </ListItemIcon>
-                <ListItemText primary="Varundused"/>
-            </ListItem>
-        </Link>
+      }
+      {isAdmin() &&
+      <Link to="/backup">
+        <ListItem button>
+          <ListItemIcon>
+            <BackupIcon/>
+          </ListItemIcon>
+          <ListItemText primary="Varundused"/>
+        </ListItem>
+      </Link>
+      }
+        
     </div>
 );
