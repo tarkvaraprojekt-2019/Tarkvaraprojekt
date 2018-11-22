@@ -1,10 +1,24 @@
 # Tarkvaraprojekt
 
-#### Backend installation instructions:
+#### Requirements:
+1. Apache 2.4 or later
+1. MariaDB 10.2 or later (alternatively MySQL 5.7 or later)
+1. PHP 7.2 or later
+
+#### Installation instructions (Ubuntu):
+1. Clone repository
+1. Execute test_conf/install.sh
+
+This will automatically set up yarn, node, and build the project.  
+To update installed project, execute update.sh  
+Site will be hosted on localhost, default username and password are "asdf"
+
+#### Backend installation instructions (Windows):
 
 1. Download [Wamp.NET](http://www.wamp.net/)
 1. Extract it and run Wamp.NET.exe
 1. Add packages "apache 2.4.25", "mariadb 10.2.6", and "php 7.2.8"
+1. Make sure deflate_module, headers_module, and rewrite_module are enabled
 1. Start the packages
 
 #### Setting up developer workflow for frontend/[gatsby](https://www.gatsbyjs.org/tutorial/part-zero/)
