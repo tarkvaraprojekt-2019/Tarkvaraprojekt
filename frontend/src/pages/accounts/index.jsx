@@ -4,9 +4,7 @@ import { Link } from 'gatsby';
 import { withStyles } from '@material-ui/core/styles';
 import withRoot from '../../withRoot';
 import Typography from '@material-ui/core/Typography';
-import SearchIcon from '@material-ui/icons/Search';
 import { Button, TextField } from '@material-ui/core';
-import { sampleSize, sumNames, zipWith } from '../../util';
 
 import Layout from '../../components/Layout';
 import UserTable from '../../components/UserTable';
@@ -15,57 +13,6 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import Dialog from '@material-ui/core/Dialog/Dialog';
-
-let id = 0;
-function createUser(name, district) {
-  id += 1;
-  return { id, name, district };
-}
-
-const lastNames = ['Kütt', 'Tamm', 'Mägi', 'Saar', 'Kukk'];
-const firstNames = ['Kadri', 'Riina', 'Anneli', 'Maria', 'Tiina'];
-
-const piirkonnad = [
-  'Harjumaa',
-  'Tartumaa',
-  'Pärnumaa',
-  'Harjumaa',
-  'Tartumaa',
-  'Pärnumaa',
-  'Harjumaa',
-  'Tartumaa',
-  'Pärnumaa',
-  'Harjumaa',
-  'Tartumaa',
-  'Pärnumaa',
-  'Harjumaa',
-  'Tartumaa',
-  'Pärnumaa',
-  'Harjumaa',
-  'Tartumaa',
-  'Pärnumaa',
-  'Harjumaa',
-  'Tartumaa',
-  'Pärnumaa',
-  'Harjumaa',
-  'Tartumaa',
-  'Pärnumaa',
-  'Harjumaa',
-  'Tartumaa',
-  'Pärnumaa',
-  'Harjumaa',
-  'Tartumaa',
-  'Pärnumaa',
-];
-
-
-
-const names = zipWith(sumNames, firstNames, lastNames);
-const districts = sampleSize(piirkonnad, names.length);
-const currentUsers = zipWith(createUser, names, districts);
-
-
-const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
@@ -173,10 +120,6 @@ class Accounts extends React.Component {
         <Typography variant="h4" gutterBottom>
           Kasutajad
         </Typography>
-        <div>
-          <SearchIcon />
-          <TextField name="userSearch" label="Otsing..." />
-        </div>
 
         <div className={classes.tableContainer}>
           <UserTable
