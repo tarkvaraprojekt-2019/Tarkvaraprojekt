@@ -163,7 +163,7 @@ class Dashboard extends React.Component {
             </IconButton>
           </div>
           <Divider/>
-          <List>{mainListItems}</List>
+          <List>{mainListItems()}</List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer}/>
@@ -184,6 +184,9 @@ class Dashboard extends React.Component {
 
 Dashboard.propTypes = {
   classes: PropTypes.object.isRequired,
+  title: PropTypes.string.isRequired,
+  error: PropTypes.string,
+  children: PropTypes.element.isRequired,
 };
 
 export default withStyles(styles)(Dashboard);

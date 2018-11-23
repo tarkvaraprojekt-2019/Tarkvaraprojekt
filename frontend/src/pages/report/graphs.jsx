@@ -1,24 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from '@reach/router';
 
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
-
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
-import Radio from '@material-ui/core/Radio';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Checkbox from '@material-ui/core/Checkbox';
-import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -27,11 +15,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Chip from '@material-ui/core/Chip';
 
 import withRoot from '../../withRoot';
-
-import ReportLayout from './ReportLayout';
+import Layout from '../../components/Layout';
 import SimpleLineChart from '../../components/SimpleLineChart';
-
-import { zip, range } from '../../util'
 import { isBrowser } from '../../auth';
 //import ReportImg from 'report.png';
 
@@ -215,7 +200,7 @@ class Graphs extends React.Component {
     ))
 
     return (
-      <ReportLayout title="Aruandlus" selectedTab={0}>
+      <Layout title="Aruandlus" error="">
         <div>
           <Paper className={classes.formControl}>
             <form>
@@ -299,7 +284,7 @@ class Graphs extends React.Component {
             </ExpansionPanelDetails>
           </ExpansionPanel>
         </div>
-      </ReportLayout>
+      </Layout>
     );
   }
 }
