@@ -25,7 +25,6 @@ const VictimTable = props => {
 
 
     return (
-        <Paper className={classes.paper}>
             <Table >
                 <TableHead>
                     <TableRow>
@@ -58,7 +57,6 @@ const VictimTable = props => {
                     })}
                 </TableBody>
             </Table>
-        </Paper>
     );
 };
 
