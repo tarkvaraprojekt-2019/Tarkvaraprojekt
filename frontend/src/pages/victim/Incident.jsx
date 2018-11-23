@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
@@ -22,7 +23,7 @@ import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout/index';
-import {navigate} from "gatsby";
+import { navigate } from 'gatsby';
 
 
 const styles = theme => ({
@@ -45,6 +46,9 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
+  disabledPaper: {
+    backgroundColor: '#e47e001c',
+  },
 });
 
 
@@ -213,7 +217,9 @@ class Incident extends React.Component {
                 Juhtum
             </Typography>
 
-            <Paper className={classes.paper}>
+          <Paper className={classNames(classes.paper, {
+            [classes.disabledPaper]: !this.state.editingEnabled,
+          })}>
                 <Grid container
                       direction="column"
                       justify="center"

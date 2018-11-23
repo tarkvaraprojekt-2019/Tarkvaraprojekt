@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from '@reach/router';
 
-import {withStyles} from '@material-ui/core/styles';
+
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -14,10 +15,10 @@ import Typography from '@material-ui/core/Typography';
 
 
 import withRoot from '../../withRoot';
-import IncidentTable from "../../components/IncidentTable";
+import IncidentTable from '../../components/IncidentTable';
 
 import Layout from '../../components/Layout';
-import {navigate} from "gatsby";
+import { navigate } from 'gatsby';
 
 const styles = theme => ({
     root: {
@@ -39,6 +40,9 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
+  disabledPaper: {
+    backgroundColor: '#e47e001c',
+  },
 });
 
 
@@ -133,7 +137,9 @@ class Victim extends React.Component {
                 <Typography variant="h4" gutterBottom>
                     Isiku profiil
                 </Typography>
-                <Paper className={classes.paper}>
+              <Paper className={classNames(classes.paper, {
+                [classes.disabledPaper]: !this.state.editingEnabled,
+              })}>
                 <Grid container
                       direction="column"
                       justify="center"
