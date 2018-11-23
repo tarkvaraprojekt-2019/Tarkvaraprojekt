@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from '@reach/router';
 
-import {withStyles} from '@material-ui/core/styles';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -24,6 +24,7 @@ import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout/index';
+import { navigate } from 'gatsby';
 
 
 const styles = theme => ({
@@ -43,6 +44,12 @@ const styles = theme => ({
     input: {
         margin: theme.spacing.unit,
     },
+    button: {
+        margin: theme.spacing.unit,
+    },
+  disabledPaper: {
+    backgroundColor: '#e47e001c',
+  },
 });
 
 
@@ -63,7 +70,7 @@ class Session extends React.Component {
     }
 
     getSession() {
-        if (typeof this.props.location.state !== 'undefined') {
+        if (this.props.location && this.props.location.state && this.props.location.state.session) {
             const formValues = this.props.location.state["session"];
             formValues['id'] = this.props.sessionID;
             this.setState({
@@ -71,7 +78,21 @@ class Session extends React.Component {
             });
             console.log("get", this.state.formValues);
 
+        } else {
+            this.props.axios.get('get_session.php', {
+                params: {
+                    id: this.props.sessionID,
+                }
+            }).then( res => {
+                console.log("get_session.php", res.data);
+                this.setState({
+                    formValues: res.data[0]
+                })
+            })
+                .catch( err => console.log("search err: ", err))
         }
+
+
     }
 
     updateSession = () => {
@@ -164,7 +185,9 @@ class Session extends React.Component {
             <Typography variant="h4" gutterBottom>
                 Sessioon
             </Typography>
-            <Paper className={classes.paper}>
+          <Paper className={classNames(classes.paper, {
+            [classes.disabledPaper]: !this.state.editingEnabled,
+          })}>
 
                 <Grid container
                       direction="column"
@@ -530,6 +553,7 @@ class Session extends React.Component {
 
                         {!this.state.editingEnabled ?
                             <Button
+                                className={classes.button}
                                 variant="contained"
                                 color="primary"
                                 onClick={e => this.setState({
@@ -541,6 +565,7 @@ class Session extends React.Component {
 
                         {this.state.editingEnabled ?
                             <Button
+                                className={classes.button}
                                 type="submit"
                                 variant="contained"
                                 color="primary"
@@ -560,6 +585,7 @@ class Session extends React.Component {
 
                         {this.state.editingEnabled ?
                             <Button
+                                className={classes.button}
                                 variant="contained"
                                 color="primary"
                                 onClick={e => {
@@ -578,7 +604,15 @@ class Session extends React.Component {
 
             </Paper>
 
+            <Button
+                className={classes.button}
+                variant="contained"
+                color="primary"
+                onClick={e => navigate("/victim/" + this.props.victimID +  "/" + this.props.incidentID)}
 
+            >
+                TAGASI
+            </Button>
 
 
         </Layout>

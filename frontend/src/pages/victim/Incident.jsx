@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from '@reach/router';
 
-import {withStyles} from '@material-ui/core/styles';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -16,14 +16,14 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
-import SessionTable from "../../components/SessionTable";
+import SessionTable from '../../components/SessionTable';
 import Grid from '@material-ui/core/Grid';
-
 
 
 import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout/index';
+import { navigate } from 'gatsby';
 
 
 const styles = theme => ({
@@ -43,6 +43,12 @@ const styles = theme => ({
     input: {
         margin: theme.spacing.unit,
     },
+    button: {
+        margin: theme.spacing.unit,
+    },
+  disabledPaper: {
+    backgroundColor: '#e47e001c',
+  },
 });
 
 
@@ -60,7 +66,6 @@ class Incident extends React.Component {
     componentWillMount() {
         this.getSessions();
         this.getIncident()
-
     }
 
     componentDidMount() {
@@ -207,12 +212,14 @@ class Incident extends React.Component {
         const {classes} = this.props;
 
 
-        return <Layout title="Uus juhtum">
+        return <Layout title="Juhtum">
             <Typography variant="h4" gutterBottom>
                 Juhtum
             </Typography>
 
-            <Paper className={classes.paper}>
+          <Paper className={classNames(classes.paper, {
+            [classes.disabledPaper]: !this.state.editingEnabled,
+          })}>
                 <Grid container
                       direction="column"
                       justify="center"
@@ -637,6 +644,7 @@ class Incident extends React.Component {
                     <Grid item>
                         {!this.state.editingEnabled ?
                             <Button
+                                className={classes.button}
                                 variant="contained"
                                 color="primary"
                                 onClick={e => this.setState({
@@ -648,6 +656,7 @@ class Incident extends React.Component {
 
                         {this.state.editingEnabled ?
                             <Button
+                                className={classes.button}
                                 type="submit"
                                 variant="contained"
                                 color="primary"
@@ -667,6 +676,7 @@ class Incident extends React.Component {
 
                         {this.state.editingEnabled ?
                             <Button
+                                className={classes.button}
                                 variant="contained"
                                 color="primary"
                                 onClick={e => {
@@ -687,8 +697,16 @@ class Incident extends React.Component {
 
             <SessionTable classes={classes} uid={this.props.victimID} incidentID={this.props.incidentID}
                             sessions={this.state.sessions}/>
-           
 
+            <Button
+                className={classes.button}
+                variant="contained"
+                color="primary"
+                onClick={e => navigate("/victim/" + this.props.victimID)}
+
+            >
+                TAGASI
+            </Button>
 
         </Layout>;
     }

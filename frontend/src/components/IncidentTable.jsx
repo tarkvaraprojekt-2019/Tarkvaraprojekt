@@ -37,7 +37,7 @@ const IncidentTable = props => {
                     <Table >
                         <TableHead>
                             <TableRow>
-                                <TableCell>ID</TableCell>
+                                <TableCell>Viimati muudetud</TableCell>
                                 <TableCell>Piirkond</TableCell>
                                 <TableCell>Füüsiline vägivald</TableCell>
                                 <TableCell>Vaimne vägivald</TableCell>
@@ -59,7 +59,7 @@ const IncidentTable = props => {
                                         })
                                     }}
                                     >
-                                        <TableCell component="th" scope="row">{n.id}</TableCell>
+                                        <TableCell component="th" scope="row">{n.muutmisaeg === null || n.muutmisaeg === "" ? "Teadmata" : n.muutmisaeg}</TableCell>
                                         <TableCell>{n.piirkond}</TableCell>
                                         <TableCell>{n.fuusiline_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
                                         <TableCell>{n.vaimne_vagivald === 1 ? "Jah" : "Ei"}</TableCell>

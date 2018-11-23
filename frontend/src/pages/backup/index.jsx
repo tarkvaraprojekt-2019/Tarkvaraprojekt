@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from '@reach/router';
 
 
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -18,13 +17,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import SaveIcon from '@material-ui/icons/Save'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'
+import SaveIcon from '@material-ui/icons/Save';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout';
-import CSVBackup from "./CSVBackup";
+import CSVBackup from './CSVBackup';
 
 
 const styles = theme => ({
@@ -72,10 +71,10 @@ class DatabaseBackup extends React.Component {
     };
 
     handleClickOpen = () => {
-        this.setState({ open: true })
+      this.setState({ drawerOpen: true });
     }
     handleClose = () => {
-        this.setState({ open: false })
+      this.setState({ drawerOpen: false });
     }
     downloadDatabase = () => {
         console.log("Downloading database backup")

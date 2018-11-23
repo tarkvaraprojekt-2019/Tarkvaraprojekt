@@ -1,16 +1,20 @@
-import React from "react";
-import PropTypes from "prop-types";
-import withRoot from "../../withRoot";
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import FileSaver from 'file-saver';
+
+import withRoot from '../../withRoot';
+
 import Typography from '@material-ui/core/Typography';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import FormControl from "@material-ui/core/FormControl/";
-import TextField from "@material-ui/core//TextField";
-import SaveIcon from '@material-ui/icons/Save'
+import FormControl from '@material-ui/core/FormControl/';
+import TextField from '@material-ui/core//TextField';
+import SaveIcon from '@material-ui/icons/Save';
 
 
 const styles = theme => ({
@@ -70,10 +74,10 @@ class CSVBackup extends React.Component {
 
 
     handleClickOpen = () => {
-        this.setState({open: true})
+      this.setState({ drawerOpen: true });
     }
     handleClose = () => {
-        this.setState({open: false})
+      this.setState({ drawerOpen: false });
     }
 
 
@@ -103,18 +107,10 @@ class CSVBackup extends React.Component {
     downloadCSV = () =>  {
         let csv = this.state.results;
 
-
         let filename = 'export.csv';
 
-        if (!csv.match(/^data:text\/csv/i)) {
-            csv =  'data:text/csv;charset=utf-8,' + csv
-        }
-        let data = encodeURI(csv);
-
-        let link = document.createElement('a');
-        link.setAttribute('href', data);
-        link.setAttribute('download', filename);
-        link.click();
+      const blob = new Blob([csv], { type: 'data:text/csv;charset=utf-8' });
+      FileSaver.saveAs(blob, filename);
     }
 
     render() {

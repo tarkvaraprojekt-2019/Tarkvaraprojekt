@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from '@reach/router';
 
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -24,9 +23,7 @@ import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout/index';
-import {navigate} from "gatsby";
-
-
+import { navigate } from 'gatsby';
 
 
 const styles = theme => ({
@@ -44,6 +41,9 @@ const styles = theme => ({
             .spacing.unit * 3}px`,
     },
     input: {
+        margin: theme.spacing.unit,
+    },
+    button: {
         margin: theme.spacing.unit,
     },
 });
@@ -99,7 +99,7 @@ class NewSession extends React.Component {
             .then( res => {
                 let data = res.data;
                 console.log("result: ", data)
-                navigate("/victim/" + this.props.victimID)
+              navigate('/victim/' + this.props.victimID + '/' + this.props.incidentID + "/" + data);
             })
     }
     static getDate(){
@@ -488,6 +488,7 @@ class NewSession extends React.Component {
                     </Grid>
                     <Grid item>
                         <Button
+                            className={classes.button}
                             onClick={() => {
                                 this.createSession()
                             }}
@@ -498,9 +499,10 @@ class NewSession extends React.Component {
                         </Button>
 
                         <Button
+                            className={classes.button}
                             variant="contained"
                             color="primary"
-                            onClick={e => navigate("/victim/" + this.props.victimID)}
+                            onClick={e => navigate("/victim/" + this.props.victimID +  "/" + this.props.incidentID)}
 
                         >
                             Tühista

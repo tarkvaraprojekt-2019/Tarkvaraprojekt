@@ -27,36 +27,36 @@ if ($action === "create") {
 		echo "Unauthorized action";
 		exit();
 	}
-	if (!isset($body["username"]) || !isset($body["password"])) {
+	if (!isset($body["name"]) || !isset($body["password"])) {
 		http_response_code(400);
 		echo "Missing parameters";
 		exit();
 	}
-	create_user($body["username"], $body["password"]);
+	create_user($body["name"], $body["password"]);
 } else if ($action === "set_admin") {
 	if (!is_admin()) {
 		http_response_code(403);
 		echo "Unauthorized action";
 		exit();
 	}
-	if (!isset($body["username"]) || !isset($body["admin_status"])) {
+	if (!isset($body["name"]) || !isset($body["admin_status"])) {
 		http_response_code(400);
 		echo "Missing parameters";
 		exit();
 	}
-	set_admin($body["username"], $body["admin_status"], $username);
+	set_admin($body["name"], $body["admin_status"], $username);
 } else if ($action === "delete") {
 	if (!is_admin()) {
 		http_response_code(403);
 		echo "Unauthorized action";
 		exit();
 	}
-	if (!isset($body["username"])) {
+	if (!isset($body["name"])) {
 		http_response_code(400);
 		echo "Missing parameters";
 		exit();
 	}
-	delete_user($body["username"], $username);
+	delete_user($body["name"], $username);
 } else {
 	http_response_code(400);
 	echo "Invalid action";

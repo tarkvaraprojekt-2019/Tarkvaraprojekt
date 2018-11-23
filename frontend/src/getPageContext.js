@@ -1,9 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 
-import {SheetsRegistry} from 'jss';
-import {createMuiTheme, createGenerateClassName} from '@material-ui/core/styles';
-import purple from '@material-ui/core/colors/purple';
-import green from '@material-ui/core/colors/green';
+import { SheetsRegistry } from 'jss';
+import { createGenerateClassName, createMuiTheme } from '@material-ui/core/styles';
 
 // A theme with custom primary and secondary color.
 // It's optional.
@@ -23,7 +21,18 @@ const theme = createMuiTheme({
     },
     typography: {
         useNextVariants: true,
-    }
+    },
+  overrides: {
+    MuiInput: {
+      disabled: {
+        //backgroundColor: "black",
+
+        //backgroundColor: 'black',
+        color: '#b16508',
+      },
+
+    },
+  }
 });
 
 function createPageContext() {
