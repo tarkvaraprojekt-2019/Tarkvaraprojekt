@@ -24,6 +24,7 @@ import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout/index';
+import {navigate} from "gatsby";
 
 
 const styles = theme => ({
@@ -41,6 +42,9 @@ const styles = theme => ({
             .spacing.unit * 3}px`,
     },
     input: {
+        margin: theme.spacing.unit,
+    },
+    button: {
         margin: theme.spacing.unit,
     },
 });
@@ -544,6 +548,7 @@ class Session extends React.Component {
 
                         {!this.state.editingEnabled ?
                             <Button
+                                className={classes.button}
                                 variant="contained"
                                 color="primary"
                                 onClick={e => this.setState({
@@ -555,6 +560,7 @@ class Session extends React.Component {
 
                         {this.state.editingEnabled ?
                             <Button
+                                className={classes.button}
                                 type="submit"
                                 variant="contained"
                                 color="primary"
@@ -574,6 +580,7 @@ class Session extends React.Component {
 
                         {this.state.editingEnabled ?
                             <Button
+                                className={classes.button}
                                 variant="contained"
                                 color="primary"
                                 onClick={e => {
@@ -592,7 +599,15 @@ class Session extends React.Component {
 
             </Paper>
 
+            <Button
+                className={classes.button}
+                variant="contained"
+                color="primary"
+                onClick={e => navigate("/victim/" + this.props.victimID +  "/" + this.props.incidentID)}
 
+            >
+                TAGASI
+            </Button>
 
 
         </Layout>

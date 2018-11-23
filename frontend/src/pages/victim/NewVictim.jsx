@@ -35,6 +35,9 @@ const styles = theme => ({
     input: {
         margin: theme.spacing.unit,
     },
+    button: {
+        margin: theme.spacing.unit,
+    },
 });
 
 
@@ -130,6 +133,7 @@ class NewVictim extends React.Component {
 
                         <Grid item>
                                 <Button
+                                    className={classes.button}
                                     onClick={() => {
                                         this.createVictim()
                                     }}
@@ -141,6 +145,7 @@ class NewVictim extends React.Component {
                             <Link to="/overview">
 
                                 <Button
+                                    className={classes.button}
                                     variant="contained"
                                     color="primary"
                                 >

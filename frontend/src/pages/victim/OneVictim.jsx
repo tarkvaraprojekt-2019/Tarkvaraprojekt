@@ -17,6 +17,7 @@ import withRoot from '../../withRoot';
 import IncidentTable from "../../components/IncidentTable";
 
 import Layout from '../../components/Layout';
+import {navigate} from "gatsby";
 
 const styles = theme => ({
     root: {
@@ -33,6 +34,9 @@ const styles = theme => ({
             .spacing.unit * 3}px`,
     },
     input: {
+        margin: theme.spacing.unit,
+    },
+    button: {
         margin: theme.spacing.unit,
     },
 });
@@ -205,6 +209,7 @@ class Victim extends React.Component {
                     <Grid item>
                         { !this.state.editingEnabled ?
                             <Button
+                                className={classes.button}
                                 variant="contained"
                                 color="primary"
                                 onClick={ e => this.setState({
@@ -216,6 +221,7 @@ class Victim extends React.Component {
 
                         { this.state.editingEnabled ?
                             <Button
+                                className={classes.button}
                                 type="submit"
                                 variant="contained"
                                 color="primary"
@@ -233,6 +239,7 @@ class Victim extends React.Component {
 
                         {this.state.editingEnabled ?
                             <Button
+                                className={classes.button}
                                 variant="contained"
                                 color="primary"
                                 onClick={ e => {
@@ -250,9 +257,17 @@ class Victim extends React.Component {
                 </Paper>
 
                     <IncidentTable classes={classes} uid={this.props.victimID} incidents ={this.state.incidents} />
-                
 
 
+                <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    onClick={e => navigate("/overview")}
+
+                >
+                    TAGASI
+                </Button>
 
 
 

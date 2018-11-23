@@ -43,6 +43,9 @@ const styles = theme => ({
     input: {
         margin: theme.spacing.unit,
     },
+    button: {
+        margin: theme.spacing.unit,
+    },
 });
 
 
@@ -485,6 +488,7 @@ class NewSession extends React.Component {
                     </Grid>
                     <Grid item>
                         <Button
+                            className={classes.button}
                             onClick={() => {
                                 this.createSession()
                             }}
@@ -495,6 +499,7 @@ class NewSession extends React.Component {
                         </Button>
 
                         <Button
+                            className={classes.button}
                             variant="contained"
                             color="primary"
                             onClick={e => navigate("/victim/" + this.props.victimID +  "/" + this.props.incidentID)}

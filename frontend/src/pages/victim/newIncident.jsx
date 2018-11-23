@@ -46,6 +46,9 @@ const styles = theme => ({
     input: {
         margin: theme.spacing.unit,
     },
+    button: {
+        margin: theme.spacing.unit,
+    },
 });
 
 
@@ -218,7 +221,6 @@ class NewIncident extends React.Component {
                         <RadioGroup>
                             <FormControlLabel control={
                                 <Radio
-
                                     checked={this.state.formValues.rasedus === 1}
                                     onClick={() => this.radioChange("rasedus", 1)}
                                 />
@@ -503,6 +505,7 @@ class NewIncident extends React.Component {
                     </Grid>
                     <Grid item>
                         <Button
+                            className={classes.button}
                             variant="contained"
                             color="primary"
                             onClick={() => {
@@ -511,6 +514,7 @@ class NewIncident extends React.Component {
                             Salvesta
                         </Button>
                         <Button
+                            className={classes.button}
                             variant="contained"
                             color="primary"
                             onClick={e => navigate("/victim/" + this.props.victimID)}
