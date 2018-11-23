@@ -63,7 +63,7 @@ class NewIncident extends React.Component {
             .then( res => {
                 let data = res.data;
                 console.log("result: ", data)
-                navigate("/victim/" + this.props.victimID)
+                navigate("/victim/" + this.props.victimID + "/" + data)
             })
     }
 

@@ -96,7 +96,7 @@ class NewSession extends React.Component {
             .then( res => {
                 let data = res.data;
                 console.log("result: ", data)
-              navigate('/victim/' + this.props.victimID + '/' + this.props.incidentID);
+              navigate('/victim/' + this.props.victimID + '/' + this.props.incidentID + "/" + data);
             })
     }
     static getDate(){
@@ -497,7 +497,7 @@ class NewSession extends React.Component {
                         <Button
                             variant="contained"
                             color="primary"
-                            onClick={e => navigate("/victim/" + this.props.victimID)}
+                            onClick={e => navigate("/victim/" + this.props.victimID +  "/" + this.props.incidentID)}
 
                         >
                             Tühista
