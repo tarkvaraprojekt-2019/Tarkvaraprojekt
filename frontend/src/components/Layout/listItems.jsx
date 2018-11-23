@@ -10,7 +10,7 @@ import { Link } from 'gatsby';
 
 import { isAdmin } from '../../auth';
 
-export const mainListItems = (
+export const mainListItems = (props) => (
     <div>
         <Link to="/overview">
             <ListItem button>
@@ -20,6 +20,7 @@ export const mainListItems = (
                 <ListItemText primary="Ülevaade"/>
             </ListItem>
         </Link>
+      {console.log('is admin: ', isAdmin())}
       {isAdmin() && (
         <Link to="/accounts">
           <ListItem button>

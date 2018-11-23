@@ -163,7 +163,7 @@ class Dashboard extends React.Component {
             </IconButton>
           </div>
           <Divider/>
-          <List>{mainListItems}</List>
+          <List>{mainListItems()}</List>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer}/>
