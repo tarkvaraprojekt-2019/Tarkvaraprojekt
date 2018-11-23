@@ -63,7 +63,7 @@ class Session extends React.Component {
     }
 
     getSession() {
-        if (typeof this.props.location.state !== 'undefined') {
+        if (this.props.location && this.props.location.state && this.props.location.state.session) {
             const formValues = this.props.location.state["session"];
             formValues['id'] = this.props.sessionID;
             this.setState({
@@ -71,7 +71,21 @@ class Session extends React.Component {
             });
             console.log("get", this.state.formValues);
 
+        } else {
+            this.props.axios.get('get_session.php', {
+                params: {
+                    id: this.props.sessionID,
+                }
+            }).then( res => {
+                console.log("get_session.php", res.data);
+                this.setState({
+                    formValues: res.data[0]
+                })
+            })
+                .catch( err => console.log("search err: ", err))
         }
+
+
     }
 
     updateSession = () => {

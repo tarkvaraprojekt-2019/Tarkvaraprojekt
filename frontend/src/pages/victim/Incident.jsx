@@ -204,7 +204,7 @@ class Incident extends React.Component {
         const {classes} = this.props;
 
 
-        return <Layout title="Uus juhtum">
+        return <Layout title="Juhtum">
             <Typography variant="h4" gutterBottom>
                 Juhtum
             </Typography>
