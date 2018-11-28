@@ -1,6 +1,16 @@
 RewriteEngine On
 Options +FollowSymLinks
 
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Max-Age "1000"
+Header always set Access-Control-Allow-Headers "X-Requested-With, Content-Type, Auth, Auth-timestamp, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding, Auth-token"
+Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
+
+# Redirect options to the blank file
+RewriteCond %{REQUEST_METHOD} OPTIONS 
+RewriteRule ^(.*)$ blank.php [QSA,L]
+
+
 # Do not redirect API requests
 RewriteRule "^api\/" "-" [END] 
 

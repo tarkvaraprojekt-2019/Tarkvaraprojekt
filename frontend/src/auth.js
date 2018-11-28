@@ -1,12 +1,17 @@
 import axios from 'axios';
 import { navigate } from 'gatsby';
 
-export const isBrowser = typeof window !== `undefined`
-
 const getToken = () =>
   window.localStorage.authToken || ""
 
-export const setToken = token => (window.localStorage.authToken = token)
+
+export const isBrowser = typeof window !== `undefined`;
+
+
+export const setToken = token => {
+  token = token.includes('"') ? '' : token;
+  window.localStorage.authToken = token;
+};
 
 export const getBaseUrl = () => {
   if (!isBrowser) return false
@@ -48,11 +53,13 @@ export const isLoggedIn = () => {
   if (!isBrowser) return false
 
   const token = getToken()
-  return token !== ""
+  return token !== '' && !token.includes('"');
 }
 
 export const isAdmin = () => {
-  if (!isBrowser) return false
+  if (!isBrowser) {
+    return false;
+  }
   const token = atob(getToken())
   const adminString = token.split(":")[2]
   return adminString === "1"
@@ -64,6 +71,6 @@ export const logout = () => {
   if (!isBrowser) return
 
   console.log(`Logging out`)
-  setToken("")
+  setToken('');
   navigate('/');
 }
