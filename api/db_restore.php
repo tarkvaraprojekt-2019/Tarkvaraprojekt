@@ -11,10 +11,10 @@ if (!is_admin()) {
 	exit();
 }
 
-$body = file_get_contents("php://input");
+#$body = file_get_contents("php://input");
 
 $conf = parse_ini_file("../.htconf");
 
-$dump = `mysql -h {$conf["DB_ADDR"]} -u {$conf["DB_USER"]} -p{$conf["DB_PASS"]} {$conf["DB_NAME"]} -e "{$body}"`;
+$process = popen("mysql -h {$conf["DB_ADDR"]} -u {$conf["DB_USER"]} -p{$conf["DB_PASS"]} {$conf["DB_NAME"]}", "w");
 
-echo $dump;
+fwrite($process, stream_get_contents("php://input"));
