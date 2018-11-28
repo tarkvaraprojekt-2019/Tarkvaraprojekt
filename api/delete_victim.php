@@ -23,4 +23,4 @@ if (!isset($body["id"])) {
 $db = get_db();
 $stmt = mysqli_prepare($db, "DELETE FROM clients WHERE id = ?");
 mysqli_stmt_bind_param($stmt, "i", $body["id"]);
-echo mysqli_stmt_execute($stmt)
+echo mysqli_stmt_execute($stmt);
