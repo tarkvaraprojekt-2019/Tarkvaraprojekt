@@ -15,6 +15,6 @@ $body = file_get_contents("php://input");
 
 $conf = parse_ini_file("../.htconf");
 
-$dump = `mysql -h {$conf["DB_ADDR"]} -u {$conf["DB_USER"]} -p{$conf["DB_PASS"]} {$conf["DB_NAME"]} -e {$body}`;
+$dump = `mysql -h {$conf["DB_ADDR"]} -u {$conf["DB_USER"]} -p{$conf["DB_PASS"]} {$conf["DB_NAME"]} -e "{$body}"`;
 
 echo $dump;
