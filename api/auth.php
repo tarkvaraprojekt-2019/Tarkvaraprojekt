@@ -25,7 +25,7 @@ function login($username, $password) {
 	mysqli_stmt_bind_param($stmt, "s", $username);
 	mysqli_stmt_execute($stmt);
 	
-	return base64_encode($username . ":" . $token . ":" . (int) $res["@is_admin"]);
+	return base64_encode($username) . ":" . $token . ":" . (int) $res["@is_admin"];
 }
 
 function logout($username) {
