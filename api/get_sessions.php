@@ -16,7 +16,7 @@ echo get_sessions($_GET["incident_id"]);
 
 function get_sessions($incident_id) {
 	$db = get_db();
-	$stmt = $db->prepare("SELECT * FROM sessions WHERE incident_id = ?");
+	$stmt = $db->prepare("SELECT * FROM sessions WHERE incident_id = ? ORDER BY kuupaev DESC");
 	$stmt->bind_param("i", $incident_id);
 	$stmt->execute() or trigger_error($db->error);
 	$json = json_encode($stmt->get_result()->fetch_all(MYSQLI_ASSOC));
