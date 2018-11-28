@@ -17,4 +17,4 @@ $conf = parse_ini_file("../.htconf");
 
 $process = popen("mysql -h {$conf["DB_ADDR"]} -u {$conf["DB_USER"]} -p{$conf["DB_PASS"]} {$conf["DB_NAME"]}", "w");
 
-fwrite($process, stream_get_contents(fopen("php://input")));
+fwrite($process, stream_get_contents(fopen("php://input", "r")));
