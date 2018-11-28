@@ -23,6 +23,6 @@ $conf = parse_ini_file("../.htconf");
 
 echo substr($body["dump"],0,1000);
 
-$dump = shell_exec(sprintf("mysql -h %s -u %s -p%s -e %s", $conf["DB_ADDR"], $conf["DB_USER"], $conf["DB_PASS"], $body["dump"]));
+$dump = shell_exec(sprintf("mysql -h %s -u %s -p%s %s -e '%s'", $conf["DB_ADDR"], $conf["DB_USER"], $conf["DB_PASS"], $conf["DB_NAME"], $body["dump"]));
 
 echo $dump;
