@@ -6,6 +6,7 @@ import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import BackupIcon from '@material-ui/icons/Backup';
+import LockIcon from '@material-ui/icons/Lock';
 import { Link } from 'gatsby';
 
 import { isAdmin } from '../../auth';
@@ -20,6 +21,14 @@ export const mainListItems = (props) => (
                 <ListItemText primary="Ülevaade"/>
             </ListItem>
         </Link>
+      <Link to="/password">
+        <ListItem button>
+          <ListItemIcon>
+            <LockIcon/>
+          </ListItemIcon>
+          <ListItemText primary="Ülevaade"/>
+        </ListItem>
+      </Link>
       {console.log('is admin: ', isAdmin())}
       {isAdmin() && (
         <Link to="/accounts">
