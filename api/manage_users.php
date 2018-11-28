@@ -4,8 +4,9 @@ require "verify_token.php";
 
 //All actions require admin token
 //Request is specified in the "action" parameter
-//Actions are "create", "set_admin", or "delete"
+//Actions are "create", "set_pass", "set_admin", or "delete"
 //"create" requires "username" and "password"
+//"set_pass" requires "username" and "password"
 //"set_admin" requires "username" and "admin_status"
 //"delete" requires "username"
 
@@ -33,6 +34,13 @@ if ($action === "create") {
 		exit();
 	}
 	create_user($body["name"], $body["password"]);
+} else if ($action === "set_pass") {
+	if (!isset($body["name"]) || !isset($body["password"])) {
+		http_response_code(400);
+		echo "Missing parameters";
+		exit();
+	}
+	set_pass($body["name"], $body["password"], $username);
 } else if ($action === "set_admin") {
 	if (!is_admin()) {
 		http_response_code(403);
@@ -72,6 +80,23 @@ function create_user($username, $pass) {
 	$stmt->bind_param("ss", $username, $pass_hashed);
 	$stmt->execute() or trigger_error($db->error);
 	$db->close();
+}
+
+//Sets a user's password to given value
+function set_pass($modified_username, $pass, $caller_username) {
+	if (!($modified_username === $caller_username)) {
+		if (!is_admin()) {
+			http_response_code(403);
+			echo "Unauthorized action";
+			exit();
+		}
+	}
+	$db = get_db();
+	$pass_hashed = password_hash($pass, PASSWORD_DEFAULT);
+	$stmt = $db->prepare("CALL set_pass(?, ?)");
+	$stmt->bind_param("ss", $modified_username, $pass_hashed);
+	$stmt->execute() or trigger_error($db->error);
+	$db->close();	
 }
 
 //Sets a user's admin status to selected value
