@@ -26,7 +26,7 @@ export function handleLogin({ username, password }) {
   const user = username
   const pass = password
 
-  const auth = btoa(user + ":" + pass)
+  const auth = btoa(user) + ':' + btoa(pass);
 
   return axios({
       method: 'get', 
@@ -60,8 +60,7 @@ export const isAdmin = () => {
   if (!isBrowser) {
     return false;
   }
-  const token = atob(getToken())
-  const adminString = token.split(":")[2]
+  const adminString = getToken().split(':')[2];
   return adminString === "1"
 }
 
