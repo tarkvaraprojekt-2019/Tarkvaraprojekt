@@ -11,11 +11,7 @@ if (!is_admin()) {
 	exit();
 }
 
-<<<<<<< HEAD
 $body = file_get_contents("php://input");
-=======
-$body = file_get_contents("php://input";
->>>>>>> c7526f56fd6b5b57c0b07925c35f930db016f82a
 
 $conf = parse_ini_file("../.htconf");
 
