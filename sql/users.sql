@@ -2,7 +2,10 @@ CREATE OR REPLACE TABLE users
 (name VARCHAR(64) PRIMARY KEY, pass VARCHAR(255) NOT NULL, is_admin BOOL NOT NULL DEFAULT 0, token VARCHAR(32));
 
 CREATE OR REPLACE PROCEDURE create_user(p_name VARCHAR(64), p_pass VARCHAR(255))
-REPLACE INTO users SET name = p_name, pass = p_pass, token = NULL;
+INSERT INTO users SET name = p_name, pass = p_pass, token = NULL;
+
+CREATE OR REPLACE PROCEDURE set_pass(p_name VARCHAR(64), p_pass VARCHAR(255))
+UPDATE users SET pass = p_pass, token = NULL WHERE name = p_name;
 
 CREATE OR REPLACE PROCEDURE delete_user(p_name VARCHAR(64))
 DELETE FROM users WHERE name = p_name;
