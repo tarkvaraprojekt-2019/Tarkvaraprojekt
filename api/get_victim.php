@@ -30,7 +30,7 @@ for ($i = 0; $i < $c; $i++) {
 }
 
 $db = get_db();
-$stmt = mysqli_prepare($db, "SELECT * FROM clients" . $where_query);
+$stmt = mysqli_prepare($db, "SELECT * FROM clients" . $where_query . " ORDER BY id DESC");
 mysqli_stmt_bind_param($stmt, str_repeat("s", $c), ...$where_params);
 mysqli_stmt_execute($stmt);
 $res = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
