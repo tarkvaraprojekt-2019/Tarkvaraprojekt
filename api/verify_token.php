@@ -8,7 +8,7 @@ if (!isset($_SERVER["HTTP_AUTH_TOKEN"])) {
 	exit();
 }
 
-$auth_token = explode(":", $_SERVER["HTTP_AUTH_TOKEN"], 3)
+$auth_token = explode(":", $_SERVER["HTTP_AUTH_TOKEN"], 3);
 
 if (count($auth_token) < 2) {
 	http_response_code(401);
