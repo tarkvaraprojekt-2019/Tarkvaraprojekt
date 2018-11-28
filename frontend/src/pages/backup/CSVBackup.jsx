@@ -107,7 +107,7 @@ class CSVBackup extends React.Component {
     downloadCSV = () =>  {
         let csv = this.state.results;
 
-        let filename = 'export.csv';
+      let filename = 'export.txt';
 
       const blob = new Blob([csv], { type: 'data:text/csv;charset=utf-8' });
       FileSaver.saveAs(blob, filename);
