@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import { navigate } from 'gatsby';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -145,7 +144,7 @@ class Dashboard extends React.Component {
               {this.props.title}
             </Typography>
 
-            <IconButton color="inherit" onClick={() => logout(() => navigate('/'))}>
+            <IconButton color="inherit" onClick={() => logout()}>
               <PowerSettingsNew color="secondary"/>
             </IconButton>
           </Toolbar>
