@@ -19,6 +19,8 @@ import ErrorBar from './ErrorBar';
 
 import { logout } from '../../auth';
 
+import { AxiosContext } from '../../withRoot';
+
 
 const drawerWidth = 240;
 
@@ -143,10 +145,16 @@ class Dashboard extends React.Component {
             <Typography variant="h6" color="inherit" noWrap className={classes.title}>
               {this.props.title}
             </Typography>
-
-            <IconButton color="inherit" onClick={() => logout()}>
-              <PowerSettingsNew color="secondary"/>
-            </IconButton>
+            <AxiosContext.Consumer>
+              {context => <IconButton color="inherit" onClick={() => {
+                console.log('context: ', context);
+                context.post('logout.php');
+                logout();
+              }}>
+                <PowerSettingsNew color="secondary"/>
+              </IconButton>
+              }
+            </AxiosContext.Consumer>
           </Toolbar>
         </AppBar>
         <Drawer

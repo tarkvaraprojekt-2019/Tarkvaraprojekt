@@ -5,7 +5,9 @@ import JssProvider from 'react-jss/lib/JssProvider';
 import getPageContext from './getPageContext';
 import axios from 'axios';
 import { getBaseUrl, getCurrentToken, isBrowser, isLoggedIn, logout } from './auth';
-import { navigate } from 'gatsby';
+
+
+export const AxiosContext = React.createContext('default');
 
 function withRoot(Component) {
   class WithRoot extends React.Component {
@@ -24,7 +26,7 @@ function withRoot(Component) {
       // Add general redirecting when auth fails
       this.axios.interceptors.response.use(null, (error) => {
         if (error.response.status === 401) {
-          logout(() => navigate("/"))
+          logout();
           return
         }
         return Promise.reject(error)
@@ -51,6 +53,7 @@ function withRoot(Component) {
         return null;
       }
 
+
       return (
         <JssProvider generateClassName={this.muiPageContext.generateClassName}>
           {/* MuiThemeProvider makes the theme available down the React
@@ -59,9 +62,11 @@ function withRoot(Component) {
             theme={this.muiPageContext.theme}
             sheetsManager={this.muiPageContext.sheetsManager}
           >
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            <Component {...this.props} axios={this.axios} />
+            <AxiosContext.Provider value={this.axios}>
+              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+              <CssBaseline/>
+              <Component {...this.props} axios={this.axios}/>
+            </AxiosContext.Provider>
           </MuiThemeProvider>
         </JssProvider>
       );
