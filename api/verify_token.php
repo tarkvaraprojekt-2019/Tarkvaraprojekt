@@ -17,8 +17,9 @@ if (count($auth_token) < 2) {
 }
 
 list($username, $token, ) = $auth_token;
+$username = base64_decode($username);
 $db = get_db();
-$user = get_user(base64_decode($username), $db);
+$user = get_user($username, $db);
 if ($user["@token"] !== $token) {
 	http_response_code(401);
 	echo "Invalid username/password";
