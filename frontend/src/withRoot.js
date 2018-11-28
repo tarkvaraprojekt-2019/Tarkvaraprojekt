@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import getPageContext from './getPageContext';
 import axios from 'axios';
-import { getCurrentToken, getBaseUrl, isLoggedIn, logout, isBrowser } from './auth';
+import { getBaseUrl, getCurrentToken, isBrowser, isLoggedIn, logout } from './auth';
 import { navigate } from 'gatsby';
 
 function withRoot(Component) {
@@ -47,7 +47,7 @@ function withRoot(Component) {
 
     render() {
       if(!isLoggedIn() && isBrowser && this.props.location.pathname !== '/') {
-        navigate("/")
+        logout();
         return null;
       }
 

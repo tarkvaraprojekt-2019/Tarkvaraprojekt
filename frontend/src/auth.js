@@ -1,4 +1,5 @@
-import axios from 'axios'
+import axios from 'axios';
+import { navigate } from 'gatsby';
 
 export const isBrowser = typeof window !== `undefined`
 
@@ -59,10 +60,10 @@ export const isAdmin = () => {
 
 export const getCurrentToken = () => isBrowser && getToken()
 
-export const logout = (callback) => {
+export const logout = () => {
   if (!isBrowser) return
 
   console.log(`Logging out`)
   setToken("")
-  callback()
+  navigate('/');
 }
