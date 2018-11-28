@@ -21,6 +21,6 @@ if (!isset($body["dump"])) {
 
 $conf = parse_ini_file("../.htconf");
 
-$dump = shell_exec(sprintf("mysql -h %s -u %s -p%s %s -e '%s'", $conf["DB_ADDR"], $conf["DB_USER"], $conf["DB_PASS"], $conf["DB_NAME"], $body["dump"]));
+$dump = `mysql -h {$conf["DB_ADDR"]} -u {$conf["DB_USER"]} -p{$conf["DB_PASS"]} {$conf["DB_NAME"]} -e {$body["dump"]}`;
 
 echo $dump;
