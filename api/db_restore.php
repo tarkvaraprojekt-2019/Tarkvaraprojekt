@@ -1,6 +1,6 @@
 <?php
 
-//Feeds sent SQL statements into database, to be used with statements retrieved from db_dump.php
+//Feeds sent SQL statements into database to restore tables, to be used with statements retrieved from db_dump.php
 //Requires "dump" parameter
 
 require "verify_token.php";
@@ -11,13 +11,7 @@ if (!is_admin()) {
 	exit();
 }
 
-$body = json_decode(file_get_contents("php://input"), true);
-
-if (!isset($body["dump"])) {
-	http_response_code(400);
-	echo "Missing dump parameter";
-	exit();
-}
+$body = file_get_contents("php://input");
 
 $conf = parse_ini_file("../.htconf");
 
