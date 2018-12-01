@@ -260,7 +260,6 @@ class NewIncident extends React.Component {
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
-                                                teadmata_vagivald: 0
                                             }
                                         }))
                                     }}
@@ -274,7 +273,6 @@ class NewIncident extends React.Component {
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
-                                                teadmata_vagivald: 0
                                             }
                                         }))
                                     }}
@@ -288,7 +286,6 @@ class NewIncident extends React.Component {
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
-                                                teadmata_vagivald: 0
                                             }
                                         }))
                                     }}
@@ -302,7 +299,6 @@ class NewIncident extends React.Component {
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
-                                                teadmata_vagivald: 0
                                             }
                                         }))
                                     }}
@@ -316,7 +312,6 @@ class NewIncident extends React.Component {
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
-                                                teadmata_vagivald: 0
                                             }
                                         }))
                                     }}
@@ -330,11 +325,6 @@ class NewIncident extends React.Component {
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
-                                                inimkaubandus: 0,
-                                                seksuaalne_vagivald: 0,
-                                                majanduslik_vagivald: 0,
-                                                vaimne_vagivald: 0,
-                                                fuusiline_vagivald: 0
                                             }
                                         }))
                                     }}

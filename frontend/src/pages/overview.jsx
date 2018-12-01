@@ -110,15 +110,16 @@ class Overview extends React.Component {
     render() {
         const {classes} = this.props;
 
-        const field = (id, label) => (
+        const field = (id, label, pattern) => (
             <TextField
-                type={id === "id" || id === "phone" || id === "national_id" ? "number" : "text"}
+                type = {id === "email" ? "email" : "text"}
                 id={id}
                 label={label}
                 className={classes.input}
                 value={this.state.searchFields[id]}
                 onChange={this.handleChange}
                 margin="normal"
+                inputProps={{pattern: pattern}}
             />
         )
         const showVictims = this.state.results.length !== 0
@@ -127,13 +128,12 @@ class Overview extends React.Component {
                 <Paper className={classes.paper}>
 
                     <form onSubmit={this.handleSearch}>
-
-                        {field('id', 'ID')}
-                        {field('first_name', 'Eesnimi')}
-                        {field('last_name', 'Perenimi')}
-                        {field('national_id', 'Isikukood')}
-                        {field('phone', 'Telefoninumber')}
-                        {field('email', 'E-Mail')}
+                        {field('id', 'ID', "\\d*")}
+                        {field('first_name', 'Eesnimi', "\\p{Letter}*")}
+                        {field('last_name', 'Perenimi', "\\p{Letter}*")}
+                        {field('national_id', 'Isikukood', "([1-6]\\d\\d(0[1-9]|1[0-2])(0[1-9]|1\\d|2\\d|30|31)\\d{4})?")}
+                        {field('phone', 'Telefoninumber', "([+]\\d+)?\\d*")}
+                        {field('email', 'E-Mail', "(.*?)")}
 
                         <Button
                             type="submit"

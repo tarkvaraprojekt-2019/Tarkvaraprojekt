@@ -52,14 +52,23 @@ class NewVictim extends React.Component {
     }
 
     createVictim() {
-        this.axios.post("create_victim.php",this.state.formValues)
-            .then( res => {
+        this.axios.post("create_victim.php", this.state.formValues)
+            .then(res => {
                 let data = res.data;
                 console.log("result: ", data)
                 navigate("/victim/" + data)
             })
-        }
-
+            .catch(err => {
+                if (err.message === "Request failed with status code 400") {
+                    this.setState({error: 'Viga. Proovisid lisada ilma parameetriteta.'});
+                }
+                else if (err.message === "Request failed with status code 401") {
+                    this.setState({error: 'Autentimisviga. Proovi uuesti sisse logida.'});
+                }
+                setTimeout(() => this.setState({error: ''}), 6000);
+                console.log("adding err: ", err)
+            })
+    }
 
 
     componentWillMount() {
@@ -82,6 +91,12 @@ class NewVictim extends React.Component {
         console.log(this.state)
     };
 
+    handleCreate = event => {
+        event.preventDefault()
+        this.createVictim()
+    }
+
+
     state = {
         formValues: {
             first_name: "",
@@ -90,71 +105,70 @@ class NewVictim extends React.Component {
             email: "",
             national_id: "",
         },
-        isNum: false
+        error: '',
     }
 
     render() {
         const {classes} = this.props;
 
-        const field = (id, label) => (
+        const field = (id, label, pattern) => (
             <TextField
-                type={id === "national_id" || id === "phone" ? "number" : "text"}
+                type={id === "email" ? "email" : "text"}
                 id={id}
                 label={label}
                 className={classes.input}
                 value={this.state.formValues[id]}
                 onChange={this.handleChange}
                 margin="normal"
+                inputProps={{pattern: pattern}}
+
                 fullWidth
             />
         )
 
         return (
-            <Layout title="Uus klient">
+            <Layout title="Uus klient" error={this.state.error}>
                 <Typography variant="h4" gutterBottom>
                     Lisa uus isik
                 </Typography>
                 <Paper className={classes.paper}>
-                    <Grid container
-                          direction="column"
-                          justify="center"
-                          alignItems="center"
-                          spacing={8}>
-                        <Grid item>
-                            <form className={classes.form}>
-                                {field("first_name", "Eesnimi")}
-                                {field("last_name", "Perenimi")}
-                                {field("national_id", "Isikukood")}
-                                {field("phone", "Telefoninumber")}
-                                {field("email", "E-Mail")}
 
-                            </form>
-                        </Grid>
+                    <form className={classes.form} onSubmit={this.handleCreate}>
 
-                        <Grid item>
+                        {field('first_name', 'Eesnimi', "\\p{Letter}*")}
+                        {field('last_name', 'Perenimi', "\\p{Letter}*")}
+                        {field('national_id', 'Isikukood', "([1-6]\\d\\d(0[1-9]|1[0-2])(0[1-9]|1\\d|2\\d|30|31)\\d{4})?")}
+                        {field('phone', 'Telefoninumber', "([+]\\d+)?\\d*")}
+                        {field('email', 'E-Mail', "(.*?)")}
+
+                        <Grid container
+                              direction="column"
+                              justify="center"
+                              alignItems="center"
+                              spacing={8}>
+                            <Grid item>
                                 <Button
+                                    type="submit"
                                     className={classes.button}
-                                    onClick={() => {
-                                        this.createVictim()
-                                    }}
+
                                     variant="contained"
                                     color="primary"
                                 >
                                     Salvesta
                                 </Button>
-                            <Link to="/overview">
+                                <Link to="/overview">
 
-                                <Button
-                                    className={classes.button}
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    Tühista
-                                </Button>
-                            </Link>
+                                    <Button
+                                        className={classes.button}
+                                        variant="contained"
+                                        color="primary"
+                                    >
+                                        Tühista
+                                    </Button>
+                                </Link>
+                            </Grid>
                         </Grid>
-                    </Grid>
-
+                    </form>
                 </Paper>
             </Layout>
         );
