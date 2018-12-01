@@ -6,7 +6,7 @@ import FileSaver from 'file-saver';
 import withRoot from '../../withRoot';
 
 import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl/';
 import TextField from '@material-ui/core//TextField';
 import SaveIcon from '@material-ui/icons/Save';
+import Grid from '@material-ui/core/Grid';
 
 
 const styles = theme => ({
@@ -36,7 +37,7 @@ const styles = theme => ({
     },
     card: {
         maxWidth: 345,
-        margin: theme.spacing.unit*2,
+        margin: theme.spacing.unit * 2,
     },
     leftIcon: {
         marginRight: theme.spacing.unit,
@@ -52,6 +53,7 @@ const styles = theme => ({
         margin: theme.spacing.unit,
     },
 });
+
 class CSVBackup extends React.Component {
     static propTypes = {
         classes: PropTypes.object.isRequired,
@@ -74,12 +76,11 @@ class CSVBackup extends React.Component {
 
 
     handleClickOpen = () => {
-      this.setState({ drawerOpen: true });
+        this.setState({drawerOpen: true});
     }
     handleClose = () => {
-      this.setState({ drawerOpen: false });
+        this.setState({drawerOpen: false});
     }
-
 
 
     handleChange = event => {
@@ -104,13 +105,14 @@ class CSVBackup extends React.Component {
         }
     }
 
-    downloadCSV = () =>  {
+    downloadCSV = () => {
         let csv = this.state.results;
+        console.log(csv)
 
-      let filename = 'export.txt';
+        let filename = 'export.txt';
 
-      const blob = new Blob([csv], { type: 'data:text/csv;charset=utf-8' });
-      FileSaver.saveAs(blob, filename);
+        const blob = new Blob([csv], {type: 'data:text/csv;charset=utf-8'});
+        FileSaver.saveAs(blob, filename);
     }
 
     render() {
@@ -147,24 +149,39 @@ class CSVBackup extends React.Component {
                         </CardContent>
                     </CardActionArea>
                     <CardActions>
-                        <div className={classes.buttons}>
-                            <Button className={classes.button} variant="outlined" onClick={this.getCSV} size="small">
-                                <SaveIcon className={classes.leftIcon}/>
-                                Lae alla
-                            </Button>
 
-                            <form>
-                                {makeDateField('alates', 'Alates')}
-                                {makeDateField('kuni', 'Kuni')}
+                            <form onSubmit={this.handleDownload}>
+
+                                <Grid container
+                                      direction="column"
+                                      justify="center"
+                                      alignItems="center"
+                                      spacing={8}>
+                                    <Grid item>
+
+                                        {makeDateField('alates', 'Alates')}
+                                        {makeDateField('kuni', 'Kuni')}
+                                    </Grid>
+
+                                    <Grid item>
+                                        <Button className={classes.button} variant="outlined" type="submit"
+                                                size="small">
+                                            <SaveIcon className={classes.leftIcon}/>
+                                            Lae alla
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+
                             </form>
 
 
-                        </div>
 
-                    </CardActions>
-                </Card>
-            </React.Fragment>
-        );
+
+                </CardActions>
+            </Card>
+    </React.Fragment>
+    )
+        ;
     }
 
     correctDates() {
@@ -175,6 +192,10 @@ class CSVBackup extends React.Component {
 
         return parseInt(start[0]) <= parseInt(end[0]) && parseInt(start[1]) <= parseInt(end[1]) && parseInt(start[2]) <= parseInt(end[2]);
 
+    }
+    handleDownload = event => {
+        event.preventDefault()
+        this.getCSV()
     }
 }
 
