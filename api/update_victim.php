@@ -11,10 +11,8 @@ $params = array("first_name", "last_name", "national_id", "phone", "email");
 
 //Loop through all parameters to see if they were asked to be updated
 foreach ($params as $param) {
-	if ($body[$param] !== "") {
 		$update_fields[] = $param;
 		$update_params[] = $body[$param];
-	}
 }
 
 //Add editing user and current date
