@@ -46,6 +46,13 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
+    radiogroup: {
+        width: 'auto',
+        height: 'auto',
+        display: 'flex',
+        flexWrap: 'nowrap',
+        flexDirection: 'row',
+    }
 });
 
 
@@ -112,10 +119,10 @@ class NewSession extends React.Component {
             incident_id: this.props.incidentID,
             kuupaev: NewSession.getDate(),
             kirjeldus: "",
-            sidevahendid: "",
+            sidevahendid: 0,
             kriisinoustamine: 0,
             kriisinoustamise_aeg: "teadmata",
-            juhutuminoustamine: 0,
+            juhtuminoustamine: 0,
             vorgustikutoo: 0,
             psuhhonoustamine: 0,
             juuranoustamine: 0,
@@ -226,15 +233,14 @@ class NewSession extends React.Component {
                             </Select>
                         </FormControl> : null}
                     <FormControl margin="normal" >
-                        <InputLabel htmlFor="juhutuminoustamine">Juhtumipõhine nõustamine</InputLabel>
+                        <InputLabel htmlFor="juhtuminoustamine">Juhtumipõhine nõustamine</InputLabel>
                         <Input
                             type="number"
                             step="0.01"
-                            min="0.01"
-                            value={this.state.formValues.juhutuminoustamine}
+                            value={this.state.formValues.juhtuminoustamine}
                             onKeyPress={this.handleNumChange}
                             onChange={this.handleChange}
-                            id = "juhutuminoustamine"
+                            id = "juhtuminoustamine"
                         >
                         </Input>
                     </FormControl>
@@ -251,7 +257,7 @@ class NewSession extends React.Component {
                         </Input>
                     </FormControl>
                     <FormControl margin="normal" >
-                        <InputLabel htmlFor="psuhhonoustamine">Psühholoogiline nõustamine, psühhoteraapia</InputLabel>
+                        <InputLabel htmlFor="psuhhonoustamine">Psüh. nõustamine</InputLabel>
                         <Input
                             type="number"
                             step="0.01"
@@ -338,20 +344,24 @@ class NewSession extends React.Component {
                         <FormLabel>Võrgustikutöö teiste organisatsioonidega</FormLabel>
                     </FormControl>
                     <FormControl margin="normal" >
-                        <InputLabel htmlFor="umarlaud">Juhtumipõhiste ümarlaudade arv (v.a. MARAC)</InputLabel>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            value={this.state.formValues.umarlaud}
-                            onKeyPress={this.handleNumChange}
-                            onChange={this.handleChange}
-                            id = "umarlaud"
-                        >
-                        </Input>
+                        <FormLabel>Juhtumipõhine ümarlaud (v.a. MARAC)</FormLabel>
+                        <RadioGroup classname={classes.radiogroup}>
+                            <FormControlLabel control={
+                                <Radio
+                                    checked={this.state.formValues.umarlaud === 1}
+                                    onClick={() => this.radioChange("umarlaud", 1)}
+                                    />
+                            } label="Jah"/>
+                            <FormControlLabel control={
+                                <Radio
+                                    checked={this.state.formValues.umarlaud === 0}
+                                    onClick={() => this.radioChange("umarlaud", 0)}/>
+                            } label="Ei"/>
+                        </RadioGroup>
                     </FormControl>
                     <FormControl margin="normal" fullWidth>
                         <FormLabel>Suunatud MARACi</FormLabel>
-                        <RadioGroup>
+                        <RadioGroup classname={classes.radiogroup}>
                             <FormControlLabel control={
                                 <Radio
                                     checked={this.state.formValues.marac === 1}

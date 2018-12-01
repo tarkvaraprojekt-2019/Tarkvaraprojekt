@@ -149,7 +149,7 @@ class Session extends React.Component {
             sidevahendid: "",
             kriisinoustamine: 0,
             kriisinoustamise_aeg: "teadmata",
-            juhutuminoustamine: 0,
+            juhtuminoustamine: 0,
             vorgustikutoo: 0,
             psuhhonoustamine: 0,
             juuranoustamine: 0,
@@ -181,7 +181,7 @@ class Session extends React.Component {
     render() {
         const {classes} = this.props;
         let dateValue = new Date().toDateInputValue();
-        return <Layout title="Uus juhtum">
+        return <Layout title="Sessioon">
             <Typography variant="h4" gutterBottom>
                 Sessioon
             </Typography>
@@ -272,15 +272,15 @@ class Session extends React.Component {
                                     </Select>
                                 </FormControl> : null}
                             <FormControl margin="normal">
-                                <InputLabel htmlFor="juhutuminoustamine">Juhtumipõhine nõustamine</InputLabel>
+                                <InputLabel htmlFor="juhtuminoustamine">Juhtumipõhine nõustamine</InputLabel>
                                 <Input
                                     disabled={!this.state.editingEnabled}
                                     type="number"
                                     step="0.01"
-                                    value={this.state.formValues.juhutuminoustamine}
+                                    value={this.state.formValues.juhtuminoustamine}
                                     onKeyPress={this.handleNumChange}
                                     onChange={this.handleChange}
-                                    id="juhutuminoustamine"
+                                    id="juhtuminoustamine"
                                 >
                                 </Input>
                             </FormControl>
@@ -298,8 +298,7 @@ class Session extends React.Component {
                                 </Input>
                             </FormControl>
                             <FormControl margin="normal">
-                                <InputLabel htmlFor="psuhhonoustamine">Psühholoogiline nõustamine,
-                                    psühhoteraapia</InputLabel>
+                                <InputLabel htmlFor="psuhhonoustamine">Psüh. nõustamine</InputLabel>
                                 <Input
                                     disabled={!this.state.editingEnabled}
                                     type="number"
@@ -392,18 +391,22 @@ class Session extends React.Component {
                             <FormControl margin="normal" fullWidth>
                                 <FormLabel>Võrgustikutöö teiste organisatsioonidega</FormLabel>
                             </FormControl>
-                            <FormControl margin="normal">
-                                <InputLabel htmlFor="umarlaud">Juhtumipõhiste ümarlaudade arv (v.a. MARAC)</InputLabel>
-                                <Input
-                                    disabled={!this.state.editingEnabled}
-                                    type="number"
-                                    step="0.01"
-                                    value={this.state.formValues.umarlaud}
-                                    onKeyPress={this.handleNumChange}
-                                    onChange={this.handleChange}
-                                    id="umarlaud"
-                                >
-                                </Input>
+                            <FormControl margin="normal" >
+                                <FormLabel>Juhtumipõhine ümarlaud (v.a. MARAC)</FormLabel>
+                                <RadioGroup>
+                                    <FormControlLabel control={
+                                        <Radio
+                                            disabled={!this.state.editingEnabled}
+                                            checked={this.state.formValues.umarlaud === 1}
+                                            onClick={() => this.radioChange("marac", 1)}/>
+                                    } label="Jah"/>
+                                    <FormControlLabel control={
+                                        <Radio
+                                            disabled={!this.state.editingEnabled}
+                                            checked={this.state.formValues.umarlaud === 0}
+                                            onClick={() => this.radioChange("marac", 0)}/>
+                                    } label="Ei"/>
+                                </RadioGroup>
                             </FormControl>
                             <FormControl margin="normal" fullWidth>
                                 <FormLabel>Suunatud MARACi</FormLabel>
@@ -560,7 +563,7 @@ class Session extends React.Component {
                                     editingEnabled: !this.state.editingEnabled
                                 })}
                             >
-                                MUUDA JUHTUMI ANDMEID
+                                MUUDA SESSIOONI ANDMEID
                             </Button> : null}
 
                         {this.state.editingEnabled ?
