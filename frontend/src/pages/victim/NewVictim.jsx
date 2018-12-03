@@ -55,8 +55,13 @@ class NewVictim extends React.Component {
         this.axios.post("create_victim.php", this.state.formValues)
             .then(res => {
                 let data = res.data;
-                console.log("result: ", data)
-                navigate("/victim/" + data)
+                if (data.length === 0)  {
+                    this.setState({error: 'Tekkis ootamatu viga.'});
+                    setTimeout(() => this.setState({error: ''}), 6000);
+                } else {
+                    console.log("result: ", data)
+                    navigate("/victim/" + data)
+                }
             })
             .catch(err => {
                 if (err.message === "Request failed with status code 400") {
