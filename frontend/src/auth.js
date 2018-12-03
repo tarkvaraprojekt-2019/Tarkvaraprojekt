@@ -35,16 +35,6 @@ export function handleLogin({ username, password }) {
           'Auth': auth,
       }
   })
-  
-      
-//   if (username === `gatsby` && password === `demo`) {
-//     console.log(`Credentials match! Setting the active user.`)
-//     return setUser({
-//       name: `Jim`,
-//       legalName: `James K. User`,
-//       email: `jim@example.org`,
-//     })
-//   }
 
   return false
 }

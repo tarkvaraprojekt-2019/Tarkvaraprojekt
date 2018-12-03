@@ -28,7 +28,6 @@ const styles = theme => ({
         margin: theme.spacing.unit * 4,
         display: 'flex',
         flexDirection: 'row',
-        //justifyContent: '',
         padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
             .spacing.unit * 3}px`,
     },
