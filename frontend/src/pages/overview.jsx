@@ -83,6 +83,7 @@ class Overview extends React.Component {
                 }
                 setTimeout(() => this.setState({error: ''}), 6000);
                 console.log("search err: ", err)
+                this.setState({results: []});
                 this.setState({drawerOpen: true});
             })
     }
