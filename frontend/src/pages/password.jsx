@@ -8,11 +8,11 @@ import withRoot from '../withRoot';
 
 import Layout from '../components/Layout';
 import Paper from '@material-ui/core/Paper/Paper';
-import TextField from '@material-ui/core/TextField/TextField';
 import Button from '@material-ui/core/Button/Button';
 import FormHelperText from '@material-ui/core/es/FormHelperText/FormHelperText';
 
 import { getName } from '../auth';
+import DoublePassword from '../components/DoublePassword';
 
 const styles = theme => ({
   root: {
@@ -28,11 +28,8 @@ const styles = theme => ({
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
       .spacing.unit * 3}px`,
   },
-  input: {
-    margin: theme.spacing.unit,
-  },
-});
 
+});
 
 class ChangePassword extends React.Component {
   static propTypes = {
@@ -43,7 +40,6 @@ class ChangePassword extends React.Component {
     formValues: {
       name: getName(),
       password: '',
-      password_again: '',
       action: 'set_pass',
     },
     error: '',
@@ -52,8 +48,9 @@ class ChangePassword extends React.Component {
 
   handleSend = event => {
     event.preventDefault();
-    if (this.state.formValues.password !== this.state.formValues.password_again) {
-      this.setState({ formError: 'Viga. Paroolid ei ole võrdsed. ' });
+    if (!this.state.isCorrect) {
+      this.setState({ error: 'Viga. Paroolid ei ole korrektsed.' });
+      setTimeout(() => this.setState({ error: '' }), 6000);
       return;
     }
     this.props.axios.post('manage_users.php', this.state.formValues)
@@ -72,17 +69,11 @@ class ChangePassword extends React.Component {
       });
   };
 
-  handleChange = event => {
+  handlePassword = (isCorrect, password, formError) => {
+    const oldForm = this.state.formValues;
+    const formValues = Object.assign({}, oldForm, { password });
 
-    const key = event.target.id;
-    const value = event.target.value;
-
-    const formValues = this.state.formValues;
-    formValues[key] = value;
-
-    this.setState((state, props) =>
-      Object.assign({}, state, { formValues }),
-    );
+    this.setState({ isCorrect, formError, formValues });
   };
 
   render() {
@@ -95,27 +86,7 @@ class ChangePassword extends React.Component {
             <FormHelperText className={classes.input}>
               {this.state.formError}
             </FormHelperText>
-            <TextField
-              type="password"
-              id="password_again"
-              label="Parool"
-              className={classes.input}
-              value={this.state.formValues.password_again}
-              onChange={this.handleChange}
-              fullWidth
-              required
-            />
-            <TextField
-              type="password"
-              id="password"
-              label="Parool uuesti"
-              className={classes.input}
-              value={this.state.formValues.password}
-              onChange={this.handleChange}
-              margin="normal"
-              fullWidth
-              required
-            />
+            <DoublePassword checkCallback={this.handlePassword}/>
             <Button
               type="submit"
               className={classes.input}

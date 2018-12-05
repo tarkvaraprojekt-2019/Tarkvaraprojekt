@@ -18,6 +18,8 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import Dialog from '@material-ui/core/Dialog/Dialog';
+import DoublePassword from '../../components/DoublePassword';
+import FormHelperText from '@material-ui/core/es/FormHelperText/FormHelperText';
 
 
 const styles = theme => ({
@@ -57,8 +59,10 @@ class NewUser extends React.Component {
       action: 'create',
     },
     error: '',
+    formError: '',
     users: [],
     dialogOpen: false,
+
   };
 
   getUsers = () => {
@@ -114,6 +118,12 @@ class NewUser extends React.Component {
     this.setState({ dialogOpen: false });
   };
   addNewUser = () => {
+    if (!this.state.isCorrect) {
+      this.setState({ error: 'Viga. Paroolid ei ole korrektsed.' });
+      setTimeout(() => this.setState({ error: '' }), 6000);
+      return;
+
+    }
     this.axios.post('manage_users.php', this.state.userFields)
       .then(res => {
         const data = res.data;
@@ -131,6 +141,15 @@ class NewUser extends React.Component {
       });
   };
 
+  handlePassword = (isCorrect, password, formError) => {
+
+    const userFieldsOld = this.state.userFields;
+    const userFields = Object.assign({}, userFieldsOld, { password });
+
+    this.setState({ userFields, isCorrect, formError });
+
+  };
+
   render() {
     const { classes } = this.props;
 
@@ -141,7 +160,9 @@ class NewUser extends React.Component {
         </Typography>
         <Paper className={classes.paper}>
           <form className={classes.form} autoComplete="off" onSubmit={this.handleNew}>
-
+            <FormHelperText className={classes.input}>
+              {this.state.formError}
+            </FormHelperText>
             <TextField
               type="username"
               id="name"
@@ -153,17 +174,7 @@ class NewUser extends React.Component {
               fullWidth
               required
             />
-            <TextField
-              type="password"
-              id="password"
-              label="Parool"
-              className={classes.input}
-              value={this.state.userFields.password}
-              onChange={this.handleChange}
-              margin="normal"
-              fullWidth
-              required
-            />
+            <DoublePassword checkCallback={this.handlePassword}/>
             <Button
               type="submit"
               className={classes.input}

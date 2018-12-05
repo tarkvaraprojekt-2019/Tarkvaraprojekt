@@ -13,7 +13,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 import { navigate } from 'gatsby';
 import { Redirect } from '@reach/router';
-import { handleLogin, setToken, isLoggedIn } from '../auth';
+import { handleLogin, isLoggedIn, setToken } from '../auth';
 import { FormHelperText } from '@material-ui/core';
 
 const styles = theme => ({
@@ -111,7 +111,7 @@ class SignIn extends React.Component {
               </FormHelperText>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Kasutajatunnus</InputLabel>
-                <Input id="email" name="email" autoComplete="email" autoFocus onChange={ this.handleUsername }/>
+                <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.handleUsername}/>
               </FormControl>
 
               <FormControl margin="normal" required fullWidth>
