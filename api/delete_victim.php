@@ -15,7 +15,7 @@ $body = json_decode(file_get_contents("php://input"), true);
 //Check if id exists
 if (!isset($body["id"])) {
 	http_response_code(400);
-	echo("Missing id");
+	echo "Missing id";
 	exit();
 }
 

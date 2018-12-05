@@ -37,11 +37,13 @@ const IncidentTable = props => {
                     <Table >
                         <TableHead>
                             <TableRow>
-                                <TableCell>Viimati muudetud</TableCell>
                                 <TableCell>Piirkond</TableCell>
-                                <TableCell>Füüsiline vägivald</TableCell>
-                                <TableCell>Vaimne vägivald</TableCell>
-                                <TableCell>Vägivallatseja sugu</TableCell>
+                                <TableCell>Suhtluskeel</TableCell>
+                                <TableCell>Vanus</TableCell>
+                                <TableCell>Elukoht</TableCell>
+                                <TableCell>Viimati muudetud</TableCell>
+                                <TableCell>Muutja</TableCell>
+
                             </TableRow>
                         </TableHead>
 
@@ -59,11 +61,13 @@ const IncidentTable = props => {
                                         })
                                     }}
                                     >
-                                        <TableCell component="th" scope="row">{n.muutmisaeg === null || n.muutmisaeg === "" ? "Teadmata" : n.muutmisaeg}</TableCell>
-                                        <TableCell>{n.piirkond}</TableCell>
-                                        <TableCell>{n.fuusiline_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
-                                        <TableCell>{n.vaimne_vagivald === 1 ? "Jah" : "Ei"}</TableCell>
-                                        <TableCell>{n.vagivallatseja_sugu}</TableCell>
+                                        <TableCell component="th" scope="row">{n.piirkond}</TableCell>
+                                        <TableCell>{n.keel === null ||n.keel === "teadmata" || n.keel === "" ? "Teadmata" : n.keel}</TableCell>
+                                        <TableCell>{n.vanus === null ||n.vanus === "teadmata" || n.vanus === "" ? "Teadmata" : n.vanus}</TableCell>
+                                        <TableCell>{n.elukoht === null ||n.elukoht === "teadmata" || n.elukoht === "" ? "Teadmata" : n.elukoht}</TableCell>
+                                        <TableCell>{n.muutmisaeg === null || n.muutmisaeg === "" ? "Teadmata" : n.muutmisaeg}</TableCell>
+                                        <TableCell>{n.muutja === null ||n.muutja === "teadmata" || n.muutja === "" ? "Teadmata" : n.muutja}</TableCell>
+
                                     </TableRow>
                                 );
                             })}

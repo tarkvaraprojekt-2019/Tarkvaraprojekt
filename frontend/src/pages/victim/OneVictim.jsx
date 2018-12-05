@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 
 
 import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField'
 
 import Typography from '@material-ui/core/Typography';
 
@@ -18,7 +19,7 @@ import withRoot from '../../withRoot';
 import IncidentTable from '../../components/IncidentTable';
 
 import Layout from '../../components/Layout';
-import { navigate } from 'gatsby';
+import {navigate} from 'gatsby';
 
 const styles = theme => ({
     root: {
@@ -40,9 +41,9 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
-  disabledPaper: {
-    backgroundColor: '#e47e001c',
-  },
+    disabledPaper: {
+        backgroundColor: '#e47e001c',
+    },
 });
 
 
@@ -65,8 +66,15 @@ class Victim extends React.Component {
 
     handleChange = event => {
         const formValues = this.state.formValues;
-        formValues[event.target.id] = event.target.value;
-        this.setState({ formValues });
+        let value;
+        try {
+            value = parseFloat(event.target.value)
+        } catch (e) {
+            value = event.target.value
+        }
+        if (isNaN(value) || value === undefined) value = event.target.value
+        formValues[event.target.id] = value;
+        this.setState({formValues});
     };
 
     state = {
@@ -75,15 +83,15 @@ class Victim extends React.Component {
         incidents: [{
             id: 0,
             piirkond: "teadmata"
-        }], 
-        editingEnabled : false,
+        }],
+        editingEnabled: false,
         formValues: {
             id: this.props.victimID,
             first_name: "",
-            last_name: "", 
-            phone: "", 
-            email: "", 
-            national_id: "", 
+            last_name: "",
+            phone: "",
+            email: "",
+            national_id: "",
         },
     };
 
@@ -98,35 +106,46 @@ class Victim extends React.Component {
                 national_id: "",
             },
         })
-        .then( res => {
-            console.log(res.data);
+            .then(res => {
+                console.log(res.data);
 
-            this.setState({formValues: res.data[0]})
-        })
-        .catch( err => console.log("search err: ", err))
+                this.setState({formValues: res.data[0]})
+
+            })
+            .catch(err => console.log("search err: ", err))
     };
-
 
 
     updateVictim = () => {
-        this.axios.post("update_victim.php", this.state.formValues);
-        this.getVictim()
+        console.log(this.state.formValues)
+        this.axios.post("update_victim.php", this.state.formValues).then(res => {
+            console.log("update", res)
+            this.getVictim()
+            this.setState({
+                editingEnabled: !this.state.editingEnabled
+            });
+        });
+
     };
 
+    handleUpdate = event => {
+        event.preventDefault()
+        this.updateVictim()
+    }
 
     getIncidents = () => {
         this.axios.get('get_incidents.php', {
-            params:{
+            params: {
                 kliendi_nr: this.props.victimID,
             }
         })
-        .then( res => {
-            console.log(res);
-            this.setState({
-                incidents: res.data
+            .then(res => {
+                console.log(res);
+                this.setState({
+                    incidents: res.data
+                })
             })
-        })
-        .catch( err => console.log("search err: ", err))
+            .catch(err => console.log("search err: ", err))
     };
 
     render() {
@@ -137,132 +156,125 @@ class Victim extends React.Component {
                 <Typography variant="h4" gutterBottom>
                     Isiku profiil
                 </Typography>
-              <Paper className={classNames(classes.paper, {
-                [classes.disabledPaper]: !this.state.editingEnabled,
-              })}>
-                <Grid container
-                      direction="column"
-                      justify="center"
-                      alignItems="center"
-                      spacing = {8}>
-                    <Grid item>
+                <Paper className={classNames(classes.paper, {
+                    [classes.disabledPaper]: !this.state.editingEnabled,
+                })}>
 
-                            <form className={classes.form}>
-                                <FormControl margin="normal" required fullWidth>
-                                    <InputLabel htmlFor="victimID">ID</InputLabel>
-                                    <Input
-                                        id="id"
-                                        disabled
-                                        placeholder="1145"
-                                        value={this.props.victimID}
-                                    />
-                                </FormControl>
-                                <FormControl margin="normal" required fullWidth>
-                                    <InputLabel htmlFor="firstName">Eesnimi</InputLabel>
-                                    <Input
-                                        id="first_name"
-                                        disabled = {!this.state.editingEnabled}
-                                        // placeholder="Mari"
-                                        onChange={this.handleChange}
-                                        value={this.state.formValues.first_name}
-                                    />
-                                </FormControl>
-                                <FormControl margin="normal" required fullWidth>
-                                    <InputLabel htmlFor="lastName">Perekonnanimi</InputLabel>
-                                    <Input
-                                        id="last_name"
-                                        disabled = {!this.state.editingEnabled}
-                                        // placeholder="Maasikas"
-                                        onChange={this.handleChange}
-                                        value={this.state.formValues.last_name}
-                                    />
-                                </FormControl>
-                                <FormControl margin="normal" required fullWidth>
-                                    <InputLabel htmlFor="national_id">Isikukood</InputLabel>
-                                    <Input
-                                        type="number"
-                                        id="national_id"
-                                        disabled = {!this.state.editingEnabled}
-                                        // placeholder="Maasikas"
-                                        onChange={this.handleChange}
-                                        value={this.state.formValues.national_id}
-                                    />
-                                </FormControl>
-                                <FormControl margin="normal" fullWidth>
-                                    <InputLabel htmlFor="victimTel">Telefoninr</InputLabel>
-                                    <Input
-                                        type="number"
-                                        id="phone"
-                                        disabled = {!this.state.editingEnabled}
-                                        // placeholder="55889933"
-                                        onChange={this.handleChange}
-                                        value={this.state.formValues.phone}
-                                    />
-                                </FormControl>
-                                <FormControl margin="normal" fullWidth>
-                                    <InputLabel htmlFor="victimEmail">E-maili aadress</InputLabel>
-                                    <Input
-                                        id="email"
-                                        disabled = {!this.state.editingEnabled}
-                                        // placeholder="marimaasikas@mail.ee"
-                                        onChange={this.handleChange}
-                                        value={this.state.formValues.email}
-                                    />
-                                </FormControl>
-                            </form>
 
-                    </Grid>
-                    <Grid item>
-                        { !this.state.editingEnabled ?
-                            <Button
-                                className={classes.button}
-                                variant="contained"
-                                color="primary"
-                                onClick={ e => this.setState({
-                                    editingEnabled: !this.state.editingEnabled
-                                })}
-                            >
-                                MUUDA ISIKUANDMEID
-                            </Button> : null }
+                    <form className={classes.form} onSubmit={this.handleUpdate}>
+                        <TextField
+                            fullWidth
+                            id="id"
+                            label="ID"
+                            className={classes.input}
 
-                        { this.state.editingEnabled ?
-                            <Button
-                                className={classes.button}
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                onClick={ e => {
+                            disabled
+                            placeholder="1145"
+                            value={this.props.victimID}
+                        />
+                            <TextField
+                                fullWidth
+                                id="first_name"
+                                label="Eesnimi"
+                                className={classes.input}
 
-                                    this.setState({
-                                        editingEnabled: !this.state.editingEnabled
-                                    });
+                                disabled={!this.state.editingEnabled}
+                                // placeholder="Mari"
+                                onChange={this.handleChange}
+                                value={this.state.formValues.first_name}
+                                inputProps={{pattern: "\\p{Letter}*"}}
+                            />
+                            <TextField
+                                id="last_name"
+                                label="Perekonnanimi"
+                                className={classes.input}
+                                fullWidth
+                                disabled={!this.state.editingEnabled}
+                                // placeholder="Maasikas"
+                                onChange={this.handleChange}
+                                value={this.state.formValues.last_name}
+                                inputProps={{pattern: "\\p{Letter}*"}}
 
-                                    this.updateVictim()
-                                }}
-                            >
-                                SALVESTA
-                            </Button> : null}
+                            />
+                            <TextField
+                                label="Isikukood"
+                                id="national_id"
+                                className={classes.input}
+                                disabled={!this.state.editingEnabled}
+                                fullWidth
+                                onChange={this.handleChange}
+                                value={this.state.formValues.national_id}
+                                inputProps={{pattern: "([1-6]\\d\\d(0[1-9]|1[0-2])(0[1-9]|1\\d|2\\d|30|31)\\d{4})?"}}
+                            />
+                            <TextField
+                                id="phone"
+                                label="Telefoninr"
+                                className={classes.input}
+                                disabled={!this.state.editingEnabled}
+                                fullWidth
+                                onChange={this.handleChange}
+                                value={this.state.formValues.phone}
+                                inputProps={{pattern: "\\d*"}}
+                            />
+                            <TextField
+                                label="E-maili aadress"
+                                id="email"
+                                type="email"
+                                className={classes.input}
+                                disabled={!this.state.editingEnabled}
+                                fullWidth
+                                onChange={this.handleChange}
+                                value={this.state.formValues.email}
+                            />
+                        <Grid container
+                              direction="column"
+                              justify="center"
+                              alignItems="center"
+                              spacing={8}>
+                            <Grid item>
+                                {!this.state.editingEnabled ?
+                                    <Button
+                                        className={classes.button}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={e => this.setState({
+                                            editingEnabled: !this.state.editingEnabled
+                                        })}
+                                    >
+                                        MUUDA ISIKUANDMEID
+                                    </Button> : null}
 
-                        {this.state.editingEnabled ?
-                            <Button
-                                className={classes.button}
-                                variant="contained"
-                                color="primary"
-                                onClick={ e => {
-                                    this.setState({
-                                        editingEnabled: !this.state.editingEnabled
-                                    });
-                                    this.getVictim()
-                                }}
-                            >
-                                TÜHISTA
-                            </Button> : null}
+                                {this.state.editingEnabled ?
+                                    <Button
+                                        className={classes.button}
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary">
+                                        SALVESTA
+                                    </Button> : null}
 
-                    </Grid>
-                </Grid>
+                                {this.state.editingEnabled ?
+                                    <Button
+                                        className={classes.button}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={e => {
+                                            this.setState({
+                                                editingEnabled: !this.state.editingEnabled
+                                            });
+                                            this.getVictim()
+                                        }}
+                                    >
+                                        TÜHISTA
+                                    </Button> : null}
+
+                            </Grid>
+                        </Grid>
+                    </form>
+
                 </Paper>
 
-                    <IncidentTable classes={classes} uid={this.props.victimID} incidents ={this.state.incidents} />
+                <IncidentTable classes={classes} uid={this.props.victimID} incidents={this.state.incidents}/>
 
 
                 <Button
@@ -276,10 +288,10 @@ class Victim extends React.Component {
                 </Button>
 
 
-
             </Layout>
         );
     }
+
 }
 
 export default withRoot(withStyles(styles)(Victim));

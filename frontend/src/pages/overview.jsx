@@ -57,6 +57,7 @@ class Overview extends React.Component {
     this.setState((state, props) =>
       Object.assign({}, state, { searchFields }),
     );
+    window.localStorage.clientFields = JSON.stringify(searchFields); // HACK! replace with redux, when feeling like you have time
   };
 
   searchVictim = (searchFields) => {
@@ -82,6 +83,7 @@ class Overview extends React.Component {
         }
         setTimeout(() => this.setState({ error: '' }), 6000);
         console.log('search err: ', err);
+        this.setState({ results: [] });
         this.setState({ drawerOpen: true });
       });
   };
@@ -109,68 +111,69 @@ class Overview extends React.Component {
   render() {
     const { classes } = this.props;
 
-    const field = (id, label) => (
+    const field = (id, label, pattern) => (
       <TextField
-        type={id === 'id' || id === 'phone' || id === 'national_id' ? 'number' : 'text'}
+        type={id === 'email' ? 'email' : 'text'}
         id={id}
         label={label}
         className={classes.input}
         value={this.state.searchFields[id]}
         onChange={this.handleChange}
         margin="normal"
+        inputProps={{ pattern: pattern }}
       />
     );
     const showVictims = this.state.results.length !== 0;
     return (
       <Layout title="Ülevaade" error={this.state.error}>
-        <React.Fragment>
-          <Paper className={classes.paper}>
+        <Paper className={classes.paper}>
 
-            <form onSubmit={this.handleSearch}>
+          <form onSubmit={this.handleSearch}>
+            {field('id', 'ID', '\\d*')}
+            {field('first_name', 'Eesnimi', '\\p{Letter}*')}
+            {field('last_name', 'Perenimi', '\\p{Letter}*')}
+            {field('national_id', 'Isikukood', '([1-6]\\d\\d(0[1-9]|1[0-2])(0[1-9]|1\\d|2\\d|30|31)\\d{4})?')}
+            {field('phone', 'Telefoninumber', '([+]\\d+)?\\d*')}
+            {field('email', 'E-Mail', '(.*?)')}
 
-              {field('id', 'ID')}
-              {field('first_name', 'Eesnimi')}
-              {field('last_name', 'Perenimi')}
-              {field('national_id', 'Isikukood')}
-              {field('phone', 'Telefoninumber')}
-              {field('email', 'E-Mail')}
+            <Button
+              type="submit"
+              variant="outlined"
+              color="primary"
+              className={classes.input}
+            >
+              Otsi
+            </Button>
 
-              <Button
-                type="submit"
-                variant="outlined"
-                color="primary"
-                className={classes.input}
-              >
-                Otsi
-              </Button>
+          </form>
+        </Paper>
 
-            </form>
-          </Paper>
 
-          <Paper className={classes.paper}>
+        <Paper className={classes.paper}>
 
-            <Grid container
-                  direction="column"
-                  justify="center"
-                  alignItems="center"
-                  spacing={8}>
-              <Grid item>
-                {(showVictims && <VictimTable classes={classes} victims={this.state.results}/>)}
+          <Grid container
+                direction="column"
+                justify="center"
+                alignItems="center"
+                spacing={8}>
+            <Grid item>
+              {(showVictims && <VictimTable classes={classes} victims={this.state.results}/>)}
 
-              </Grid>
-              <Grid item>
-                <Link to={'victim/new/'} state={this.state.searchFields}>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                  >
-                    Uus isik
-                  </Button>
-                </Link>
-              </Grid>
             </Grid>
-          </Paper>
-        </React.Fragment>
+            <Grid item>
+              <Link to={'victim/new/'}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                >
+                  Uus isik
+                </Button>
+              </Link>
+            </Grid>
+          </Grid>
+        </Paper>
+
+
       </Layout>
     );
   }

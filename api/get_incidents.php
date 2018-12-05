@@ -8,7 +8,7 @@ require "verify_token.php";
 
 if (!isset($_GET["kliendi_nr"])) {
 	http_response_code(400);
-	echo("Missing kliendi_nr");
+	echo "Missing kliendi_nr";
 	exit();
 }
 

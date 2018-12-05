@@ -8,7 +8,7 @@ require "verify_token.php";
 
 if (!isset($_GET["incident_id"])) {
 	http_response_code(400);
-	echo("Missing incient_id");
+	echo "Missing incient_id";
 	exit();
 }
 
