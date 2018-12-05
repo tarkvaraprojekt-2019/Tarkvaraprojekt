@@ -1,21 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from '@reach/router';
+import { Link } from '@reach/router';
 
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
 import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField'
+import TextField from '@material-ui/core/TextField';
 
 import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout';
 
-import {isBrowser} from '../../auth';
-import {navigate} from "gatsby";
+import { isBrowser } from '../../auth';
+import { navigate } from 'gatsby';
 
 
 const styles = theme => ({
@@ -63,15 +63,11 @@ class NewVictim extends React.Component {
 
 
     componentWillMount() {
-        const formValues = isBrowser && window.localStorage.clientFields
-            ? JSON.parse(window.localStorage.clientFields)
-            : {}
+      if (isBrowser && this.props.location && this.props.location.state) {
+        const formValues = this.props.location.state;
 
-        if (formValues !== null) {
-            this.setState((state, props) =>
-                Object.assign({}, state, {formValues}))
+        this.setState({ formValues });
         }
-
     }
 
     handleChange = event => {
