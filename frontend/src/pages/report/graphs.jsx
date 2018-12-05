@@ -18,6 +18,8 @@ import withRoot from '../../withRoot';
 import Layout from '../../components/Layout';
 import SimpleLineChart from '../../components/SimpleLineChart';
 import { isBrowser } from '../../auth';
+import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox/Checkbox';
 
 const styles = theme => ({
   root: {
@@ -143,7 +145,7 @@ class Graphs extends React.Component {
     const paramValues = Object.assign(
       {},
       this.state.formValues,
-      this.defaultChips.unique
+      this.state.chipData,
     );
 
     this.props.axios
@@ -159,12 +161,10 @@ class Graphs extends React.Component {
       .catch(err => console.log('report err: ', err));
   }
 
-  handleDelete = key => () => {
-    this.setState(state => {
-      const chipData = [...state.chipData];
-      delete chipData[key];
-      return { chipData };
-    });
+  checkboxChange = field => {
+    const formValues = this.state.formValues;
+    formValues[field] = (formValues[field] === 0 || formValues[field] === '') ? 1 : 0;
+    this.setState({ formValues });
   };
 
   render() {
@@ -189,7 +189,19 @@ class Graphs extends React.Component {
 
     const error = alates && kuni;
 
-    const chips = Object.entries(this.state.chipData).map(([key, label]) => (
+    const checkbox = (id, statename, label) => (
+      <FormControlLabel control={
+        <Checkbox
+          checked={statename === 1}
+          onClick={() => {
+            this.checkboxChange(id);
+          }}
+        />
+      } label={label}/>
+    );
+
+    const checkboxes = Object.entries(this.state.chipData).map(([key, label]) => (
+      checkbox(key)
             <Chip
               key={key}
               label={label}
@@ -197,6 +209,7 @@ class Graphs extends React.Component {
               className={classes.input}
             />
     ))
+
 
     return (
       <Layout title="Aruandlus" error="">

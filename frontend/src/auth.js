@@ -16,7 +16,7 @@ export const setToken = token => {
 export const getBaseUrl = () => {
   if (!isBrowser) return false
   const host = window.location.hostname;
-  const baseurl = host === 'localhost' ? 'http://localhost' : window.location.hostname;
+  const baseurl = host === 'localhost' ? 'http://localhost' : '';
   return baseurl
 }
 
