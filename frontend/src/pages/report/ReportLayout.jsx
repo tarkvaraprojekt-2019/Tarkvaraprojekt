@@ -1,15 +1,10 @@
-import React, { Children } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, navigate } from 'gatsby';
+import { navigate } from 'gatsby';
 
 import { withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Paper from '@material-ui/core/Paper';
-
-
-
-import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout';
 //import ReportImg from 'report.png';

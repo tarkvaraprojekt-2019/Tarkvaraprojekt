@@ -57,7 +57,6 @@ class Overview extends React.Component {
     this.setState((state, props) =>
       Object.assign({}, state, { searchFields }),
     );
-    window.localStorage.clientFields = JSON.stringify(searchFields); // HACK! replace with redux, when feeling like you have time
   };
 
   searchVictim = (searchFields) => {
