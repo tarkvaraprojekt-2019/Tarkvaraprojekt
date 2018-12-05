@@ -40,7 +40,7 @@ class Accounts extends React.Component {
   };
   handleChangePassword = (event) => {
     this.manageUsers({
-      action: 'create',
+      action: 'set_pass',
       name: this.state.passwordSelectedName,
       password: this.state.password,
     });

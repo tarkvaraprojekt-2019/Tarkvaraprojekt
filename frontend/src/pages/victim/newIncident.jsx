@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from '@reach/router';
 
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -24,9 +23,7 @@ import withRoot from '../../withRoot';
 import Layout from '../../components/Layout/index';
 
 import { piirkonnad } from '../../util';
-import {navigate} from "gatsby";
-
-
+import { navigate } from 'gatsby';
 
 
 const styles = theme => ({
@@ -260,7 +257,6 @@ class NewIncident extends React.Component {
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
-                                                teadmata_vagivald: 0
                                             }
                                         }))
                                     }}
@@ -274,7 +270,6 @@ class NewIncident extends React.Component {
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
-                                                teadmata_vagivald: 0
                                             }
                                         }))
                                     }}
@@ -288,7 +283,6 @@ class NewIncident extends React.Component {
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
-                                                teadmata_vagivald: 0
                                             }
                                         }))
                                     }}
@@ -302,7 +296,6 @@ class NewIncident extends React.Component {
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
-                                                teadmata_vagivald: 0
                                             }
                                         }))
                                     }}
@@ -316,7 +309,6 @@ class NewIncident extends React.Component {
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
-                                                teadmata_vagivald: 0
                                             }
                                         }))
                                     }}
@@ -330,11 +322,6 @@ class NewIncident extends React.Component {
                                         this.setState(prevState => ({
                                             formValues: {
                                                 ...prevState.formValues,
-                                                inimkaubandus: 0,
-                                                seksuaalne_vagivald: 0,
-                                                majanduslik_vagivald: 0,
-                                                vaimne_vagivald: 0,
-                                                fuusiline_vagivald: 0
                                             }
                                         }))
                                     }}

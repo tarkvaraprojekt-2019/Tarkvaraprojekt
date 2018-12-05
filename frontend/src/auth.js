@@ -16,17 +16,17 @@ export const setToken = token => {
 export const getBaseUrl = () => {
   if (!isBrowser) return false
   const host = window.location.hostname;
-  const baseurl = host === "localhost" ? "http://localhost" : "https://andmebaas.naistetugi.ee"
+  const baseurl = host === 'localhost' ? 'http://localhost' : window.location.hostname;
   return baseurl
 }
 
 export function handleLogin({ username, password }) {
   if (!isBrowser) return false
 
-  const user = username
-  const pass = password
+  const user = btoa(username);
+  const pass = btoa(password);
 
-  const auth = btoa(user) + ':' + btoa(pass);
+  const auth = user + ':' + pass;
 
   return axios({
       method: 'get', 
@@ -35,18 +35,6 @@ export function handleLogin({ username, password }) {
           'Auth': auth,
       }
   })
-  
-      
-//   if (username === `gatsby` && password === `demo`) {
-//     console.log(`Credentials match! Setting the active user.`)
-//     return setUser({
-//       name: `Jim`,
-//       legalName: `James K. User`,
-//       email: `jim@example.org`,
-//     })
-//   }
-
-  return false
 }
 
 export const isLoggedIn = () => {

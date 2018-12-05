@@ -10,10 +10,14 @@ $update_params = array();
 $params = array("first_name", "last_name", "national_id", "phone", "email");
 
 //Loop through all parameters to see if they were asked to be updated
+$c = 7; //Update field count if everything was to be updated
 foreach ($params as $param) {
+	$update_fields[] = $param;
 	if ($body[$param] !== "") {
-		$update_fields[] = $param;
 		$update_params[] = $body[$param];
+	} else {
+		$c--;
+		$update_params[] = null;
 	}
 }
 
@@ -24,7 +28,6 @@ $update_fields[] = "muutmisaeg";
 $update_params[] = date("Y-m-d");
 
 //At least some info has to exist about the victim
-$c = count($update_fields);
 if ($c <= 2) {
 	http_response_code(400);
 	echo "Missing parameters";

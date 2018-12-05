@@ -46,6 +46,13 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
+    radiogroup: {
+        width: 'auto',
+        height: 'auto',
+        display: 'flex',
+        flexWrap: 'nowrap',
+        flexDirection: 'row',
+    }
 });
 
 
@@ -71,7 +78,6 @@ class NewSession extends React.Component {
         const formValues = this.state.formValues
         formValues[event.target.id] = event.target.value
         this.setState({formValues});
-        console.log(this.state)
     };
     handleNumChange = evt => {
             const keyCode = evt.keyCode || evt.which;
@@ -84,13 +90,11 @@ class NewSession extends React.Component {
         const formValues = this.state.formValues
         formValues[field] = (formValues[field] === 0 || formValues[field] === "") ? 1 : 0;
         this.setState({formValues});
-        console.log(this.state)
     };
     radioChange = (field, value) => {
         const formValues = this.state.formValues
         formValues[field] = value
         this.setState({formValues});
-        console.log(this.state)
     };
 
 
@@ -98,7 +102,7 @@ class NewSession extends React.Component {
         this.axios.post("create_session.php", this.state.formValues)
             .then( res => {
                 let data = res.data;
-                console.log("result: ", data)
+                console.log("result: ", res)
               navigate('/victim/' + this.props.victimID + '/' + this.props.incidentID + "/" + data);
             })
     }
@@ -112,7 +116,7 @@ class NewSession extends React.Component {
             incident_id: this.props.incidentID,
             kuupaev: NewSession.getDate(),
             kirjeldus: "",
-            sidevahendid: "",
+            sidevahendid: 0,
             kriisinoustamine: 0,
             kriisinoustamise_aeg: "teadmata",
             juhutuminoustamine: 0,
@@ -130,33 +134,54 @@ class NewSession extends React.Component {
             emo_kaasatud: 0,
             naistearst_kaasatud: 0,
             politsei_kaasatud: 0,
-            prokuratuur_kaasatud: "",
-            ohvriabi_kaasatud: "",
-            lastekaitse_kaasatud: "",
+            prokuratuur_kaasatud: 0,
+            ohvriabi_kaasatud: 0,
+            lastekaitse_kaasatud: 0,
             kov_kaasatud: 0,
             tsiviilkohus_kaasatud: 0,
             kriminaalkohus_kaasatud: 0,
-            haridusasutus_kaasatud: "",
-            mtu_kaasatud: "",
-            tuttavad_kaasatud: "",
+            haridusasutus_kaasatud: 0,
+            mtu_kaasatud: 0,
+            tuttavad_kaasatud: 0,
             markused: ""
         },
     };
 
+    handleSubmit = event => {
+        event.preventDefault()
+        this.createSession()
+    }
     render() {
+        const textfield = (id, label, value, pattern) => (
+
+            <TextField
+                label={label}
+                className={classes.input}
+                value={value}
+                onChange={this.handleChange}
+                id = {id}
+                inputProps={{pattern: pattern}}
+            />
+        )
+
+        const checkbox = (id, statename, label) => (
+            <FormControlLabel control={
+                <Checkbox
+                    checked={statename === 1}
+                    onClick={() => {
+                        this.checkboxChange(id)
+                    }}
+                />
+            } label= {label}/>
+        )
         const {classes} = this.props;
         return <Layout title="Uus juhtum">
             <Typography variant="h4" gutterBottom>
                 Lisa uus sessioon
             </Typography>
             <Paper className={classes.paper}>
-                <Grid container
-                      direction="column"
-                      justify="center"
-                      alignItems="center"
-                      spacing={8}>
-                    <Grid item>
-                <form className={classes.form}>
+
+                <form className={classes.form} onSubmit={this.handleSubmit}>
                     <FormControl margin="normal">
                         <TextField
                             value = {this.state.formValues.kuupaev}
@@ -170,13 +195,12 @@ class NewSession extends React.Component {
                         />
                     </FormControl>
                     <FormControl margin="normal" fullWidth>
-                        <InputLabel htmlFor="kirjeldus">Kirjeldus</InputLabel>
-                        <Input
+                        <TextField
+                            label="Kirjeldus"
                             value={this.state.formValues.kirjeldus}
                             onChange={this.handleChange}
                             id = "kirjeldus"
-                        >
-                        </Input>
+                        />
                     </FormControl>
                     <FormControl margin="normal" fullWidth>
                         <FormLabel>Kas nõustamine toimus sidevahendite abil?</FormLabel>
@@ -196,21 +220,13 @@ class NewSession extends React.Component {
                     <FormControl margin="normal" fullWidth >
                         <FormLabel>Osutatud teenused (tundide arv)</FormLabel>
                     </FormControl>
+                    {textfield("kriisinoustamine", "Kriisinõustamine", this.state.formValues.kriisinoustamine, "(\\d*)([.]\\d+)?")}
 
-                    <FormControl margin="normal" >
-                        <InputLabel htmlFor="kriisinoustamine">Kriisinõustamine</InputLabel>
-                        <Input
-                            type= "number"
-                            step="0.01"
-                            value={this.state.formValues.kriisinoustamine}
-                            onKeyPress={this.handleNumChange}
-                            onChange={this.handleChange}
-                            id = "kriisinoustamine"
-                        >
-                        </Input>
-                    </FormControl>
                     {parseInt(this.state.formValues.kriisinoustamine) > 0 ?
-                        <FormControl margin="normal">
+                        <FormControl>
+                            <div
+                                className={classes.input}
+                            >
                             <InputLabel htmlFor="kriisinoustamise_aeg">Kriisinõustamise aeg</InputLabel>
                             <Select
                                 value={this.state.formValues.kriisinoustamise_aeg}
@@ -223,131 +239,37 @@ class NewSession extends React.Component {
                                 <MenuItem value={"22:00-08:00"}>22:00-08:00</MenuItem>
 
                                 <MenuItem value={"teadmata"}>Teadmata</MenuItem>
-                            </Select>
+                            </Select></div>
                         </FormControl> : null}
-                    <FormControl margin="normal" >
-                        <InputLabel htmlFor="juhutuminoustamine">Juhtumipõhine nõustamine</InputLabel>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            min="0.01"
-                            value={this.state.formValues.juhutuminoustamine}
-                            onKeyPress={this.handleNumChange}
-                            onChange={this.handleChange}
-                            id = "juhutuminoustamine"
-                        >
-                        </Input>
-                    </FormControl>
-                    <FormControl margin="normal" >
-                        <InputLabel htmlFor="vorgustikutoo">Võrgustikutöö</InputLabel>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            value={this.state.formValues.vorgustikutoo}
-                            onKeyPress={this.handleNumChange}
-                            onChange={this.handleChange}
-                            id = "vorgustikutoo"
-                        >
-                        </Input>
-                    </FormControl>
-                    <FormControl margin="normal" >
-                        <InputLabel htmlFor="psuhhonoustamine">Psühholoogiline nõustamine, psühhoteraapia</InputLabel>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            value={this.state.formValues.psuhhonoustamine}
-                            onKeyPress={this.handleNumChange}
-                            onChange={this.handleChange}
-                            id = "psuhhonoustamine"
-                        >
-                        </Input>
-                    </FormControl>
-                    <FormControl margin="normal" >
-                        <InputLabel htmlFor="juuranoustamine">Juriidiline nõustamine</InputLabel>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            value={this.state.formValues.juuranoustamine}
-                            onKeyPress={this.handleNumChange}
-                            onChange={this.handleChange}
-                            id = "juuranoustamine"
-                        >
-                        </Input>
-                    </FormControl>
-                    <FormControl margin="normal" >
-                        <InputLabel htmlFor="tegevused_lapsega">Tegevused lapsega</InputLabel>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            value={this.state.formValues.tegevused_lapsega}
-                            onKeyPress={this.handleNumChange}
-                            onChange={this.handleChange}
-                            id = "tegevused_lapsega"
-                        >
-                        </Input>
-                    </FormControl>
-                    <FormControl margin="normal" >
-                        <InputLabel htmlFor="tugiteenused">Tugiteenused</InputLabel>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            value={this.state.formValues.tugiteenused}
-                            onKeyPress={this.handleNumChange}
-                            onChange={this.handleChange}
-                            id = "tugiteenused"
-                        >
-                        </Input>
-                    </FormControl>
-                    <FormControl margin="normal" >
-                        <InputLabel htmlFor="naise_majutus">Naise majutuspäevade arv</InputLabel>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            value={this.state.formValues.naise_majutus}
-                            onKeyPress={this.handleNumChange}
-                            onChange={this.handleChange}
-                            id = "naise_majutus"
-                        >
-                        </Input>
-                    </FormControl>
-                    <FormControl margin="normal" >
-                        <InputLabel htmlFor="laste_arv">Kaasasolevate laste arv</InputLabel>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            value={this.state.formValues.laste_arv}
-                            onKeyPress={this.handleNumChange}
-                            onChange={this.handleChange}
-                            id = "laste_arv"
-                        >
-                        </Input>
-                    </FormControl>
-                    <FormControl margin="normal" >
-                        <InputLabel htmlFor="laste_majutus">Laste majutuspäevade arv</InputLabel>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            value={this.state.formValues.laste_majutus}
-                            onKeyPress={this.handleNumChange}
-                            onChange={this.handleChange}
-                            id = "laste_majutus"
-                        >
-                        </Input>
-                    </FormControl>
+
+                    {textfield("juhutuminoustamine", "Juhtumipõhine nõustamine", this.state.formValues.juhutuminoustamine, "(\\d*)([.]\\d+)?")}
+                    {textfield("vorgustikutoo", "Võrgustikutöö", this.state.formValues.vorgustikutoo, "(\\d*)([.]\\d+)?")}
+                    {textfield("psuhhonoustamine", "Psüh. nõustamine", this.state.formValues.psuhhonoustamine, "(\\d*)([.]\\d+)?")}
+                    {textfield("juuranoustamine", "Juriidiline nõustamine", this.state.formValues.juuranoustamine, "(\\d*)([.]\\d+)?")}
+                    {textfield("tegevused_lapsega", "Tegevused lapsega", this.state.formValues.tegevused_lapsega, "(\\d*)([.]\\d+)?")}
+                    {textfield("tugiteenused", "Tugiteenused", this.state.formValues.tugiteenused, "(\\d*)([.]\\d+)?")}
+                    {textfield("naise_majutus", "Naise majutuspäevade arv", this.state.formValues.naise_majutus, "(\\d*)([.]\\d+)?")}
+                    {textfield("laste_arv", "Kaasasolevate laste arv", this.state.formValues.laste_arv, "(\\d*)([.]\\d+)?")}
+                    {textfield("laste_majutus", "Laste majutuspäevade arv", this.state.formValues.laste_majutus, "(\\d*)([.]\\d+)?")}
+
                     <FormControl margin="normal" fullWidth>
                         <FormLabel>Võrgustikutöö teiste organisatsioonidega</FormLabel>
                     </FormControl>
                     <FormControl margin="normal" >
-                        <InputLabel htmlFor="umarlaud">Juhtumipõhiste ümarlaudade arv (v.a. MARAC)</InputLabel>
-                        <Input
-                            type="number"
-                            step="0.01"
-                            value={this.state.formValues.umarlaud}
-                            onKeyPress={this.handleNumChange}
-                            onChange={this.handleChange}
-                            id = "umarlaud"
-                        >
-                        </Input>
+                        <FormLabel>Juhtumipõhine ümarlaud (v.a. MARAC)</FormLabel>
+                        <RadioGroup>
+                            <FormControlLabel control={
+                                <Radio
+                                    checked={this.state.formValues.umarlaud === 1}
+                                    onClick={() => this.radioChange("umarlaud", 1)}
+                                    />
+                            } label="Jah"/>
+                            <FormControlLabel control={
+                                <Radio
+                                    checked={this.state.formValues.umarlaud === 0}
+                                    onClick={() => this.radioChange("umarlaud", 0)}/>
+                            } label="Ei"/>
+                        </RadioGroup>
                     </FormControl>
                     <FormControl margin="normal" fullWidth>
                         <FormLabel>Suunatud MARACi</FormLabel>
@@ -369,110 +291,19 @@ class NewSession extends React.Component {
                     </FormControl>
                     <FormControl margin="normal" fullWidth>
                         <div>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.perearst_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("perearst_kaasatud")
-                                    }}
-                                />
-                            } label="Perearst"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.emo_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("emo_kaasatud")
-                                    }}
-                                />
-                            } label="EMO"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.naistearst_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("naistearst_kaasatud")
-                                    }}
-                                />
-                            } label="Naistearst"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.ohvriabi_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("ohvriabi_kaasatud")
-                                    }}
-                                />
-                            } label="Ohvriabi"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.politsei_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("politsei_kaasatud")
-                                    }}
-                                />
-                            } label="Politsei"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.prokuratuur_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("prokuratuur_kaasatud")
-                                    }}
-                                />
-                            } label="Prokuratuur"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.lastekaitse_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("lastekaitse_kaasatud")
-                                    }}
-                                />
-                            } label="Lastekaitse"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.kov_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("kov_kaasatud")
-                                    }}
-                                />
-                            } label="KOV sotsiaalabi"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.kriminaalkohus_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("kriminaalkohus_kaasatud")
-                                    }}
-                                />
-                            } label="Kohus (kriminaalasjas)"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.tsiviilkohus_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("tsiviilkohus_kaasatud")
-                                    }}
-                                />
-                            } label="Kohus (tsiviilasjas)"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.haridusasutus_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("haridusasutus_kaasatud")
-                                    }}
-                                />
-                            } label="Haridusasutus"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.mtu_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("mtu_kaasatud")
-                                    }}
-                                />
-                            } label="MTÜ-d"/>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    checked={this.state.formValues.tuttavad_kaasatud === 1}
-                                    onClick={() => {
-                                        this.checkboxChange("tuttavad_kaasatud")
-                                    }}
-                                />
-                            } label="Sõbrad, sugulased"/>
+                            {checkbox("perearst_kaasatud", this.state.formValues.perearst_kaasatud, "Perearst")}
+                            {checkbox("emo_kaasatud", this.state.formValues.emo_kaasatud, "EMO")}
+                            {checkbox("naistearst_kaasatud", this.state.formValues.naistearst_kaasatud, "Naistearst")}
+                            {checkbox("ohvriabi_kaasatud", this.state.formValues.ohvriabi_kaasatud, "Ohvriabi")}
+                            {checkbox("politsei_kaasatud", this.state.formValues.politsei_kaasatud, "Politsei")}
+                            {checkbox("prokuratuur_kaasatud", this.state.formValues.prokuratuur_kaasatud, "Prokuratuur")}
+                            {checkbox("lastekaitse_kaasatud", this.state.formValues.lastekaitse_kaasatud, "Lastekaitse")}
+                            {checkbox("kov_kaasatud", this.state.formValues.kov_kaasatud, "KOV sotsiaalabi")}
+                            {checkbox("kriminaalkohus_kaasatud", this.state.formValues.kriminaalkohus_kaasatud, "Kohus (kriminaalasjas)")}
+                            {checkbox("tsiviilkohus_kaasatud", this.state.formValues.tsiviilkohus_kaasatud, "Kohus (tsiviilasjas)")}
+                            {checkbox("haridusasutus_kaasatud", this.state.formValues.haridusasutus_kaasatud, "Haridusasutus")}
+                            {checkbox("mtu_kaasatud", this.state.formValues.mtu_kaasatud, "MTÜ-d")}
+                            {checkbox("tuttavad_kaasatud", this.state.formValues.tuttavad_kaasatud, "Sõbrad, sugulased")}
                         </div>
                     </FormControl>
                     <FormControl margin="normal" fullWidth>
@@ -484,31 +315,34 @@ class NewSession extends React.Component {
                         >
                         </Input>
                     </FormControl>
+                    <Grid container
+                          direction="column"
+                          justify="center"
+                          alignItems="center"
+                          spacing={8}>
+                        <Grid item>
+                            <Button
+                                type="submit"
+                                className={classes.button}
+                                variant="contained"
+                                color="primary"
+                            >
+                                Salvesta
+                            </Button>
+
+                            <Button
+                                className={classes.button}
+                                variant="contained"
+                                color="primary"
+                                onClick={e => navigate("/victim/" + this.props.victimID +  "/" + this.props.incidentID)}
+
+                            >
+                                Tühista
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </form>
-                    </Grid>
-                    <Grid item>
-                        <Button
-                            className={classes.button}
-                            onClick={() => {
-                                this.createSession()
-                            }}
-                            variant="contained"
-                            color="primary"
-                        >
-                            Salvesta
-                        </Button>
 
-                        <Button
-                            className={classes.button}
-                            variant="contained"
-                            color="primary"
-                            onClick={e => navigate("/victim/" + this.props.victimID +  "/" + this.props.incidentID)}
-
-                        >
-                            Tühista
-                        </Button>
-                    </Grid>
-                </Grid>
 
             </Paper>
 

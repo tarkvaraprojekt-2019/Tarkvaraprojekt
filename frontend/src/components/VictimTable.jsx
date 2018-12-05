@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link, navigate} from 'gatsby';
+import { navigate } from 'gatsby';
 
 
 import Table from '@material-ui/core/Table';
@@ -8,8 +8,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import EditIcon from '@material-ui/icons/Edit';
 
 const mapEmpty = row => {
     return Object.assign(...Object.entries(row).map(([key, value]) => {

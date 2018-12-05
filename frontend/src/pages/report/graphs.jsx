@@ -18,7 +18,6 @@ import withRoot from '../../withRoot';
 import Layout from '../../components/Layout';
 import SimpleLineChart from '../../components/SimpleLineChart';
 import { isBrowser } from '../../auth';
-//import ReportImg from 'report.png';
 
 const styles = theme => ({
   root: {

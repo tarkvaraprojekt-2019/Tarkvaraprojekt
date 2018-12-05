@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'gatsby';
 import { withStyles } from '@material-ui/core/styles';
 
 
@@ -13,8 +12,6 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
-
-import EditIcon from '@material-ui/icons/Edit';
 import {navigate} from "gatsby";
 const styles = theme => ({
     root: {
@@ -40,9 +37,11 @@ const SessionTable = props => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Sessiooni kuupäev</TableCell>
+                                <TableCell>Kirjeldus</TableCell>
+                                <TableCell>Kriisinõustamine (h)</TableCell>
                                 <TableCell>Viimati muudetud</TableCell>
                                 <TableCell>Muutja</TableCell>
-                                <TableCell>Kirjeldus</TableCell>
+
                             </TableRow>
                         </TableHead>
 
@@ -61,10 +60,11 @@ const SessionTable = props => {
                                     }}
                                     >
                                         <TableCell component="th" scope="row">{n.kuupaev === null || n.kuupaev === "" ? "Teadmata" : n.kuupaev}</TableCell>
+                                        <TableCell>{n.kirjeldus === null || n.kirjeldus === "" ? "-" : n.kirjeldus}</TableCell>
+                                        <TableCell>{n.kriisinoustamine === null || n.kriisinoustamine === "" ? "Teadmata" : n.kriisinoustamine}</TableCell>
+
                                         <TableCell>{n.muutmisaeg === null || n.muutmisaeg === "" ? "Teadmata" : n.muutmisaeg}</TableCell>
                                         <TableCell>{n.muutja === null || n.muutja === "" ? "Teadmata" : n.muutja}</TableCell>
-
-                                        <TableCell>{n.kirjeldus === null || n.kirjeldus === "" ? "Teadmata" : n.kirjeldus}</TableCell>
                                     </TableRow>
                                 );
                             })}
