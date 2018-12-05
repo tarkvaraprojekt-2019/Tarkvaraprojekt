@@ -28,9 +28,15 @@ for ($i = 0; $i < $c; $i++) {
 	}
 	$where_query .= $where_fields[$i] . " = ?";
 }
+$where_query = str_replace("first_name = ?", "MATCH(first_name) AGAINST(?)", $where_query);
+$where_query = str_replace("last_name = ?", "MATCH(last_name) AGAINST(?)", $where_query);
+$final_query = "SELECT * FROM clients" . $where_query;
+if ($_GET["first_name"] == "" && $_GET["last_name"] == "") {
+	$final_query .= " ORDER BY id DESC";
+}
 
 $db = get_db();
-$stmt = mysqli_prepare($db, "SELECT * FROM clients" . $where_query . " ORDER BY id DESC");
+$stmt = mysqli_prepare($db, $final_query);
 mysqli_stmt_bind_param($stmt, str_repeat("s", $c), ...$where_params);
 mysqli_stmt_execute($stmt);
 $res = mysqli_fetch_all(mysqli_stmt_get_result($stmt), MYSQLI_ASSOC);
