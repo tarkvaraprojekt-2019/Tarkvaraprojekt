@@ -84,12 +84,10 @@ function create_user($username, $pass) {
 
 //Sets a user's password to given value
 function set_pass($modified_username, $pass, $caller_username) {
-	if (!($modified_username === $caller_username)) {
-		if (!is_admin()) {
-			http_response_code(403);
-			echo "Unauthorized action";
-			exit();
-		}
+	if ($modified_username !== $caller_username && !is_admin()) {
+		http_response_code(403);
+		echo "Unauthorized action";
+		exit();
 	}
 	$db = get_db();
 	$pass_hashed = password_hash($pass, PASSWORD_DEFAULT);
