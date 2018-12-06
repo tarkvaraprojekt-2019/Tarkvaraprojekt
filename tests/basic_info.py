@@ -25,7 +25,8 @@ try:
     try:
         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "first_name")))
     except TimeoutException:
-        inputPassword.submit()
+        submitButton = driver.find_element_by_xpath("//button[@type='submit']")
+        submitButton.click()
 
     WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, "first_name")))
 
