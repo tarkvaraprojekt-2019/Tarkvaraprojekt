@@ -18,7 +18,17 @@ try:
     inputPassword.send_keys("asdf")
     inputPassword.submit()
 
-    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.ID, "first_name")))
+    try:
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "first_name")))
+    except TimeoutException:
+        inputPassword.submit()
+    try:
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "first_name")))
+    except TimeoutException:
+        inputPassword.submit()
+
+    WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, "first_name")))
+
 
     inputFirstName = driver.find_element_by_id("first_name")
     inputFirstName.send_keys("Pille")
@@ -27,16 +37,16 @@ try:
     submitButton = driver.find_element_by_xpath("//button[@type='submit']")
     submitButton.click()
 
-    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//td[contains(text(), 'PAGAN')]")))
+    WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.XPATH, "//td[contains(text(), 'PAGAN')]")))
 
     row = driver.find_element_by_xpath("//td[contains(text(), 'PAGAN')]")
     row.click()
 
-    WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.ID, "national_id")))
+    WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID, "national_id")))
 
     national_ID = driver.find_element_by_id("national_id")
 
-    WebDriverWait(driver, 120).until(EC.text_to_be_present_in_element_value((By.ID, "national_id"), "4"))
+    WebDriverWait(driver, 60).until(EC.text_to_be_present_in_element_value((By.ID, "national_id"), "4"))
     assert national_ID.get_attribute("value") == "49901329491"
     print ("Basic info retrieval - Success!")
 
