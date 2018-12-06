@@ -72,7 +72,6 @@ if ($action === "create") {
 }
 
 //Creates a non-admin user with given username and password
-//Can be used to change a user's password
 function create_user($username, $pass) {
 	$db = get_db();
 	$pass_hashed = password_hash($pass, PASSWORD_DEFAULT);
