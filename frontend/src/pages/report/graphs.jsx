@@ -12,8 +12,6 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import Chip from '@material-ui/core/Chip';
-
 import withRoot from '../../withRoot';
 import Layout from '../../components/Layout';
 import SimpleLineChart from '../../components/SimpleLineChart';
@@ -200,15 +198,15 @@ class Graphs extends React.Component {
       } label={label}/>
     );
 
-    const checkboxes = Object.entries(this.state.chipData).map(([key, label]) => (
-      checkbox(key)
+    /*const checkboxes = Object.entries(this.state.chipData).map(([key, label]) => (
+      checkbox(key, this.state.)
             <Chip
               key={key}
               label={label}
               onDelete={this.handleDelete(key)}
               className={classes.input}
             />
-    ))
+    ))*/
 
 
     return (
@@ -236,7 +234,7 @@ class Graphs extends React.Component {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <div className={classes.chips}>
-                    { chips }
+                  { /*chips*/}
                 </div>
               <SimpleLineChart/>
             </ExpansionPanelDetails>
