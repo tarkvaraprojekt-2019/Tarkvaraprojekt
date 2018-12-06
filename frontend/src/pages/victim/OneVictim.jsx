@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 
 
 import classNames from 'classnames';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField'
+import TextField from '@material-ui/core/TextField';
 
 import Typography from '@material-ui/core/Typography';
 
@@ -19,7 +16,8 @@ import withRoot from '../../withRoot';
 import IncidentTable from '../../components/IncidentTable';
 
 import Layout from '../../components/Layout';
-import {navigate} from 'gatsby';
+import { navigate } from 'gatsby';
+import { letterPattern } from '../../util';
 
 const styles = theme => ({
     root: {
@@ -173,27 +171,27 @@ class Victim extends React.Component {
                             value={this.props.victimID}
                         />
                             <TextField
-                                fullWidth
-                                id="first_name"
-                                label="Eesnimi"
-                                className={classes.input}
+                              fullWidth
+                              id="first_name"
+                              label="Eesnimi"
+                              className={classes.input}
 
-                                disabled={!this.state.editingEnabled}
+                              disabled={!this.state.editingEnabled}
                                 // placeholder="Mari"
-                                onChange={this.handleChange}
-                                value={this.state.formValues.first_name}
-                                inputProps={{pattern: "\\p{Letter}*"}}
+                              onChange={this.handleChange}
+                              value={this.state.formValues.first_name}
+                              inputProps={{ pattern: letterPattern }} // bug in FF: https://bugzilla.mozilla.org/show_bug.cgi?id=1367105
                             />
                             <TextField
-                                id="last_name"
-                                label="Perekonnanimi"
-                                className={classes.input}
-                                fullWidth
-                                disabled={!this.state.editingEnabled}
+                              id="last_name"
+                              label="Perekonnanimi"
+                              className={classes.input}
+                              fullWidth
+                              disabled={!this.state.editingEnabled}
                                 // placeholder="Maasikas"
-                                onChange={this.handleChange}
-                                value={this.state.formValues.last_name}
-                                inputProps={{pattern: "\\p{Letter}*"}}
+                              onChange={this.handleChange}
+                              value={this.state.formValues.last_name}
+                              inputProps={{ pattern: letterPattern }}  // bug in FF: https://bugzilla.mozilla.org/show_bug.cgi?id=1367105
 
                             />
                             <TextField

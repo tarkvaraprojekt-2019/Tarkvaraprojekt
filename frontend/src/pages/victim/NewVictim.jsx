@@ -16,6 +16,7 @@ import Layout from '../../components/Layout';
 
 import { isBrowser } from '../../auth';
 import { navigate } from 'gatsby';
+import { letterPattern } from '../../util';
 
 
 const styles = theme => ({
@@ -136,8 +137,10 @@ class NewVictim extends React.Component {
 
                     <form className={classes.form} onSubmit={this.handleCreate}>
 
-                        {field('first_name', 'Eesnimi', "\\p{Letter}*")}
-                        {field('last_name', 'Perenimi', "\\p{Letter}*")}
+                      {field('first_name', 'Eesnimi', letterPattern)} // bug in FF:
+                      https://bugzilla.mozilla.org/show_bug.cgi?id=1367105
+                      {field('last_name', 'Perenimi', letterPattern)} // bug in FF:
+                      https://bugzilla.mozilla.org/show_bug.cgi?id=1367105
                         {field('national_id', 'Isikukood', "([1-6]\\d\\d(0[1-9]|1[0-2])(0[1-9]|1\\d|2\\d|30|31)\\d{4})?")}
                         {field('phone', 'Telefoninumber', "([+]\\d+)?\\d*")}
                         {field('email', 'E-Mail', "(.*?)")}
