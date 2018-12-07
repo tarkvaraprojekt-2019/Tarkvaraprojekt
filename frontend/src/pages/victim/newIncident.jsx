@@ -354,35 +354,35 @@ class NewIncident extends React.Component {
                                     onClick={() => {
                                         this.checkboxChange("vanem_vagivallatseja")
                                     }}/>
-                            } label="Isa/ema*"/>
+                            } label="Isa/ema"/>
                             <FormControlLabel control={
                                 <Checkbox
                                     checked={this.state.formValues.laps_vagivallatseja === 1}
                                     onClick={() => {
                                         this.checkboxChange("laps_vagivallatseja")
                                     }}/>
-                            } label="Poeg/tütar*"/>
+                            } label="Poeg/tütar"/>
                             <FormControlLabel control={
                                 <Checkbox
                                     checked={this.state.formValues.sugulane_vagivallatseja === 1}
                                     onClick={() => {
                                         this.checkboxChange("sugulane_vagivallatseja")
                                     }}/>
-                            } label="Sugulane/hõimlane*"/>
+                            } label="Sugulane/hõimlane"/>
                             <FormControlLabel control={
                                 <Checkbox
                                     checked={this.state.formValues.tookaaslane_vagivallatseja === 1}
                                     onClick={() => {
                                         this.checkboxChange("tookaaslane_vagivallatseja")
                                     }}/>
-                            } label="Töö- või õpingukaaslane*"/>
+                            } label="Töö- või õpingukaaslane"/>
                             <FormControlLabel control={
                                 <Checkbox
                                     checked={this.state.formValues.muu_vagivallatseja === 1}
                                     onClick={() => {
                                         this.checkboxChange("muu_vagivallatseja")
                                     }}/>
-                            } label="Muu*"/>
+                            } label="Muu"/>
                         </div>
                     </FormControl>
                     <FormControl margin="normal" fullWidth>
@@ -452,7 +452,7 @@ class NewIncident extends React.Component {
                                     onClick={() => {
                                         this.checkboxChange("muu_ohver")
                                     }}/>
-                            } label="Muud*"/>
+                            } label="Muud"/>
                         </div>
                     </FormControl>
                     <FormControl margin="normal" fullWidth>

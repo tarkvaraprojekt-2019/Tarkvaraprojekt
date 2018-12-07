@@ -46,6 +46,9 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
+    textfield: {
+        width: "35%",
+    },
     radiogroup: {
         width: 'auto',
         height: 'auto',
@@ -175,7 +178,7 @@ class NewSession extends React.Component {
             } label= {label}/>
         )
         const {classes} = this.props;
-        return <Layout title="Uus juhtum">
+        return <Layout title="Uus sessioon">
             <Typography variant="h4" gutterBottom>
                 Lisa uus sessioon
             </Typography>
@@ -193,8 +196,9 @@ class NewSession extends React.Component {
                                 shrink: true,
                             }}
                         />
-                    </FormControl>
-                    <FormControl margin="normal" fullWidth>
+
+                    </FormControl> <br/>
+                    <FormControl margin="normal" className={classes.textfield}>
                         <TextField
                             label="Kirjeldus"
                             value={this.state.formValues.kirjeldus}
@@ -248,6 +252,9 @@ class NewSession extends React.Component {
                     {textfield("juuranoustamine", "Juriidiline nõustamine", this.state.formValues.juuranoustamine, "(\\d*)([.]\\d+)?")}
                     {textfield("tegevused_lapsega", "Tegevused lapsega", this.state.formValues.tegevused_lapsega, "(\\d*)([.]\\d+)?")}
                     {textfield("tugiteenused", "Tugiteenused", this.state.formValues.tugiteenused, "(\\d*)([.]\\d+)?")}
+                    <FormControl margin="normal" fullWidth >
+                        <FormLabel>Turvaline ajutine majutus</FormLabel>
+                    </FormControl>
                     {textfield("naise_majutus", "Naise majutuspäevade arv", this.state.formValues.naise_majutus, "(\\d*)([.]\\d+)?")}
                     {textfield("laste_arv", "Kaasasolevate laste arv", this.state.formValues.laste_arv, "(\\d*)")}
                     {textfield("laste_majutus", "Laste majutuspäevade arv", this.state.formValues.laste_majutus, "(\\d*)([.]\\d+)?")}
@@ -306,7 +313,7 @@ class NewSession extends React.Component {
                             {checkbox("tuttavad_kaasatud", this.state.formValues.tuttavad_kaasatud, "Sõbrad, sugulased")}
                         </div>
                     </FormControl>
-                    <FormControl margin="normal" fullWidth>
+                    <FormControl margin="normal" className={classes.textfield}>
                         <InputLabel htmlFor="markused">Märkused</InputLabel>
                         <Input
                             value={this.state.formValues.markused}
