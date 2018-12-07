@@ -19,6 +19,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import SessionTable from '../../components/SessionTable';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 
 
 import withRoot from '../../withRoot';
@@ -40,6 +41,8 @@ const styles = theme => ({
         justifyContent: 'center',
         padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
             .spacing.unit * 3}px`,
+        minWidth:'600px',
+
     },
     input: {
         margin: theme.spacing.unit,
@@ -58,6 +61,7 @@ const styles = theme => ({
     disabledPaper: {
         backgroundColor: '#e47e001c',
     },
+
 });
 
 
@@ -168,7 +172,7 @@ class Incident extends React.Component {
             keel: "teadmata",
             vanus: "teadmata",
             puue: "",
-            lapsed: "",
+            lapsed: "0",
             rasedus: "",
             elukoht: "teadmata",
             vaimne_vagivald: 0,
@@ -216,7 +220,15 @@ class Incident extends React.Component {
             .catch(err => console.log("search err: ", err))
     };
 
+    handleUpdate = event => {
+        event.preventDefault()
+        this.updateVictim();
+        this.setState({
+            editingEnabled: !this.state.editingEnabled,
+            initialValue: Object.assign({}, this.state.formValues)
+        })
 
+    }
     render() {
         const {classes} = this.props;
 
@@ -233,15 +245,16 @@ class Incident extends React.Component {
                       direction="column"
                       justify="center"
                       alignItems="center"
-                      spacing={8}>
+                      spacing={8}
+                      >
                     <Grid item>
 
-                        <form className={classes.form}>
+                        <form className={classes.form} onSubmit={this.handleUpdate}>
                             <Grid container
                                   direction="row"
                                   justify="center"
                                   spacing={16}>
-                                <Grid item xs={2} sm={4} >
+                                <Grid item sm={4} >
                                     <FormControl margin="normal" fullWidth>
                                         <InputLabel htmlFor="piirkond">Piirkond</InputLabel>
                                         <Select
@@ -336,13 +349,14 @@ class Incident extends React.Component {
                                         </Select>
                                     </FormControl>
                                     <FormControl margin="normal" fullWidth>
-                                        <InputLabel htmlFor="lapsed">Alaealiste laste arv</InputLabel>
-                                        <Input
+                                        <TextField
                                             disabled={!this.state.editingEnabled}
-                                            type="number"
-                                            id="lapsed"
+                                            label="Alaealiste laste arv"
+                                            value={this.state.formValues.lapsed}
                                             onChange={this.handleChange}
-                                            value={this.state.formValues.lapsed}/>
+                                            id = 'lapsed'
+                                            inputProps={{pattern: "\\d*"}}
+                                        />
                                     </FormControl>
                                     <FormControl margin="normal">
                                         <FormLabel>Puue</FormLabel>
@@ -382,7 +396,7 @@ class Incident extends React.Component {
                                     </FormControl>
 
                                 </Grid>
-                                <Grid item xs={2} sm={4}>
+                                <Grid item sm={4}>
                                 <FormControl margin="normal" fullWidth>
                                     <FormLabel>Vägivalla liik</FormLabel>
                                     <div>
@@ -568,7 +582,7 @@ class Incident extends React.Component {
                                     </FormControl>
                                 </Grid>
 
-                                <Grid item xs={2} sm={4}>
+                                <Grid item sm={4}>
 
                                     <FormControl margin="normal" fullWidth>
                                         <InputLabel htmlFor="vagivallatseja_vanus">Vägivallatseja vanus</InputLabel>
@@ -659,61 +673,56 @@ class Incident extends React.Component {
                                 </Grid>
 
                             </Grid>
+                            <Grid container
+                                  direction="column"
+                                  justify="center"
+                                  alignItems="center"
+                                  spacing={8}>
+                            <Grid item>
+                                {!this.state.editingEnabled ?
+                                    <Button
+                                        className={classes.button}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={e => this.setState({
+                                            editingEnabled: !this.state.editingEnabled
+                                        })}
+                                    >
+                                        MUUDA JUHTUMI ANDMEID
+                                    </Button> : null}
 
+                                {this.state.editingEnabled ?
+                                    <Button
+                                        className={classes.button}
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary">
+                                        SALVESTA
+                                    </Button> : null}
+
+                                {this.state.editingEnabled ?
+                                    <Button
+                                        className={classes.button}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={e => {
+                                            this.setState({
+                                                editingEnabled: !this.state.editingEnabled,
+                                                formValues: Object.assign({}, this.state.initialValue)
+                                            });
+
+
+                                        }}
+                                    >
+                                        TÜHISTA
+                                    </Button> : null}
+                            </Grid>
+                            </Grid>
                         </form>
 
                     </Grid>
 
-                    <Grid item>
-                        {!this.state.editingEnabled ?
-                            <Button
-                                className={classes.button}
-                                variant="contained"
-                                color="primary"
-                                onClick={e => this.setState({
-                                    editingEnabled: !this.state.editingEnabled
-                                })}
-                            >
-                                MUUDA JUHTUMI ANDMEID
-                            </Button> : null}
 
-                        {this.state.editingEnabled ?
-                            <Button
-                                className={classes.button}
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                onClick={e => {
-
-                                    this.updateVictim();
-                                    this.setState({
-                                        editingEnabled: !this.state.editingEnabled,
-                                        initialValue: Object.assign({}, this.state.formValues)
-                                    })
-
-
-                                }}
-                            >
-                                SALVESTA
-                            </Button> : null}
-
-                        {this.state.editingEnabled ?
-                            <Button
-                                className={classes.button}
-                                variant="contained"
-                                color="primary"
-                                onClick={e => {
-                                    this.setState({
-                                        editingEnabled: !this.state.editingEnabled,
-                                        formValues: Object.assign({}, this.state.initialValue)
-                                    });
-
-
-                                }}
-                            >
-                                TÜHISTA
-                            </Button> : null}
-                    </Grid>
                 </Grid>
 
             </Paper>

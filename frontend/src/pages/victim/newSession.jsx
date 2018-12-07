@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -23,7 +23,7 @@ import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout/index';
-import { navigate } from 'gatsby';
+import {navigate} from 'gatsby';
 
 
 const styles = theme => ({
@@ -39,6 +39,8 @@ const styles = theme => ({
         justifyContent: 'center',
         padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
             .spacing.unit * 3}px`,
+        minWidth: '600px',
+
     },
     input: {
         margin: theme.spacing.unit,
@@ -46,16 +48,13 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
-    textfield: {
-        width: "35%",
-    },
-    radiogroup: {
-        width: 'auto',
-        height: 'auto',
+
+    radiob: {
         display: 'flex',
-        flexWrap: 'nowrap',
         flexDirection: 'row',
-    }
+        width: 'auto',
+        paddingRight: '3em'
+    },
 });
 
 
@@ -83,10 +82,10 @@ class NewSession extends React.Component {
         this.setState({formValues});
     };
     handleNumChange = evt => {
-            const keyCode = evt.keyCode || evt.which;
-            const keyValue = String.fromCharCode(keyCode);
-            if (/[+\-\e]/.test(keyValue))
-                evt.preventDefault();
+        const keyCode = evt.keyCode || evt.which;
+        const keyValue = String.fromCharCode(keyCode);
+        if (/[+\-\e]/.test(keyValue))
+            evt.preventDefault();
     };
 
     checkboxChange = field => {
@@ -103,15 +102,16 @@ class NewSession extends React.Component {
 
     createSession() {
         this.axios.post("create_session.php", this.state.formValues)
-            .then( res => {
+            .then(res => {
                 let data = res.data;
                 console.log("result: ", res)
-              navigate('/victim/' + this.props.victimID + '/' + this.props.incidentID + "/" + data);
+                navigate('/victim/' + this.props.victimID + '/' + this.props.incidentID + "/" + data);
             })
     }
-    static getDate(){
+
+    static getDate() {
         var local = new Date();
-        return local.toJSON().slice(0,10);
+        return local.toJSON().slice(0, 10);
     }
 
     state = {
@@ -154,6 +154,7 @@ class NewSession extends React.Component {
         event.preventDefault()
         this.createSession()
     }
+
     render() {
         const textfield = (id, label, value, pattern) => (
 
@@ -162,7 +163,7 @@ class NewSession extends React.Component {
                 className={classes.input}
                 value={value}
                 onChange={this.handleChange}
-                id = {id}
+                id={id}
                 inputProps={{pattern: pattern}}
             />
         )
@@ -175,7 +176,7 @@ class NewSession extends React.Component {
                         this.checkboxChange(id)
                     }}
                 />
-            } label= {label}/>
+            } label={label}/>
         )
         const {classes} = this.props;
         return <Layout title="Uus sessioon">
@@ -183,176 +184,200 @@ class NewSession extends React.Component {
                 Lisa uus sessioon
             </Typography>
             <Paper className={classes.paper}>
+                <Grid container
+                      direction="column"
+                      justify="center"
+                      alignItems="center"
+                      spacing={8}>
+                    <Grid item>
+                        <form className={classes.form} onSubmit={this.handleSubmit}>
+                            <Grid container
+                                  direction="row"
+                                  justify="center"
+                                  spacing={16}>
+                                <Grid item sm={3}>
+                                    <FormControl margin="normal" fullwidth>
+                                        <TextField
+                                            value={this.state.formValues.kuupaev}
+                                            id="kuupaev"
+                                            label="Kuupäev"
+                                            type="date"
+                                            onChange={this.handleChange}
 
-                <form className={classes.form} onSubmit={this.handleSubmit}>
-                    <FormControl margin="normal">
-                        <TextField
-                            value = {this.state.formValues.kuupaev}
-                            id="kuupaev"
-                            label="Kuupäev"
-                            type="date"
-                            onChange={this.handleChange}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
+                                        />
+                                    </FormControl>
+                                    <br/>
+                                    <FormControl margin="normal" fullwidth>
+                                        <TextField
+                                            label="Kirjeldus"
+                                            multiline
+                                            rowsMax = "3"
+                                            value={this.state.formValues.kirjeldus}
+                                            onChange={this.handleChange}
+                                            id="kirjeldus"
+                                        />
+                                    </FormControl>
+                                    <br/>
+                                    <FormControl margin="normal" fullwidth>
+                                        <TextField
+                                            label="Märkused"
+                                            multiline
+                                            rowsMax = "3"
+                                            value={this.state.formValues.markused}
+                                            onChange={this.handleChange}
+                                            id="markused"
+                                        />
+                                    </FormControl>
+                                    <FormControl margin="normal" fullWidth>
+                                        <FormLabel>Kas nõustamine toimus sidevahendite abil?</FormLabel>
+                                        <RadioGroup className={classes.radiob}>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    checked={this.state.formValues.sidevahendid === 1}
+                                                    onClick={() => this.radioChange("sidevahendid", 1)}/>
+                                            } label="Jah"/>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    checked={this.state.formValues.sidevahendid === 0}
+                                                    onClick={() => this.radioChange("sidevahendid", 0)}/>
+                                            } label="Ei"/>
+                                        </RadioGroup>
+                                    </FormControl>
 
-                    </FormControl> <br/>
-                    <FormControl margin="normal" className={classes.textfield}>
-                        <TextField
-                            label="Kirjeldus"
-                            value={this.state.formValues.kirjeldus}
-                            onChange={this.handleChange}
-                            id = "kirjeldus"
-                        />
-                    </FormControl>
-                    <FormControl margin="normal" fullWidth>
-                        <FormLabel>Kas nõustamine toimus sidevahendite abil?</FormLabel>
-                        <RadioGroup>
-                            <FormControlLabel control={
-                                <Radio
-                                    checked={this.state.formValues.sidevahendid === 1}
-                                    onClick={() => this.radioChange("sidevahendid", 1)}/>
-                            } label="Jah"/>
-                            <FormControlLabel control={
-                                <Radio
-                                    checked={this.state.formValues.sidevahendid === 0}
-                                    onClick={() => this.radioChange("sidevahendid", 0)}/>
-                            } label="Ei"/>
-                        </RadioGroup>
-                    </FormControl>
-                    <FormControl margin="normal" fullWidth >
-                        <FormLabel>Osutatud teenused (tundide arv)</FormLabel>
-                    </FormControl>
-                    {textfield("kriisinoustamine", "Kriisinõustamine", this.state.formValues.kriisinoustamine, "(\\d*)([.]\\d+)?")}
+                                </Grid>
 
-                    {parseInt(this.state.formValues.kriisinoustamine) > 0 ?
-                        <FormControl>
-                            <div
-                                className={classes.input}
-                            >
-                            <InputLabel htmlFor="kriisinoustamise_aeg">Kriisinõustamise aeg</InputLabel>
-                            <Select
-                                value={this.state.formValues.kriisinoustamise_aeg}
-                                onChange={this.handleSelectChange}
-                                inputProps={{
-                                    name: 'kriisinoustamise_aeg',
-                                    id: 'kriisinoustamise_aeg',
-                                }}>
-                                <MenuItem value={"08:00-22:00"}>08:00-22:00</MenuItem>
-                                <MenuItem value={"22:00-08:00"}>22:00-08:00</MenuItem>
+                                <Grid item sm={5}>
+                                    <FormControl margin="normal" fullWidth>
+                                        <FormLabel>Osutatud teenused (tundide arv)</FormLabel>
+                                    </FormControl>
+                                    {textfield("kriisinoustamine", "Kriisinõustamine", this.state.formValues.kriisinoustamine, "(\\d*)([.]\\d+)?")}
 
-                                <MenuItem value={"teadmata"}>Teadmata</MenuItem>
-                            </Select></div>
-                        </FormControl> : null}
+                                    {parseInt(this.state.formValues.kriisinoustamine) > 0 ?
+                                        <FormControl>
+                                            <div
+                                                className={classes.input}
+                                            >
+                                                <InputLabel htmlFor="kriisinoustamise_aeg">Kriisinõustamise
+                                                    aeg</InputLabel>
+                                                <Select
+                                                    value={this.state.formValues.kriisinoustamise_aeg}
+                                                    onChange={this.handleSelectChange}
+                                                    inputProps={{
+                                                        name: 'kriisinoustamise_aeg',
+                                                        id: 'kriisinoustamise_aeg',
+                                                    }}>
+                                                    <MenuItem value={"08:00-22:00"}>08:00-22:00</MenuItem>
+                                                    <MenuItem value={"22:00-08:00"}>22:00-08:00</MenuItem>
 
-                    {textfield("juhutuminoustamine", "Juhtumipõhine nõustamine", this.state.formValues.juhutuminoustamine, "(\\d*)([.]\\d+)?")}
-                    {textfield("vorgustikutoo", "Võrgustikutöö", this.state.formValues.vorgustikutoo, "(\\d*)([.]\\d+)?")}
-                    {textfield("psuhhonoustamine", "Psüh. nõustamine", this.state.formValues.psuhhonoustamine, "(\\d*)([.]\\d+)?")}
-                    {textfield("juuranoustamine", "Juriidiline nõustamine", this.state.formValues.juuranoustamine, "(\\d*)([.]\\d+)?")}
-                    {textfield("tegevused_lapsega", "Tegevused lapsega", this.state.formValues.tegevused_lapsega, "(\\d*)([.]\\d+)?")}
-                    {textfield("tugiteenused", "Tugiteenused", this.state.formValues.tugiteenused, "(\\d*)([.]\\d+)?")}
-                    <FormControl margin="normal" fullWidth >
-                        <FormLabel>Turvaline ajutine majutus</FormLabel>
-                    </FormControl>
-                    {textfield("naise_majutus", "Naise majutuspäevade arv", this.state.formValues.naise_majutus, "(\\d*)([.]\\d+)?")}
-                    {textfield("laste_arv", "Kaasasolevate laste arv", this.state.formValues.laste_arv, "(\\d*)")}
-                    {textfield("laste_majutus", "Laste majutuspäevade arv", this.state.formValues.laste_majutus, "(\\d*)([.]\\d+)?")}
+                                                    <MenuItem value={"teadmata"}>Teadmata</MenuItem>
+                                                </Select></div>
+                                        </FormControl> : null}
 
-                    <FormControl margin="normal" fullWidth>
-                        <FormLabel>Võrgustikutöö teiste organisatsioonidega</FormLabel>
-                    </FormControl>
-                    <FormControl margin="normal" >
-                        <FormLabel>Juhtumipõhine ümarlaud (v.a. MARAC)</FormLabel>
-                        <RadioGroup>
-                            <FormControlLabel control={
-                                <Radio
-                                    checked={this.state.formValues.umarlaud === 1}
-                                    onClick={() => this.radioChange("umarlaud", 1)}
-                                    />
-                            } label="Jah"/>
-                            <FormControlLabel control={
-                                <Radio
-                                    checked={this.state.formValues.umarlaud === 0}
-                                    onClick={() => this.radioChange("umarlaud", 0)}/>
-                            } label="Ei"/>
-                        </RadioGroup>
-                    </FormControl>
-                    <FormControl margin="normal" fullWidth>
-                        <FormLabel>Suunatud MARACi</FormLabel>
-                        <RadioGroup>
-                            <FormControlLabel control={
-                                <Radio
-                                    checked={this.state.formValues.marac === 1}
-                                    onClick={() => this.radioChange("marac", 1)}/>
-                            } label="Jah"/>
-                            <FormControlLabel control={
-                                <Radio
-                                    checked={this.state.formValues.marac === 0}
-                                    onClick={() => this.radioChange("marac", 0)}/>
-                            } label="Ei"/>
-                        </RadioGroup>
-                    </FormControl>
-                    <FormControl margin="normal" fullWidth>
-                        <FormLabel>Juhtumisse kaasatud osapooled</FormLabel>
-                    </FormControl>
-                    <FormControl margin="normal" fullWidth>
-                        <div>
-                            {checkbox("perearst_kaasatud", this.state.formValues.perearst_kaasatud, "Perearst")}
-                            {checkbox("emo_kaasatud", this.state.formValues.emo_kaasatud, "EMO")}
-                            {checkbox("naistearst_kaasatud", this.state.formValues.naistearst_kaasatud, "Naistearst")}
-                            {checkbox("ohvriabi_kaasatud", this.state.formValues.ohvriabi_kaasatud, "Ohvriabi")}
-                            {checkbox("politsei_kaasatud", this.state.formValues.politsei_kaasatud, "Politsei")}
-                            {checkbox("prokuratuur_kaasatud", this.state.formValues.prokuratuur_kaasatud, "Prokuratuur")}
-                            {checkbox("lastekaitse_kaasatud", this.state.formValues.lastekaitse_kaasatud, "Lastekaitse")}
-                            {checkbox("kov_kaasatud", this.state.formValues.kov_kaasatud, "KOV sotsiaalabi")}
-                            {checkbox("kriminaalkohus_kaasatud", this.state.formValues.kriminaalkohus_kaasatud, "Kohus (kriminaalasjas)")}
-                            {checkbox("tsiviilkohus_kaasatud", this.state.formValues.tsiviilkohus_kaasatud, "Kohus (tsiviilasjas)")}
-                            {checkbox("haridusasutus_kaasatud", this.state.formValues.haridusasutus_kaasatud, "Haridusasutus")}
-                            {checkbox("mtu_kaasatud", this.state.formValues.mtu_kaasatud, "MTÜ-d")}
-                            {checkbox("tuttavad_kaasatud", this.state.formValues.tuttavad_kaasatud, "Sõbrad, sugulased")}
-                        </div>
-                    </FormControl>
-                    <FormControl margin="normal" className={classes.textfield}>
-                        <InputLabel htmlFor="markused">Märkused</InputLabel>
-                        <Input
-                            value={this.state.formValues.markused}
-                            onChange={this.handleChange}
-                            id = "markused"
-                        >
-                        </Input>
-                    </FormControl>
-                    <Grid container
-                          direction="column"
-                          justify="center"
-                          alignItems="center"
-                          spacing={8}>
-                        <Grid item>
-                            <Button
-                                type="submit"
-                                className={classes.button}
-                                variant="contained"
-                                color="primary"
-                            >
-                                Salvesta
-                            </Button>
+                                    {textfield("juhutuminoustamine", "Juhtumipõhine nõustamine", this.state.formValues.juhutuminoustamine, "(\\d*)([.]\\d+)?")}
+                                    {textfield("vorgustikutoo", "Võrgustikutöö", this.state.formValues.vorgustikutoo, "(\\d*)([.]\\d+)?")}
+                                    {textfield("psuhhonoustamine", "Psüh. nõustamine", this.state.formValues.psuhhonoustamine, "(\\d*)([.]\\d+)?")}
+                                    {textfield("juuranoustamine", "Juriidiline nõustamine", this.state.formValues.juuranoustamine, "(\\d*)([.]\\d+)?")}
+                                    {textfield("tegevused_lapsega", "Tegevused lapsega", this.state.formValues.tegevused_lapsega, "(\\d*)([.]\\d+)?")}
+                                    {textfield("tugiteenused", "Tugiteenused", this.state.formValues.tugiteenused, "(\\d*)([.]\\d+)?")}
+                                    <FormControl margin="normal" fullWidth>
+                                        <FormLabel>Turvaline ajutine majutus</FormLabel>
+                                    </FormControl>
+                                    {textfield("naise_majutus", "Naise majutuspäevade arv", this.state.formValues.naise_majutus, "(\\d*)([.]\\d+)?")}
+                                    {textfield("laste_arv", "Kaasasolevate laste arv", this.state.formValues.laste_arv, "(\\d*)")}
+                                    {textfield("laste_majutus", "Laste majutuspäevade arv", this.state.formValues.laste_majutus, "(\\d*)([.]\\d+)?")}
+                                </Grid>
+                                <Grid item sm={4}>
+                                    <FormControl margin="normal" fullwidth >
+                                        <FormLabel>Võrgustikutöö teiste organisatsioonidega</FormLabel>
+                                    </FormControl>
+                                    <br/>
+                                    <FormControl margin="normal" >
+                                        <FormLabel>Suunatud MARACi</FormLabel>
+                                        <RadioGroup className={classes.radiob}>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    checked={this.state.formValues.marac === 1}
+                                                    onClick={() => this.radioChange("marac", 1)}/>
+                                            } label="Jah"/>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    checked={this.state.formValues.marac === 0}
+                                                    onClick={() => this.radioChange("marac", 0)}/>
+                                            } label="Ei"/>
+                                        </RadioGroup>
+                                    </FormControl>
+                                    <FormControl margin="normal">
+                                        <FormLabel>Juhtumipõhine ümarlaud (v.a. MARAC)</FormLabel>
+                                        <RadioGroup className={classes.radiob}>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    checked={this.state.formValues.umarlaud === 1}
+                                                    onClick={() => this.radioChange("umarlaud", 1)}
+                                                />
+                                            } label="Jah"/>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    checked={this.state.formValues.umarlaud === 0}
+                                                    onClick={() => this.radioChange("umarlaud", 0)}/>
+                                            } label="Ei"/>
+                                        </RadioGroup>
+                                    </FormControl>
+                                    <FormControl margin="normal" fullWidth>
+                                        <FormLabel>Juhtumisse kaasatud osapooled</FormLabel>
+                                        <div>
+                                            {checkbox("perearst_kaasatud", this.state.formValues.perearst_kaasatud, "Perearst")}
+                                            {checkbox("emo_kaasatud", this.state.formValues.emo_kaasatud, "EMO")}
+                                            {checkbox("naistearst_kaasatud", this.state.formValues.naistearst_kaasatud, "Naistearst")}
+                                            {checkbox("ohvriabi_kaasatud", this.state.formValues.ohvriabi_kaasatud, "Ohvriabi")}
+                                            {checkbox("politsei_kaasatud", this.state.formValues.politsei_kaasatud, "Politsei")}
+                                            {checkbox("prokuratuur_kaasatud", this.state.formValues.prokuratuur_kaasatud, "Prokuratuur")}
+                                            {checkbox("lastekaitse_kaasatud", this.state.formValues.lastekaitse_kaasatud, "Lastekaitse")}
+                                            {checkbox("kov_kaasatud", this.state.formValues.kov_kaasatud, "KOV sotsiaalabi")}
+                                            {checkbox("kriminaalkohus_kaasatud", this.state.formValues.kriminaalkohus_kaasatud, "Kohus (kriminaalasjas)")}
+                                            {checkbox("tsiviilkohus_kaasatud", this.state.formValues.tsiviilkohus_kaasatud, "Kohus (tsiviilasjas)")}
+                                            {checkbox("haridusasutus_kaasatud", this.state.formValues.haridusasutus_kaasatud, "Haridusasutus")}
+                                            {checkbox("mtu_kaasatud", this.state.formValues.mtu_kaasatud, "MTÜ-d")}
+                                            {checkbox("tuttavad_kaasatud", this.state.formValues.tuttavad_kaasatud, "Sõbrad, sugulased")}
+                                        </div>
+                                    </FormControl>
 
-                            <Button
-                                className={classes.button}
-                                variant="contained"
-                                color="primary"
-                                onClick={e => navigate("/victim/" + this.props.victimID +  "/" + this.props.incidentID)}
+                                </Grid>
 
-                            >
-                                Tühista
-                            </Button>
-                        </Grid>
+                                <Grid container
+                                      direction="column"
+                                      justify="center"
+                                      alignItems="center"
+                                      spacing={8}>
+                                    <Grid item>
+                                        <Button
+                                            type="submit"
+                                            className={classes.button}
+                                            variant="contained"
+                                            color="primary"
+                                        >
+                                            Salvesta
+                                        </Button>
+
+                                        <Button
+                                            className={classes.button}
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={e => navigate("/victim/" + this.props.victimID + "/" + this.props.incidentID)}
+
+                                        >
+                                            Tühista
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+
+                            </Grid>
+
+                        </form>
                     </Grid>
-                </form>
 
+                </Grid>
 
             </Paper>
-
 
 
         </Layout>;
