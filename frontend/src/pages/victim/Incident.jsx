@@ -58,6 +58,9 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
+    backbutton: {
+        float: 'right',
+    },
     disabledPaper: {
         backgroundColor: '#e47e001c',
     },
@@ -236,6 +239,15 @@ class Incident extends React.Component {
         return <Layout title="Juhtum">
             <Typography variant="h4" gutterBottom>
                 Juhtum
+                {            <Button
+                    className={classes.backbutton}
+                    variant="contained"
+                    color="primary"
+                    onClick={e => navigate("/victim/" + this.props.victimID)}
+
+                    >
+                    TAGASI
+                    </Button>}
             </Typography>
 
             <Paper className={classNames(classes.paper, {
@@ -730,15 +742,7 @@ class Incident extends React.Component {
             <SessionTable classes={classes} uid={this.props.victimID} incidentID={this.props.incidentID}
                           sessions={this.state.sessions}/>
 
-            <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
-                onClick={e => navigate("/victim/" + this.props.victimID)}
 
-            >
-                TAGASI
-            </Button>
 
         </Layout>;
     }

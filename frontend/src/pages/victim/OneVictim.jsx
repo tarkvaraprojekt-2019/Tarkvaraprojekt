@@ -39,6 +39,9 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
+    backbutton: {
+        float: 'right',
+    },
     disabledPaper: {
         backgroundColor: '#e47e001c',
     },
@@ -153,6 +156,18 @@ class Victim extends React.Component {
             <Layout title="Klient">
                 <Typography variant="h4" gutterBottom>
                     Isiku profiil
+                    {
+                        <Button
+                            className={classes.backbutton}
+                            variant="contained"
+                            color="primary"
+                            onClick={e => navigate("/overview")}
+
+                        >
+                            TAGASI
+                        </Button>
+
+                    }
                 </Typography>
                 <Paper className={classNames(classes.paper, {
                     [classes.disabledPaper]: !this.state.editingEnabled,
@@ -274,16 +289,6 @@ class Victim extends React.Component {
 
                 <IncidentTable classes={classes} uid={this.props.victimID} incidents={this.state.incidents}/>
 
-
-                <Button
-                    className={classes.button}
-                    variant="contained"
-                    color="primary"
-                    onClick={e => navigate("/overview")}
-
-                >
-                    TAGASI
-                </Button>
 
 
             </Layout>

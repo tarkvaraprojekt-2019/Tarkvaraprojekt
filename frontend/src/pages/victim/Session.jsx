@@ -40,6 +40,7 @@ const styles = theme => ({
         justifyContent: 'center',
         padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
             .spacing.unit * 3}px`,
+        minWidth: '600px',
     },
     input: {
         margin: theme.spacing.unit,
@@ -47,8 +48,14 @@ const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
     },
-    textfield: {
-        width: "35%",
+    radiob: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: 'auto',
+        paddingRight: '3em'
+    },
+    backbutton: {
+        float: 'right',
     },
     disabledPaper: {
         backgroundColor: '#e47e001c',
@@ -220,216 +227,244 @@ class Session extends React.Component {
         return <Layout title="Sessioon">
             <Typography variant="h4" gutterBottom>
                 Sessioon
+                {
+                    <Button
+                        className={classes.backbutton}
+                        variant="contained"
+                        color="primary"
+                        onClick={e => navigate("/victim/" + this.props.victimID + "/" + this.props.incidentID)}
+
+                    >
+                        TAGASI
+                    </Button>
+                }
             </Typography>
             <Paper className={classNames(classes.paper, {
                 [classes.disabledPaper]: !this.state.editingEnabled,
             })}>
-                <form className={classes.form} onSubmit={this.handleUpdate}>
-                    <FormControl margin="normal">
-                        <TextField
-                            value={this.state.formValues.kuupaev === "" ? dateValue : this.state.formValues.kuupaev}
-                            disabled={!this.state.editingEnabled}
-                            id="kuupaev"
-                            label="Kuupäev"
-                            type="date"
-                            onChange={this.handleChange}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                    </FormControl> <br/>
-                    <FormControl margin="normal" className={classes.textfield}>
-                        <InputLabel htmlFor="kirjeldus">Kirjeldus</InputLabel>
-                        <Input
-                            disabled={!this.state.editingEnabled}
-                            value={this.state.formValues.kirjeldus}
-                            onChange={this.handleChange}
-                            id="kirjeldus"
-                        >
-                        </Input>
-                    </FormControl>
-                    <FormControl margin="normal" fullWidth>
-                        <FormLabel>Kas nõustamine toimus sidevahendite abil?</FormLabel>
-                        <RadioGroup>
-                            <FormControlLabel control={
-                                <Radio
-                                    disabled={!this.state.editingEnabled}
-                                    checked={this.state.formValues.sidevahendid === 1}
-                                    onClick={() => this.radioChange("sidevahendid", 1)}/>
-                            } label="Jah"/>
-                            <FormControlLabel control={
-                                <Radio
-                                    disabled={!this.state.editingEnabled}
-                                    checked={this.state.formValues.sidevahendid === 0}
-                                    onClick={() => this.radioChange("sidevahendid", 0)}/>
-                            } label="Ei"/>
-                        </RadioGroup>
-                    </FormControl>
-                    <FormControl margin="normal" fullWidth>
-                        <FormLabel>Osutatud teenused (tundide arv)</FormLabel>
-                    </FormControl>
-                    {textfield("kriisinoustamine", "Kriisinõustamine", this.state.formValues.kriisinoustamine, "(\\d*)([.]\\d+)?")}
-                    {this.state.formValues.kriisinoustamine > 0 ?
-                        <FormControl>
-                            <div className={classes.input}>
-                                <InputLabel htmlFor="kriisinoustamise_aeg">Kriisinõustamise aeg</InputLabel>
-                                <Select
-                                    disabled={!this.state.editingEnabled}
-                                    value={this.state.formValues.kriisinoustamise_aeg}
-                                    onChange={this.handleSelectChange}
-                                    inputProps={{
-                                        name: 'kriisinoustamise_aeg',
-                                        id: 'kriisinoustamise_aeg',
-                                    }}>
-                                    <MenuItem value={"08:00-22:00"}>08:00-22:00</MenuItem>
-                                    <MenuItem value={"22:00-08:00"}>22:00-08:00</MenuItem>
-
-                                    <MenuItem value={"teadmata"}>Teadmata</MenuItem>
-                                </Select></div>
-                        </FormControl> : null}
-                    {textfield("juhtuminoustamine", "Juhtumipõhine nõustamine", this.state.formValues.juhtuminoustamine, "(\\d*)([.]\\d+)?")}
-                    {textfield("vorgustikutoo", "Võrgustikutöö", this.state.formValues.vorgustikutoo, "(\\d*)([.]\\d+)?")}
-                    {textfield("psuhhonoustamine", "Psüh. nõustamine", this.state.formValues.psuhhonoustamine, "(\\d*)([.]\\d+)?")}
-                    {textfield("juuranoustamine", "Juriidiline nõustamine", this.state.formValues.juuranoustamine, "(\\d*)([.]\\d+)?")}
-                    {textfield("tegevused_lapsega", "Tegevused lapsega", this.state.formValues.tegevused_lapsega, "(\\d*)([.]\\d+)?")}
-                    {textfield("tugiteenused", "Tugiteenused", this.state.formValues.tugiteenused, "(\\d*)([.]\\d+)?")}
-                    <FormControl margin="normal" fullWidth >
-                        <FormLabel>Turvaline ajutine majutus</FormLabel>
-                    </FormControl>
-                    {textfield("naise_majutus", "Naise majutuspäevade arv", this.state.formValues.naise_majutus, "(\\d*)([.]\\d+)?")}
-                    {textfield("laste_arv", "Kaasasolevate laste arv", this.state.formValues.laste_arv, "(\\d*)")}
-                    {textfield("laste_majutus", "Laste majutuspäevade arv", this.state.formValues.laste_majutus, "(\\d*)([.]\\d+)?")}
-
-                    <FormControl margin="normal" fullWidth>
-                        <FormLabel>Võrgustikutöö teiste organisatsioonidega</FormLabel>
-                    </FormControl>
-                    <FormControl margin="normal">
-                        <FormLabel>Juhtumipõhine ümarlaud (v.a. MARAC)</FormLabel>
-                        <RadioGroup>
-                            <FormControlLabel control={
-                                <Radio
-                                    disabled={!this.state.editingEnabled}
-                                    checked={this.state.formValues.umarlaud === 1}
-                                    onClick={() => this.radioChange("marac", 1)}/>
-                            } label="Jah"/>
-                            <FormControlLabel control={
-                                <Radio
-                                    disabled={!this.state.editingEnabled}
-                                    checked={this.state.formValues.umarlaud === 0}
-                                    onClick={() => this.radioChange("marac", 0)}/>
-                            } label="Ei"/>
-                        </RadioGroup>
-                    </FormControl>
-                    <FormControl margin="normal" fullWidth>
-                        <FormLabel>Suunatud MARACi</FormLabel>
-                        <RadioGroup>
-                            <FormControlLabel control={
-                                <Radio
-                                    disabled={!this.state.editingEnabled}
-                                    checked={this.state.formValues.marac === 1}
-                                    onClick={() => this.radioChange("marac", 1)}/>
-                            } label="Jah"/>
-                            <FormControlLabel control={
-                                <Radio
-                                    disabled={!this.state.editingEnabled}
-                                    checked={this.state.formValues.marac === 0}
-                                    onClick={() => this.radioChange("marac", 0)}/>
-                            } label="Ei"/>
-                        </RadioGroup>
-                    </FormControl>
-                    <FormControl margin="normal" fullWidth>
-                        <FormLabel>Juhtumisse kaasatud osapooled</FormLabel>
-                    </FormControl>
-                    <FormControl margin="normal" fullWidth>
-                        <div>
-                            {checkbox("perearst_kaasatud", this.state.formValues.perearst_kaasatud, "Perearst")}
-                            {checkbox("emo_kaasatud", this.state.formValues.emo_kaasatud, "EMO")}
-                            {checkbox("naistearst_kaasatud", this.state.formValues.naistearst_kaasatud, "Naistearst")}
-                            {checkbox("ohvriabi_kaasatud", this.state.formValues.ohvriabi_kaasatud, "Ohvriabi")}
-                            {checkbox("politsei_kaasatud", this.state.formValues.politsei_kaasatud, "Politsei")}
-                            {checkbox("prokuratuur_kaasatud", this.state.formValues.prokuratuur_kaasatud, "Prokuratuur")}
-                            {checkbox("lastekaitse_kaasatud", this.state.formValues.lastekaitse_kaasatud, "Lastekaitse")}
-                            {checkbox("kov_kaasatud", this.state.formValues.kov_kaasatud, "KOV sotsiaalabi")}
-                            {checkbox("kriminaalkohus_kaasatud", this.state.formValues.kriminaalkohus_kaasatud, "Kohus (kriminaalasjas)")}
-                            {checkbox("tsiviilkohus_kaasatud", this.state.formValues.tsiviilkohus_kaasatud, "Kohus (tsiviilasjas)")}
-                            {checkbox("haridusasutus_kaasatud", this.state.formValues.haridusasutus_kaasatud, "Haridusasutus")}
-                            {checkbox("mtu_kaasatud", this.state.formValues.mtu_kaasatud, "MTÜ-d")}
-                            {checkbox("tuttavad_kaasatud", this.state.formValues.tuttavad_kaasatud, "Sõbrad, sugulased")}
-                        </div>
-                    </FormControl>
-                    <br/>
-                    <FormControl margin="normal" className={classes.textfield}>
-                        <InputLabel htmlFor="markused">Märkused</InputLabel>
-                        <Input
-                            disabled={!this.state.editingEnabled}
-                            value={this.state.formValues.markused}
-                            onChange={this.handleChange}
-                            id="markused"
-                        >
-                        </Input>
-                    </FormControl>
-
-                    <Grid container
-                          direction="column"
-                          justify="center"
-                          alignItems="center"
-                          spacing={8}>
-                        <Grid item>
-
-                            {!this.state.editingEnabled ?
-                                <Button
-                                    className={classes.button}
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={e => this.setState({
-                                        editingEnabled: !this.state.editingEnabled
-                                    })}
-                                >
-                                    MUUDA SESSIOONI ANDMEID
-                                </Button> : null}
-
-                            {this.state.editingEnabled ?
-                                <Button
-                                    className={classes.button}
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    SALVESTA
-                                </Button> : null}
-
-                            {this.state.editingEnabled ?
-                                <Button
-                                    className={classes.button}
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={e => {
-                                        this.setState({
-                                            editingEnabled: !this.state.editingEnabled,
-                                            formValues: Object.assign({}, this.state.initialValue)
-                                        });
+                <Grid container
+                      direction="column"
+                      justify="center"
+                      alignItems="center"
+                      spacing={8}>
+                    <Grid item>
+                        <form className={classes.form} onSubmit={this.handleUpdate}>
+                            <Grid container
+                                  direction="row"
+                                  justify="center"
+                                  spacing={16}>
+                                <Grid item sm={3}>
+                                    <FormControl margin="normal">
+                                        <TextField
+                                            value={this.state.formValues.kuupaev === "" ? dateValue : this.state.formValues.kuupaev}
+                                            disabled={!this.state.editingEnabled}
+                                            id="kuupaev"
+                                            label="Kuupäev"
+                                            type="date"
+                                            onChange={this.handleChange}
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </FormControl> <br/>
+                                    <FormControl margin="normal" className={classes.textfield}>
+                                        <InputLabel htmlFor="kirjeldus">Kirjeldus</InputLabel>
+                                        <Input
+                                            disabled={!this.state.editingEnabled}
+                                            value={this.state.formValues.kirjeldus}
+                                            onChange={this.handleChange}
+                                            id="kirjeldus"
+                                        >
+                                        </Input>
+                                    </FormControl>
+                                    <br/>
+                                    <FormControl margin="normal" fullwidth>
+                                        <TextField
+                                            disabled={!this.state.editingEnabled}
+                                            label="Märkused"
+                                            multiline
+                                            rowsMax="3"
+                                            value={this.state.formValues.markused}
+                                            onChange={this.handleChange}
+                                            id="markused"
+                                        />
+                                    </FormControl>
+                                    <FormControl margin="normal" fullWidth>
+                                        <FormLabel>Kas nõustamine toimus sidevahendite abil?</FormLabel>
+                                        <RadioGroup className={classes.radiob}>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.sidevahendid === 1}
+                                                    onClick={() => this.radioChange("sidevahendid", 1)}/>
+                                            } label="Jah"/>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.sidevahendid === 0}
+                                                    onClick={() => this.radioChange("sidevahendid", 0)}/>
+                                            } label="Ei"/>
+                                        </RadioGroup>
+                                    </FormControl>
 
 
-                                    }}
-                                >
-                                    TÜHISTA
-                                </Button> : null}
-                        </Grid>
+                                </Grid>
+
+                                <Grid item sm={5}>
+                                    <FormControl margin="normal" fullWidth>
+                                        <FormLabel>Osutatud teenused (tundide arv)</FormLabel>
+                                    </FormControl>
+                                    {textfield("kriisinoustamine", "Kriisinõustamine", this.state.formValues.kriisinoustamine, "(\\d*)([.]\\d+)?")}
+                                    {this.state.formValues.kriisinoustamine > 0 ?
+                                        <FormControl>
+                                            <div className={classes.input}>
+                                                <InputLabel htmlFor="kriisinoustamise_aeg">Kriisinõustamise
+                                                    aeg</InputLabel>
+                                                <Select
+                                                    disabled={!this.state.editingEnabled}
+                                                    value={this.state.formValues.kriisinoustamise_aeg}
+                                                    onChange={this.handleSelectChange}
+                                                    inputProps={{
+                                                        name: 'kriisinoustamise_aeg',
+                                                        id: 'kriisinoustamise_aeg',
+                                                    }}>
+                                                    <MenuItem value={"08:00-22:00"}>08:00-22:00</MenuItem>
+                                                    <MenuItem value={"22:00-08:00"}>22:00-08:00</MenuItem>
+
+                                                    <MenuItem value={"teadmata"}>Teadmata</MenuItem>
+                                                </Select></div>
+                                        </FormControl> : null}
+                                    {textfield("juhtuminoustamine", "Juhtumipõhine nõustamine", this.state.formValues.juhtuminoustamine, "(\\d*)([.]\\d+)?")}
+                                    {textfield("vorgustikutoo", "Võrgustikutöö", this.state.formValues.vorgustikutoo, "(\\d*)([.]\\d+)?")}
+                                    {textfield("psuhhonoustamine", "Psüh. nõustamine", this.state.formValues.psuhhonoustamine, "(\\d*)([.]\\d+)?")}
+                                    {textfield("juuranoustamine", "Juriidiline nõustamine", this.state.formValues.juuranoustamine, "(\\d*)([.]\\d+)?")}
+                                    {textfield("tegevused_lapsega", "Tegevused lapsega", this.state.formValues.tegevused_lapsega, "(\\d*)([.]\\d+)?")}
+                                    {textfield("tugiteenused", "Tugiteenused", this.state.formValues.tugiteenused, "(\\d*)([.]\\d+)?")}
+                                    <FormControl margin="normal" fullWidth>
+                                        <FormLabel>Turvaline ajutine majutus</FormLabel>
+                                    </FormControl>
+                                    {textfield("naise_majutus", "Naise majutuspäevade arv", this.state.formValues.naise_majutus, "(\\d*)([.]\\d+)?")}
+                                    {textfield("laste_arv", "Kaasasolevate laste arv", this.state.formValues.laste_arv, "(\\d*)")}
+                                    {textfield("laste_majutus", "Laste majutuspäevade arv", this.state.formValues.laste_majutus, "(\\d*)([.]\\d+)?")}
+                                </Grid>
+                                <Grid item sm={4}>
+                                    <FormControl margin="normal">
+                                        <FormLabel>Võrgustikutöö teiste organisatsioonidega</FormLabel>
+                                    </FormControl>
+                                    <br/>
+                                    <FormControl margin="normal">
+                                        <FormLabel>Suunatud MARACi</FormLabel>
+                                        <RadioGroup className={classes.radiob}>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.marac === 1}
+                                                    onClick={() => this.radioChange("marac", 1)}/>
+                                            } label="Jah"/>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.marac === 0}
+                                                    onClick={() => this.radioChange("marac", 0)}/>
+                                            } label="Ei"/>
+                                        </RadioGroup>
+                                    </FormControl>
+                                    <FormControl margin="normal">
+                                        <FormLabel>Juhtumipõhine ümarlaud (v.a. MARAC)</FormLabel>
+                                        <RadioGroup className={classes.radiob}>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.umarlaud === 1}
+                                                    onClick={() => this.radioChange("marac", 1)}/>
+                                            } label="Jah"/>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.umarlaud === 0}
+                                                    onClick={() => this.radioChange("marac", 0)}/>
+                                            } label="Ei"/>
+                                        </RadioGroup>
+                                    </FormControl>
+                                    <FormControl margin="normal" fullWidth>
+                                        <FormLabel>Juhtumisse kaasatud osapooled</FormLabel>
+                                    </FormControl>
+                                    <FormControl margin="normal" fullWidth>
+                                        <div>
+                                            {checkbox("perearst_kaasatud", this.state.formValues.perearst_kaasatud, "Perearst")}
+                                            {checkbox("emo_kaasatud", this.state.formValues.emo_kaasatud, "EMO")}
+                                            {checkbox("naistearst_kaasatud", this.state.formValues.naistearst_kaasatud, "Naistearst")}
+                                            {checkbox("ohvriabi_kaasatud", this.state.formValues.ohvriabi_kaasatud, "Ohvriabi")}
+                                            {checkbox("politsei_kaasatud", this.state.formValues.politsei_kaasatud, "Politsei")}
+                                            {checkbox("prokuratuur_kaasatud", this.state.formValues.prokuratuur_kaasatud, "Prokuratuur")}
+                                            {checkbox("lastekaitse_kaasatud", this.state.formValues.lastekaitse_kaasatud, "Lastekaitse")}
+                                            {checkbox("kov_kaasatud", this.state.formValues.kov_kaasatud, "KOV sotsiaalabi")}
+                                            {checkbox("kriminaalkohus_kaasatud", this.state.formValues.kriminaalkohus_kaasatud, "Kohus (kriminaalasjas)")}
+                                            {checkbox("tsiviilkohus_kaasatud", this.state.formValues.tsiviilkohus_kaasatud, "Kohus (tsiviilasjas)")}
+                                            {checkbox("haridusasutus_kaasatud", this.state.formValues.haridusasutus_kaasatud, "Haridusasutus")}
+                                            {checkbox("mtu_kaasatud", this.state.formValues.mtu_kaasatud, "MTÜ-d")}
+                                            {checkbox("tuttavad_kaasatud", this.state.formValues.tuttavad_kaasatud, "Sõbrad, sugulased")}
+                                        </div>
+                                    </FormControl>
+
+                                </Grid>
+
+                                <Grid container
+                                      direction="column"
+                                      justify="center"
+                                      alignItems="center"
+                                      spacing={8}>
+                                    <Grid item>
+
+                                        {!this.state.editingEnabled ?
+                                            <Button
+                                                className={classes.button}
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={e => this.setState({
+                                                    editingEnabled: !this.state.editingEnabled
+                                                })}
+                                            >
+                                                MUUDA SESSIOONI ANDMEID
+                                            </Button> : null}
+
+                                        {this.state.editingEnabled ?
+                                            <Button
+                                                className={classes.button}
+                                                type="submit"
+                                                variant="contained"
+                                                color="primary"
+                                            >
+                                                SALVESTA
+                                            </Button> : null}
+
+                                        {this.state.editingEnabled ?
+                                            <Button
+                                                className={classes.button}
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={e => {
+                                                    this.setState({
+                                                        editingEnabled: !this.state.editingEnabled,
+                                                        formValues: Object.assign({}, this.state.initialValue)
+                                                    });
+
+
+                                                }}
+                                            >
+                                                TÜHISTA
+                                            </Button> : null}
+                                    </Grid>
+                                </Grid>
+
+                            </Grid>
+
+                        </form>
                     </Grid>
-                </form>
 
+                </Grid>
 
             </Paper>
-
-            <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
-                onClick={e => navigate("/victim/" + this.props.victimID + "/" + this.props.incidentID)}
-
-            >
-                TAGASI
-            </Button>
 
 
         </Layout>

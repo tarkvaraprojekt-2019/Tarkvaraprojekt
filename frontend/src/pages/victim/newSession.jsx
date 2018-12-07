@@ -211,7 +211,7 @@ class NewSession extends React.Component {
                                         <TextField
                                             label="Kirjeldus"
                                             multiline
-                                            rowsMax = "3"
+                                            rowsMax="3"
                                             value={this.state.formValues.kirjeldus}
                                             onChange={this.handleChange}
                                             id="kirjeldus"
@@ -222,7 +222,7 @@ class NewSession extends React.Component {
                                         <TextField
                                             label="Märkused"
                                             multiline
-                                            rowsMax = "3"
+                                            rowsMax="3"
                                             value={this.state.formValues.markused}
                                             onChange={this.handleChange}
                                             id="markused"
@@ -287,11 +287,11 @@ class NewSession extends React.Component {
                                     {textfield("laste_majutus", "Laste majutuspäevade arv", this.state.formValues.laste_majutus, "(\\d*)([.]\\d+)?")}
                                 </Grid>
                                 <Grid item sm={4}>
-                                    <FormControl margin="normal" fullwidth >
+                                    <FormControl margin="normal" fullwidth>
                                         <FormLabel>Võrgustikutöö teiste organisatsioonidega</FormLabel>
                                     </FormControl>
                                     <br/>
-                                    <FormControl margin="normal" >
+                                    <FormControl margin="normal">
                                         <FormLabel>Suunatud MARACi</FormLabel>
                                         <RadioGroup className={classes.radiob}>
                                             <FormControlLabel control={
