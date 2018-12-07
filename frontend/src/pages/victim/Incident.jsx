@@ -6,6 +6,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup'
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -48,7 +49,8 @@ const styles = theme => ({
     radiob: {
         display: 'flex',
         flexDirection: 'row',
-        width: 'auto'
+        width: 'auto',
+        paddingRight: '3em'
     },
     button: {
         margin: theme.spacing.unit,
@@ -239,7 +241,7 @@ class Incident extends React.Component {
                                   direction="row"
                                   justify="center"
                                   spacing={16}>
-                                <Grid item xs={2} sm={3} >
+                                <Grid item xs={2} sm={4} >
                                     <FormControl margin="normal" fullWidth>
                                         <InputLabel htmlFor="piirkond">Piirkond</InputLabel>
                                         <Select
@@ -333,12 +335,56 @@ class Incident extends React.Component {
                                             <MenuItem value={"teadmata"}>Teadmata</MenuItem>
                                         </Select>
                                     </FormControl>
-                                </Grid>
-                                <Grid item xs={2} sm={3}>
                                     <FormControl margin="normal" fullWidth>
-                                    <FormLabel>Vägivalla liik</FormLabel>
-                                </FormControl>
+                                        <InputLabel htmlFor="lapsed">Alaealiste laste arv</InputLabel>
+                                        <Input
+                                            disabled={!this.state.editingEnabled}
+                                            type="number"
+                                            id="lapsed"
+                                            onChange={this.handleChange}
+                                            value={this.state.formValues.lapsed}/>
+                                    </FormControl>
+                                    <FormControl margin="normal">
+                                        <FormLabel>Puue</FormLabel>
+                                        <RadioGroup className = {classes.radiob}>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.puue === 1}
+                                                    onClick={() => this.radioChange("puue", 1)}/>
+                                            } label="Jah"/>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.puue === 0}
+                                                    onClick={() => this.radioChange("puue", 0)}/>
+                                            } label="Ei"/>
+                                        </RadioGroup>
+                                    </FormControl>
+                                    <FormControl margin="normal" >
+                                        <FormLabel>Rasedus</FormLabel>
+                                        <RadioGroup className = {classes.radiob}>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.rasedus === 1}
+                                                    onClick={() => this.radioChange("rasedus", 1)}
+                                                />
+                                            } label="Jah"/>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.rasedus === 0}
+                                                    onClick={() => this.radioChange("rasedus", 0)}
+                                                />
+                                            } label="Ei"/>
+                                        </RadioGroup>
+                                    </FormControl>
+
+                                </Grid>
+                                <Grid item xs={2} sm={4}>
                                 <FormControl margin="normal" fullWidth>
+                                    <FormLabel>Vägivalla liik</FormLabel>
                                     <div>
                                         <FormControlLabel control={
                                             <Checkbox
@@ -426,10 +472,10 @@ class Incident extends React.Component {
                                         } label="Teadmata vägivald"/>
                                     </div>
                                 </FormControl>
+
                                     <FormControl margin="normal" fullWidth>
                                         <FormLabel>Vägivallatseja</FormLabel>
-                                    </FormControl>
-                                    <FormControl margin="normal" fullWidth>
+
                                         <div>
                                             <FormControlLabel control={
                                                 <Checkbox
@@ -490,62 +536,9 @@ class Incident extends React.Component {
                                         </div>
                                     </FormControl>
 
-                                </Grid>
-
-                                <Grid item xs={2} sm={3}>
-                                    <FormControl margin="normal" fullWidth>
-                                        <FormLabel>Vägivallatseja sugu</FormLabel> <br/>
-                                        <RadioGroup className = {classes.radiob}>
-                                            <FormControlLabel control={
-                                                <Radio
-                                                    disabled={!this.state.editingEnabled}
-                                                    checked={this.state.formValues.vagivallatseja_sugu === "Mees"}
-                                                    onClick={() => this.radioChange("vagivallatseja_sugu", "Mees")}
-                                                />
-                                            } label="Mees"/>
-                                            <FormControlLabel control={
-                                                <Radio
-                                                    disabled={!this.state.editingEnabled}
-                                                    checked={this.state.formValues.vagivallatseja_sugu === "Naine"}
-                                                    onClick={() => this.radioChange("vagivallatseja_sugu", "Naine")}
-                                                />
-                                            } label="Naine"/>
-                                            <FormControlLabel control={
-                                                <Radio
-                                                    disabled={!this.state.editingEnabled}
-                                                    checked={this.state.formValues.vagivallatseja_sugu === "teadmata"}
-                                                    onClick={() => this.radioChange("vagivallatseja_sugu", "teadmata")}
-                                                />
-                                            } label="Teadmata"/>
-                                        </RadioGroup>
-                                    </FormControl>
-                                    <FormControl margin="normal" fullWidth>
-                                        <InputLabel htmlFor="vagivallatseja_vanus">Vägivallatseja vanus</InputLabel>
-                                        <Select
-                                            disabled={!this.state.editingEnabled}
-                                            value={this.state.formValues.vagivallatseja_vanus}
-                                            onChange={this.handleSelectChange}
-                                            inputProps={{
-                                                name: 'vagivallatseja_vanus',
-                                                id: 'vagivallatseja_vanus',
-                                            }}>
-                                            <MenuItem value={"alla_18"}>Alla 18</MenuItem>
-                                            <MenuItem value={"18-24"}>18-24</MenuItem>
-                                            <MenuItem value={"25-49"}>25-49</MenuItem>
-                                            <MenuItem value={"50-64"}>50-64</MenuItem>
-                                            <MenuItem value={"üle 65"}>Üle 65</MenuItem>
-                                            <MenuItem value={"teadmata"}>Teadmata</MenuItem>
-                                        </Select>
-                                    </FormControl>
-
-
-
-
-
                                     <FormControl margin="normal" fullWidth>
                                         <FormLabel>Ohvrid lisaks naisele</FormLabel>
-                                    </FormControl>
-                                    <FormControl margin="normal" fullWidth>
+
                                         <div>
                                             <FormControlLabel control={
                                                 <Checkbox
@@ -573,6 +566,59 @@ class Incident extends React.Component {
                                             } label="Muud"/>
                                         </div>
                                     </FormControl>
+                                </Grid>
+
+                                <Grid item xs={2} sm={4}>
+
+                                    <FormControl margin="normal" fullWidth>
+                                        <InputLabel htmlFor="vagivallatseja_vanus">Vägivallatseja vanus</InputLabel>
+                                        <Select
+                                            disabled={!this.state.editingEnabled}
+                                            value={this.state.formValues.vagivallatseja_vanus}
+                                            onChange={this.handleSelectChange}
+                                            inputProps={{
+                                                name: 'vagivallatseja_vanus',
+                                                id: 'vagivallatseja_vanus',
+                                            }}>
+                                            <MenuItem value={"alla_18"}>Alla 18</MenuItem>
+                                            <MenuItem value={"18-24"}>18-24</MenuItem>
+                                            <MenuItem value={"25-49"}>25-49</MenuItem>
+                                            <MenuItem value={"50-64"}>50-64</MenuItem>
+                                            <MenuItem value={"üle 65"}>Üle 65</MenuItem>
+                                            <MenuItem value={"teadmata"}>Teadmata</MenuItem>
+                                        </Select>
+                                    </FormControl>
+
+                                    <FormControl margin="normal" fullWidth>
+                                        <FormLabel>Vägivallatseja sugu</FormLabel>
+                                        <RadioGroup className = {classes.radiob}>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.vagivallatseja_sugu === "Mees"}
+                                                    onClick={() => this.radioChange("vagivallatseja_sugu", "Mees")}
+                                                />
+                                            } label="Mees"/>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.vagivallatseja_sugu === "Naine"}
+                                                    onClick={() => this.radioChange("vagivallatseja_sugu", "Naine")}
+                                                />
+                                            } label="Naine"/>
+                                            <FormControlLabel control={
+                                                <Radio
+                                                    disabled={!this.state.editingEnabled}
+                                                    checked={this.state.formValues.vagivallatseja_sugu === "teadmata"}
+                                                    onClick={() => this.radioChange("vagivallatseja_sugu", "teadmata")}
+                                                />
+                                            } label="Teadmata"/>
+                                        </RadioGroup>
+                                    </FormControl>
+
+
+
+
                                     <FormControl margin="normal" fullWidth>
                                         <FormLabel>Kas ohver on varasemalt politseiga kontakteerunud?</FormLabel>
                                         <RadioGroup className = {classes.radiob}>
@@ -593,54 +639,6 @@ class Incident extends React.Component {
                                         </RadioGroup>
                                     </FormControl>
 
-                                </Grid>
-                                <Grid item xs={2} sm={3}>
-                                    <FormControl margin="normal" fullWidth>
-                                        <FormLabel>Puue</FormLabel>
-                                        <RadioGroup className = {classes.radiob}>
-                                            <FormControlLabel control={
-                                                <Radio
-                                                    disabled={!this.state.editingEnabled}
-                                                    checked={this.state.formValues.puue === 1}
-                                                    onClick={() => this.radioChange("puue", 1)}/>
-                                            } label="Jah"/>
-                                            <FormControlLabel control={
-                                                <Radio
-                                                    disabled={!this.state.editingEnabled}
-                                                    checked={this.state.formValues.puue === 0}
-                                                    onClick={() => this.radioChange("puue", 0)}/>
-                                            } label="Ei"/>
-                                        </RadioGroup>
-                                    </FormControl>
-                                    <FormControl margin="normal" fullWidth>
-                                        <FormLabel>Rasedus</FormLabel>
-                                        <RadioGroup className = {classes.radiob}>
-                                            <FormControlLabel control={
-                                                <Radio
-                                                    disabled={!this.state.editingEnabled}
-                                                    checked={this.state.formValues.rasedus === 1}
-                                                    onClick={() => this.radioChange("rasedus", 1)}
-                                                />
-                                            } label="Jah"/>
-                                            <FormControlLabel control={
-                                                <Radio
-                                                    disabled={!this.state.editingEnabled}
-                                                    checked={this.state.formValues.rasedus === 0}
-                                                    onClick={() => this.radioChange("rasedus", 0)}
-                                                />
-                                            } label="Ei"/>
-                                        </RadioGroup>
-                                    </FormControl>
-                                    <FormControl margin="normal" fullWidth>
-                                        <InputLabel htmlFor="lapsed">Alaealiste laste arv</InputLabel>
-                                        <Input
-                                            disabled={!this.state.editingEnabled}
-                                            type="number"
-                                            id="lapsed"
-                                            onChange={this.handleChange}
-                                            value={this.state.formValues.lapsed}/>
-                                    </FormControl>
-
                                     <FormControl margin="normal" fullwidth>
                                         <InputLabel htmlFor="rahastus">Rahastuse liik</InputLabel>
                                         <Select
@@ -655,6 +653,9 @@ class Incident extends React.Component {
                                             <MenuItem value={"NTK rahastus"}>NTK rahastus</MenuItem>
                                         </Select>
                                     </FormControl>
+
+
+
                                 </Grid>
 
                             </Grid>
