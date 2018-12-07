@@ -269,7 +269,7 @@ class NewSession extends React.Component {
                                                     <MenuItem value={"08:00-22:00"}>08:00-22:00</MenuItem>
                                                     <MenuItem value={"22:00-08:00"}>22:00-08:00</MenuItem>
 
-                                                    <MenuItem value={"teadmata"}>Teadmata</MenuItem>
+                                                    <MenuItem value={"teadmata"}>Teadmata   </MenuItem>
                                                 </Select></div>
                                         </FormControl> : null}
 

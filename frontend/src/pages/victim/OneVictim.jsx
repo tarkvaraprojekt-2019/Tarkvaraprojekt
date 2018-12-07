@@ -109,8 +109,17 @@ class Victim extends React.Component {
         })
             .then(res => {
                 console.log(res.data);
+                let values = res.data[0]
+                Object.keys(values).forEach(function(key,index) {
+                    if (values[key]===null) {
+                        values[key] = ""
+                    }
+                });
 
-                this.setState({formValues: res.data[0]})
+
+
+                this.setState({formValues: values})
+                console.log(this.state)
 
             })
             .catch(err => console.log("search err: ", err))
@@ -272,10 +281,11 @@ class Victim extends React.Component {
                                         variant="contained"
                                         color="primary"
                                         onClick={e => {
+                                            this.getVictim()
+
                                             this.setState({
                                                 editingEnabled: !this.state.editingEnabled
                                             });
-                                            this.getVictim()
                                         }}
                                     >
                                         TÜHISTA
