@@ -1,5 +1,6 @@
 CREATE OR REPLACE TABLE users
-(name VARCHAR(64) PRIMARY KEY, pass VARCHAR(255) NOT NULL, is_admin BOOL NOT NULL DEFAULT 0, token VARCHAR(32));
+(name VARCHAR(64) PRIMARY KEY, pass VARCHAR(255) NOT NULL, is_admin BOOL NOT NULL DEFAULT 0, token VARCHAR(32))
+CHARACTER SET 'utf8' COLLATE 'utf8_bin';
 
 CREATE OR REPLACE PROCEDURE create_user(p_name VARCHAR(64), p_pass VARCHAR(255))
 INSERT INTO users SET name = p_name, pass = p_pass, token = NULL;
