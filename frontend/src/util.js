@@ -84,7 +84,7 @@ export const piirkonnad = [
 , "Teadmata"
 ]
 
-export const letterPattern = '[a-zA-ZüõöäÜÕÖÄžŽšŠ]*\- ';
+export const letterPattern = '[a-zA-ZüõöäÜÕÖÄžŽšŠ]*';
 
 
 
