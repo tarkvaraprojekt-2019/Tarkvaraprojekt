@@ -106,7 +106,9 @@ class Session extends React.Component {
     }
 
     updateSession = () => {
-        this.axios.post("update_session.php", this.state.formValues);
+        this.axios.post("update_session.php", this.state.formValues).then(res => {
+            console.log(res)
+        });
         this.props.location.state["session"] = this.state.formValues
     };
 
@@ -314,7 +316,7 @@ class Session extends React.Component {
                                     <FormControl margin="normal" fullWidth>
                                         <FormLabel>Osutatud teenused (tundide arv)</FormLabel>
                                     </FormControl>
-                                    {textfield("kriisinoustamine", "Kriisinõustamine", this.state.formValues.kriisinoustamine, "(\\d*)([.]\\d+)?")}
+                                    {textfield("kriisinoustamine", "Kriisinõustamine", this.state.formValues.kriisinoustamine, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
                                     {this.state.formValues.kriisinoustamine > 0 ?
                                         <FormControl>
                                             <div className={classes.input}>
@@ -334,18 +336,18 @@ class Session extends React.Component {
                                                     <MenuItem value={"teadmata"}>Teadmata</MenuItem>
                                                 </Select></div>
                                         </FormControl> : null}
-                                    {textfield("juhtuminoustamine", "Juhtumipõhine nõustamine", this.state.formValues.juhtuminoustamine, "(\\d*)([.]\\d+)?")}
-                                    {textfield("vorgustikutoo", "Võrgustikutöö", this.state.formValues.vorgustikutoo, "(\\d*)([.]\\d+)?")}
-                                    {textfield("psuhhonoustamine", "Psüh. nõustamine", this.state.formValues.psuhhonoustamine, "(\\d*)([.]\\d+)?")}
-                                    {textfield("juuranoustamine", "Juriidiline nõustamine", this.state.formValues.juuranoustamine, "(\\d*)([.]\\d+)?")}
-                                    {textfield("tegevused_lapsega", "Tegevused lapsega", this.state.formValues.tegevused_lapsega, "(\\d*)([.]\\d+)?")}
-                                    {textfield("tugiteenused", "Tugiteenused", this.state.formValues.tugiteenused, "(\\d*)([.]\\d+)?")}
+                                    {textfield("juhtuminoustamine", "Juhtumipõhine nõustamine", this.state.formValues.juhtuminoustamine, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
+                                    {textfield("vorgustikutoo", "Võrgustikutöö", this.state.formValues.vorgustikutoo, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
+                                    {textfield("psuhhonoustamine", "Psüh. nõustamine", this.state.formValues.psuhhonoustamine, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
+                                    {textfield("juuranoustamine", "Juriidiline nõustamine", this.state.formValues.juuranoustamine, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
+                                    {textfield("tegevused_lapsega", "Tegevused lapsega", this.state.formValues.tegevused_lapsega, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
+                                    {textfield("tugiteenused", "Tugiteenused", this.state.formValues.tugiteenused, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
                                     <FormControl margin="normal" fullWidth>
                                         <FormLabel>Turvaline ajutine majutus</FormLabel>
                                     </FormControl>
-                                    {textfield("naise_majutus", "Naise majutuspäevade arv", this.state.formValues.naise_majutus, "(\\d*)([.]\\d+)?")}
+                                    {textfield("naise_majutus", "Naise majutuspäevade arv", this.state.formValues.naise_majutus, "(\\d*)")}
                                     {textfield("laste_arv", "Kaasasolevate laste arv", this.state.formValues.laste_arv, "(\\d*)")}
-                                    {textfield("laste_majutus", "Laste majutuspäevade arv", this.state.formValues.laste_majutus, "(\\d*)([.]\\d+)?")}
+                                    {textfield("laste_majutus", "Laste majutuspäevade arv", this.state.formValues.laste_majutus, "(\\d*)")}
                                 </Grid>
                                 <Grid item sm={4}>
                                     <FormControl margin="normal">
