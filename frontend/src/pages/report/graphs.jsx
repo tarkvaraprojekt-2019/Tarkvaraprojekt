@@ -121,6 +121,9 @@ class Graphs extends React.Component {
         "tuttavad_kaasatud" :'Sõbrad, sugulased',
     }}
 
+
+
+
   state = {
     formValues: {
       alates: '2017-01-01',
@@ -133,6 +136,19 @@ class Graphs extends React.Component {
 
   componentWillMount() {
     this.getReport();
+
+      const algus = new Date();
+      const lopp = new Date();
+
+      algus.setMonth(algus.getMonth()-1);
+      algus.setDate(1);
+      lopp.setMonth(lopp.getMonth());
+      lopp.setDate(0);
+      let formValues = {...this.state.formValues};
+      formValues.alates = algus.toDateInputValue()
+      formValues.kuni = lopp.toDateInputValue()
+
+      this.setState({formValues})
   }
 
   getReport() {

@@ -59,14 +59,29 @@ class CSVBackup extends React.Component {
     };
 
     constructor(props) {
-        super(props)
-        this.axios = this.props.axios
+        super(props);
+        this.axios = this.props.axios;
+
+    }
+    componentWillMount() {
+        const algus = new Date();
+        const lopp = new Date();
+
+        algus.setMonth(algus.getMonth()-1);
+        algus.setDate(1);
+        lopp.setMonth(lopp.getMonth());
+        lopp.setDate(0);
+        let formValues = {...this.state.formValues};
+        formValues.alates = algus.toDateInputValue()
+        formValues.kuni = lopp.toDateInputValue()
+
+        this.setState({formValues})
     }
 
     state = {
         open: false,
         formValues: {
-            alates: new Date().toDateInputValue(),
+            alates: "",
             kuni: new Date().toDateInputValue(),
         },
         results: {}
@@ -76,25 +91,29 @@ class CSVBackup extends React.Component {
 
     handleClickOpen = () => {
         this.setState({drawerOpen: true});
-    }
+    };
     handleClose = () => {
         this.setState({drawerOpen: false});
-    }
+    };
 
 
     handleChange = event => {
         const formValues = this.state.formValues;
         formValues[event.target.id] = event.target.value;
         this.setState({formValues: formValues});
-        console.log(this.state);
     };
 
     getCSV = () => {
         if (this.correctDates()) {
-            this.axios.get('export_csv.php')
-                .then(res => {
+            this.axios.get('export_csv.php', {
+                params: {
+                    alates: this.state.formValues.alates,
+                    kuni: this.state.formValues.kuni,
+
+                }
+            }).then(res => {
                     let data = res.data;
-                    this.setState({results: data})
+                    this.setState({results: data});
                     this.downloadCSV()
 
                 })
@@ -102,17 +121,17 @@ class CSVBackup extends React.Component {
                     console.log("export err: ", err)
                 })
         }
-    }
+    };
 
     downloadCSV = () => {
         let csv = this.state.results;
-        console.log(csv)
+        console.log(csv);
 
         let filename = 'export.txt';
 
         const blob = new Blob([csv], {type: 'data:text/csv;charset=utf-8'});
         FileSaver.saveAs(blob, filename);
-    }
+    };
 
     render() {
         const {classes} = this.props;
@@ -186,14 +205,12 @@ class CSVBackup extends React.Component {
     correctDates() {
         const start = this.state.formValues.alates.split("-");
         const end = this.state.formValues.kuni.split("-");
-        console.log(start);
-        console.log(end);
 
         return parseInt(start[0]) <= parseInt(end[0]) && parseInt(start[1]) <= parseInt(end[1]) && parseInt(start[2]) <= parseInt(end[2]);
 
     }
     handleDownload = event => {
-        event.preventDefault()
+        event.preventDefault();
         this.getCSV()
     }
 }
