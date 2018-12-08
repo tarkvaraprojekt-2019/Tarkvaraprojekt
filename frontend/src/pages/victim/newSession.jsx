@@ -122,7 +122,7 @@ class NewSession extends React.Component {
             sidevahendid: 0,
             kriisinoustamine: 0,
             kriisinoustamise_aeg: "teadmata",
-            juhutuminoustamine: 0,
+            juhtuminoustamine: 0,
             vorgustikutoo: 0,
             psuhhonoustamine: 0,
             juuranoustamine: 0,
@@ -273,7 +273,7 @@ class NewSession extends React.Component {
                                                 </Select></div>
                                         </FormControl> : null}
 
-                                    {textfield("juhutuminoustamine", "Juhtumipõhine nõustamine", this.state.formValues.juhutuminoustamine, "(\\d*)([.]\\d+)?")}
+                                    {textfield("juhtuminoustamine", "Juhtumipõhine nõustamine", this.state.formValues.juhtuminoustamine, "(\\d*)([.]\\d+)?")}
                                     {textfield("vorgustikutoo", "Võrgustikutöö", this.state.formValues.vorgustikutoo, "(\\d*)([.]\\d+)?")}
                                     {textfield("psuhhonoustamine", "Psüh. nõustamine", this.state.formValues.psuhhonoustamine, "(\\d*)([.]\\d+)?")}
                                     {textfield("juuranoustamine", "Juriidiline nõustamine", this.state.formValues.juuranoustamine, "(\\d*)([.]\\d+)?")}
