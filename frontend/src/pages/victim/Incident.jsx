@@ -84,10 +84,6 @@ class Incident extends React.Component {
         this.getIncident()
     }
 
-    componentDidMount() {
-        this.state.initialValue = Object.assign({}, this.state.formValues)
-    }
-
     getIncident() {
         if (this.props.location && this.props.location.state && this.props.location.state.incident) {
             const formValues = this.props.location.state["incident"];
@@ -96,6 +92,10 @@ class Incident extends React.Component {
                 formValues: formValues,
             });
             console.log("get", this.state.formValues);
+            if (!this.state.hasInit) {
+                this.state.initialValue = Object.assign({}, this.state.formValues)
+                this.state.hasInit = true;
+            }
 
         } else {
             this.props.axios.get('get_incident.php', {
@@ -107,6 +107,10 @@ class Incident extends React.Component {
                 this.setState({
                     formValues: res.data[0]
                 })
+                if (!this.state.hasInit) {
+                    this.state.initialValue = Object.assign({}, this.state.formValues)
+                    this.state.hasInit = true;
+                }
             })
                 .catch(err => console.log("search err: ", err))
         }
@@ -167,6 +171,7 @@ class Incident extends React.Component {
         sessions: [{
             id: 0,
         }],
+        hasInit: false,
         editingEnabled: false,
         formValues: {
             id: this.props.incidentID,
