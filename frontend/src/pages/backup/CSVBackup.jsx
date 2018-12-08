@@ -105,8 +105,13 @@ class CSVBackup extends React.Component {
 
     getCSV = () => {
         if (this.correctDates()) {
-            this.axios.get('export_csv.php')
-                .then(res => {
+            this.axios.get('export_csv.php', {
+                params: {
+                    alates: this.state.formValues.alates,
+                    kuni: this.state.formValues.kuni,
+
+                }
+            }).then(res => {
                     let data = res.data;
                     this.setState({results: data});
                     this.downloadCSV()
