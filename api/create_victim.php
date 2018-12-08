@@ -11,7 +11,7 @@ $params = array("first_name", "last_name", "national_id", "phone", "email");
 
 //Loop through all parameters to see if they were asked to be inserted
 foreach ($params as $param) {
-	if ($body[$param] !== "") {
+	if (isset($body[$param])) {
 		$insert_fields[] = $param;
 		$insert_params[] = $body[$param];
 	}
