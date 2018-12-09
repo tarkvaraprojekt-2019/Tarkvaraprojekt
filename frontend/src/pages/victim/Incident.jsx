@@ -361,7 +361,7 @@ class Incident extends React.Component {
                                             <MenuItem value={"18-24"}>18-24</MenuItem>
                                             <MenuItem value={"25-49"}>25-49</MenuItem>
                                             <MenuItem value={"50-64"}>50-64</MenuItem>
-                                            <MenuItem value={"üle 65"}>Üle 65</MenuItem>
+                                            <MenuItem value={"65+"}>Üle 65</MenuItem>
                                             <MenuItem value={"teadmata"}>Teadmata</MenuItem>
                                         </Select>
                                     </FormControl>
@@ -615,7 +615,7 @@ class Incident extends React.Component {
                                             <MenuItem value={"18-24"}>18-24</MenuItem>
                                             <MenuItem value={"25-49"}>25-49</MenuItem>
                                             <MenuItem value={"50-64"}>50-64</MenuItem>
-                                            <MenuItem value={"üle 65"}>Üle 65</MenuItem>
+                                            <MenuItem value={"65+"}>Üle 65</MenuItem>
                                             <MenuItem value={"teadmata"}>Teadmata</MenuItem>
                                         </Select>
                                     </FormControl>
