@@ -26,7 +26,7 @@ export const mainListItems = (props) => (
           <ListItemIcon>
             <LockIcon/>
           </ListItemIcon>
-          <ListItemText primary="Ülevaade"/>
+          <ListItemText primary="Muuda parooli"/>
         </ListItem>
       </Link>
       {console.log('is admin: ', isAdmin())}

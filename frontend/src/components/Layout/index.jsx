@@ -20,6 +20,7 @@ import ErrorBar from './ErrorBar';
 import { logout } from '../../auth';
 
 import { AxiosContext } from '../../withRoot';
+import Button from '@material-ui/core/Button/Button';
 
 
 const drawerWidth = 240;
@@ -146,13 +147,15 @@ class Dashboard extends React.Component {
               {this.props.title}
             </Typography>
             <AxiosContext.Consumer>
-              {context => <IconButton color="inherit" onClick={() => {
+              {context =>
+                <Button color="inherit" onClick={() => {
                 console.log('context: ', context);
                 context.post('logout.php');
                 logout();
               }}>
                 <PowerSettingsNew color="secondary"/>
-              </IconButton>
+                  Logi välja
+                </Button>
               }
             </AxiosContext.Consumer>
           </Toolbar>
