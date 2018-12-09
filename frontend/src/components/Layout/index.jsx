@@ -17,7 +17,7 @@ import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import { mainListItems } from './listItems';
 import ErrorBar from './ErrorBar';
 
-import { logout } from '../../auth';
+import { getName, logout } from '../../auth';
 
 import { AxiosContext } from '../../withRoot';
 import Button from '@material-ui/core/Button/Button';
@@ -149,9 +149,10 @@ class Dashboard extends React.Component {
             <Typography variant="h6" color="inherit" noWrap className={classes.title}>
               {this.props.title}
             </Typography>
+            <Typography variant="h6"> {getName()}</Typography>
             <AxiosContext.Consumer>
               {context =>
-                <Button variant="outlined" color="default" onClick={() => {
+                <Button variant="outlined" className={classes.iconRight} color="default" onClick={() => {
                   console.log('context: ', context);
                   context.post('logout.php');
                   logout();
@@ -162,6 +163,7 @@ class Dashboard extends React.Component {
                 </Button>
               }
             </AxiosContext.Consumer>
+
           </Toolbar>
         </AppBar>
         <Drawer

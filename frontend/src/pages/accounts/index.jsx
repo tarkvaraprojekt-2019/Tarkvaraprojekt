@@ -95,6 +95,7 @@ class Accounts extends React.Component {
     if (username === getName()) {
       this.setState({ error: 'Viga. Proovisid eemaldada admini õigusi enda kasutajat. ' });
       setTimeout(() => this.setState({ error: '' }), 6000);
+      return;
     }
     this.manageUsers({
       action: 'set_admin',
@@ -107,6 +108,7 @@ class Accounts extends React.Component {
     if (username === getName()) {
       this.setState({ error: 'Viga. Proovisid kustutada ennast.' });
       setTimeout(() => this.setState({ error: '' }), 6000);
+      return;
     }
     this.manageUsers({
       action: 'delete',
