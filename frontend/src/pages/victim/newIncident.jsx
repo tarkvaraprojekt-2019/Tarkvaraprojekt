@@ -221,7 +221,7 @@ class NewIncident extends React.Component {
                                             <MenuItem value={"18-24"}>18-24</MenuItem>
                                             <MenuItem value={"25-49"}>25-49</MenuItem>
                                             <MenuItem value={"50-64"}>50-64</MenuItem>
-                                            <MenuItem value={"65+"}>Üle 65</MenuItem>
+                                            <MenuItem value={"65+"}>65+</MenuItem>
                                             <MenuItem value={"teadmata"}>Teadmata</MenuItem>
                                         </Select>
                                     </FormControl>
@@ -428,7 +428,7 @@ class NewIncident extends React.Component {
                                                     onClick={() => {
                                                         this.checkboxChange("vana_ohver")
                                                     }}/>
-                                            } label="Eakad (üle 65)"/>
+                                            } label="Eakad (65+)"/>
                                             <FormControlLabel control={
                                                 <Checkbox
                                                     checked={this.state.formValues.muu_ohver === 1}
@@ -454,7 +454,7 @@ class NewIncident extends React.Component {
                                             <MenuItem value={"18-24"}>18-24</MenuItem>
                                             <MenuItem value={"25-49"}>25-49</MenuItem>
                                             <MenuItem value={"50-64"}>50-64</MenuItem>
-                                            <MenuItem value={"65+"}>Üle 65</MenuItem>
+                                            <MenuItem value={"65+"}>65+</MenuItem>
                                             <MenuItem value={"teadmata"}>Teadmata</MenuItem>
                                         </Select>
                                     </FormControl>
