@@ -91,6 +91,9 @@ const styles = theme => ({
     height: '100vh',
     overflow: 'auto',
   },
+  iconRight: {
+    marginLeft: theme.spacing.unit,
+  },
 });
 
 class Dashboard extends React.Component {
@@ -148,13 +151,14 @@ class Dashboard extends React.Component {
             </Typography>
             <AxiosContext.Consumer>
               {context =>
-                <Button color="inherit" onClick={() => {
-                console.log('context: ', context);
-                context.post('logout.php');
-                logout();
-              }}>
-                <PowerSettingsNew color="secondary"/>
-                  Logi välja
+                <Button variant="outlined" color="default" onClick={() => {
+                  console.log('context: ', context);
+                  context.post('logout.php');
+                  logout();
+                }}>
+                  <Typography> Logi välja </Typography>
+                  <PowerSettingsNew color="secondary" className={classes.iconRight}/>
+
                 </Button>
               }
             </AxiosContext.Consumer>

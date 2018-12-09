@@ -1,7 +1,6 @@
 <?php
 
 //Feeds sent SQL statements into database to restore tables, to be used with statements retrieved from db_dump.php
-//Requires "dump" parameter
 
 require "verify_token.php";
 
@@ -11,10 +10,11 @@ if (!is_admin()) {
 	exit();
 }
 
-#$body = file_get_contents("php://input");
+$body = file_get_contents("php://input");
 
 $conf = parse_ini_file("../.htconf");
+$date = date("Y-m-d");
+$filename = "../restores/restore_" . $date;
+file_put_contents($filename, $body);
 
-$process = popen("mysql -h {$conf["DB_ADDR"]} -u {$conf["DB_USER"]} -p{$conf["DB_PASS"]} {$conf["DB_NAME"]}", "w");
-
-fwrite($process, stream_get_contents(fopen("php://input", "r")));
+echo `mysql -h {$conf["DB_ADDR"]} -u {$conf["DB_USER"]} -p{$conf["DB_PASS"]} {$conf["DB_NAME"]} < {$filename}`;
