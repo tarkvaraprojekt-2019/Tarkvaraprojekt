@@ -48,7 +48,7 @@ try:
     national_ID = driver.find_element_by_id("national_id")
 
     WebDriverWait(driver, 60).until(EC.text_to_be_present_in_element_value((By.ID, "national_id"), "4"))
-    assert national_ID.get_attribute("value") == "49901329491"
+    assert national_ID.get_attribute("value") == "47102042742"
     print ("Basic info retrieval - Success!")
 
 except TimeoutException as e:
