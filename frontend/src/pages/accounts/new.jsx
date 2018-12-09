@@ -190,20 +190,16 @@ class NewUser extends React.Component {
           onClose={this.handleClose}
         >
           <DialogTitle>
-            Muuda eksisteerivat kasutajat?
+            Kasutaja eksisteerib
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Sellise nimega kasutaja juba eksisteerib. Jätkates salvestamisega
-              kirjutad eelmise kasutaja üle.
+              Sellise nimega kasutaja juba eksisteerib. Ei saa uut sama nimelist kasutajat teha.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
               Tagasi
-            </Button>
-            <Button onClick={this.addNewUser} color="secondary">
-              Salvesta
             </Button>
           </DialogActions>
         </Dialog>
