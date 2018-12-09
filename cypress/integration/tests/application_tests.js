@@ -4,7 +4,6 @@ describe('Basic info', function() {
 		cy.get('#email').type('asdf')
 		cy.get('#password').type('asdf')
 		cy.get('span:contains("Sisene")').click()
-		cy.wait(120000)
 		cy.get('#first_name').type('Pille')
 		cy.get('span:contains("Otsi")').click()
 		cy.get('td:contains("PAGAN")').click()
