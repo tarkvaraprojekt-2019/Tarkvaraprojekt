@@ -48,7 +48,6 @@ const SessionTable = props => {
                             <TableRow>
                                 <TableCell>Sessiooni kuupäev</TableCell>
                                 <TableCell>Kirjeldus</TableCell>
-                                <TableCell>Kriisinõustamine (h)</TableCell>
                                 <TableCell>Viimati muudetud</TableCell>
                                 <TableCell>Muutja</TableCell>
 
@@ -71,8 +70,6 @@ const SessionTable = props => {
                                     >
                                         <TableCell component="th" scope="row">{n.kuupaev === null || n.kuupaev === "" ? "Teadmata" : n.kuupaev}</TableCell>
                                         <TableCell>{n.kirjeldus === null || n.kirjeldus === "" ? "-" : n.kirjeldus}</TableCell>
-                                        <TableCell>{n.kriisinoustamine === null || n.kriisinoustamine === "" ? "Teadmata" : n.kriisinoustamine}</TableCell>
-
                                         <TableCell>{n.muutmisaeg === null || n.muutmisaeg === "" ? "Teadmata" : n.muutmisaeg}</TableCell>
                                         <TableCell>{n.muutja === null || n.muutja === "" ? "Teadmata" : n.muutja}</TableCell>
                                     </TableRow>

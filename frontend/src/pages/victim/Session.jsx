@@ -121,7 +121,6 @@ class Session extends React.Component {
         const formValues = this.state.formValues
         formValues[event.target.name] = event.target.value
         this.setState({formValues});
-        console.log(this.state)
     };
 
 
@@ -129,7 +128,6 @@ class Session extends React.Component {
         const formValues = this.state.formValues
         formValues[event.target.id] = event.target.value
         this.setState({formValues});
-        console.log(this.state)
     };
     handleNumChange = event => {
         const formValues = this.state.formValues
@@ -141,13 +139,11 @@ class Session extends React.Component {
         const formValues = this.state.formValues
         formValues[field] = (formValues[field] === 0 || formValues[field] === "") ? 1 : 0;
         this.setState({formValues});
-        console.log(this.state)
     };
     radioChange = (field, value) => {
         const formValues = this.state.formValues
         formValues[field] = value
         this.setState({formValues});
-        console.log(this.state)
     };
 
     state = {
@@ -271,6 +267,8 @@ class Session extends React.Component {
                                     <FormControl margin="normal" className={classes.textfield}>
                                         <InputLabel htmlFor="kirjeldus">Kirjeldus</InputLabel>
                                         <Input
+                                            multiline
+                                            rowsMax="3"
                                             disabled={!this.state.editingEnabled}
                                             value={this.state.formValues.kirjeldus}
                                             onChange={this.handleChange}
