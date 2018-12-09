@@ -81,11 +81,10 @@ class NewSession extends React.Component {
         formValues[event.target.id] = event.target.value
         this.setState({formValues});
     };
-    handleNumChange = evt => {
-        const keyCode = evt.keyCode || evt.which;
-        const keyValue = String.fromCharCode(keyCode);
-        if (/[+\-\e]/.test(keyValue))
-            evt.preventDefault();
+    handleNumChange = event => {
+        const formValues = this.state.formValues
+        formValues[event.target.id] = event.target.value.replace(',', '.')
+        this.setState({formValues});
     };
 
     checkboxChange = field => {
@@ -162,7 +161,7 @@ class NewSession extends React.Component {
                 label={label}
                 className={classes.input}
                 value={value}
-                onChange={this.handleChange}
+                onChange={this.handleNumChange}
                 id={id}
                 inputProps={{pattern: pattern}}
             />
