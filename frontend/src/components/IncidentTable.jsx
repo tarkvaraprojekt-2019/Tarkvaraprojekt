@@ -33,6 +33,15 @@ const IncidentTable = props => {
                   justify="center"
                   alignItems="center"
                 spacing = {8}>
+                <Grid item xs>
+                    <Button
+                        onClick={e => navigate("/victim/" + props.uid + "/newIncident")}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Uus juhtum
+                    </Button>
+                </Grid>
                 <Grid item xs = {12}>
                     <Table >
                         <TableHead>
@@ -74,15 +83,7 @@ const IncidentTable = props => {
                         </TableBody>
                     </Table>
                 </Grid>
-                <Grid item xs>
-                        <Button
-                            onClick={e => navigate("/victim/" + props.uid + "/newIncident")}
-                            variant="contained"
-                            color="primary"
-                        >
-                            Uus juhtum
-                        </Button>
-                </Grid>
+
             </Grid>
 
         </Paper>

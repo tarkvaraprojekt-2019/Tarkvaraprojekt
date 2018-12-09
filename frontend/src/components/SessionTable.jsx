@@ -32,7 +32,17 @@ const SessionTable = props => {
                   justify="center"
                   alignItems="center"
                   spacing = {8}>
+                <Grid item xs>
+                    <Button
+                        onClick={e => navigate("/victim/" + props.uid + "/" + props.incidentID + "/newSession" )}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Uus Sessioon
+                    </Button>
+                </Grid>
                 <Grid item xs = {12}>
+
                     <Table >
                         <TableHead>
                             <TableRow>
@@ -71,15 +81,7 @@ const SessionTable = props => {
                         </TableBody>
                     </Table>
                 </Grid>
-                <Grid item xs>
-                        <Button
-                            onClick={e => navigate("/victim/" + props.uid + "/" + props.incidentID + "/newSession" )}
-                            variant="contained"
-                            color="primary"
-                        >
-                            Uus Sessioon
-                        </Button>
-                </Grid>
+
             </Grid>
 
         </Paper>
