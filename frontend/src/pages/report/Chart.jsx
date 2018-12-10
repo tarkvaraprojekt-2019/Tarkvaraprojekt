@@ -17,7 +17,7 @@ const Chart = (props) => {
       <Legend/>
       {props.states.map((s, i) => <Bar dataKey={s} fill={colors[i % colors.length]}/>)}
       <XAxis dataKey="name" interval={0} angle={-90} textAnchor="begin">
-        <Label value="piirkond"/>
+        <Label value="Piirkond"/>
       </XAxis>
       <YAxis/>
     </BarChart>

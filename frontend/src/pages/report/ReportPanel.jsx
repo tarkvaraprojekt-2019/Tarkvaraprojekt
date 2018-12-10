@@ -145,9 +145,9 @@ export class ReportPanel extends Component {
       }
       // data
       nonEmpty.slice(1).forEach(([...values], i) => {
-        values.forEach((e, ii) => longData[ii]['summa'] = values[ii]);
+        values.forEach((e, ii) => longData[ii]['Summa'] = values[ii]);
       });
-      const piirkonnad = ['summa'];
+      const piirkonnad = ['Summa'];
 
       // filter out unchecked
       const outData = longData.filter(({ name }) => this.state.checkboxValues[this.state.labels[name]]);
