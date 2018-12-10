@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { isBrowser } from '../../auth';
+import { isBrowser } from '../auth';
 import CSVParser from 'papaparse';
 import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox/Checkbox';
-import { shallowCompare, uniqueArr } from '../../util';
+import { shallowCompare, uniqueArr } from '../util';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/core/SvgIcon/SvgIcon';
