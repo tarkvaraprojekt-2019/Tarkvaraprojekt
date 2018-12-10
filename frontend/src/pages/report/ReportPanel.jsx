@@ -35,15 +35,12 @@ export class ReportPanel extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    console.log('comparison: ', props.formValues, state.formValues);
     if (!shallowCompare(props.formValues, state.formValues)) {
-      console.log('true');
       return {
         data: null,
         formValues: { ...props.formValues },
       };
     }
-    console.log('false');
     return null;
   }
 
@@ -93,7 +90,7 @@ export class ReportPanel extends Component {
       })
       .then(res => {
         const csv = CSVParser.parse(res.data, { dynamicTyping: true, delimiter: '\t' });
-        console.log('report: ', csv);
+        //console.log('report: ', csv);
         this.setState({ data: csv.data });
         this._request = null;
         //this.data = csv.data;

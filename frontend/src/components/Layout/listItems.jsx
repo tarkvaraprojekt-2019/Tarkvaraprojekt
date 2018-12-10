@@ -29,7 +29,7 @@ export const mainListItems = (props) => (
           <ListItemText primary="Muuda parooli"/>
         </ListItem>
       </Link>
-      {console.log('is admin: ', isAdmin())}
+
       {isAdmin() && (
         <Link to="/accounts">
           <ListItem button>

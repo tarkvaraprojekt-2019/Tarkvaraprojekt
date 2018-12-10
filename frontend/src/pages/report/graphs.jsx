@@ -58,7 +58,7 @@ class Graphs extends React.Component {
     const id = event.target.id || event.target.name;
     formValues[id] = event.target.value;
     this.setState({ formValues });
-    console.log('handleChange: ', this.state);
+    //console.log('handleChange: ', this.state);
   };
 
   columns =
@@ -399,7 +399,7 @@ class Graphs extends React.Component {
         params: paramValues,
       })
       .then(res => {
-        console.log(res);
+        //console.log(res);
         this.setState({
           data: res.data,
         });

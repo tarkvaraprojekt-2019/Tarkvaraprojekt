@@ -55,8 +55,8 @@ export const isAdmin = () => {
 export const getName = () => {
   if (!isBrowser) return false;
   const nameString = getToken().split(':')[0];
-  console.log('name: ', nameString);
-  console.log('atob: ', atob(nameString));
+  //console.log('name: ', nameString);
+  //console.log('atob: ', atob(nameString));
 
   return atob(nameString);
 };
