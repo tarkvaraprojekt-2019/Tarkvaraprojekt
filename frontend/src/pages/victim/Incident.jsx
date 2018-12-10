@@ -2,12 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import classNames from 'classnames';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup'
-import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
@@ -25,7 +23,9 @@ import TextField from '@material-ui/core/TextField';
 import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout/index';
-import {navigate} from 'gatsby';
+import { navigate } from 'gatsby';
+import { isAdmin } from '../../auth';
+import ConfirmDelete from '../../components/ConfirmDelete';
 
 
 const styles = theme => ({
@@ -173,6 +173,7 @@ class Incident extends React.Component {
         }],
         hasInit: false,
         editingEnabled: false,
+      isDeleteOpen: false,
         formValues: {
             id: this.props.incidentID,
             kliendi_nr: this.props.victimID,
@@ -206,6 +207,20 @@ class Incident extends React.Component {
         },
         initialValue: {}
     };
+
+  handleDeleteOpen = () => {
+    this.setState({ isDeleteOpen: true });
+  };
+  handleDeleteClose = () => {
+    this.setState({ isDeleteOpen: false });
+  };
+  handleDeleteContinue = () => {
+    this.axios.post('delete_incident.php', { id: this.props.incidentID })
+      .then(res => {
+        console.log('delete: ', res);
+        navigate('/victim/' + this.props.victimID);
+      });
+  };
 
     updateVictim = () => {
         this.axios.post("update_incident.php", this.state.formValues);
@@ -707,6 +722,17 @@ class Incident extends React.Component {
                                     >
                                         MUUDA JUHTUMI ANDMEID
                                     </Button> : null}
+                              {!this.state.editingEnabled && isAdmin() ?
+                                <Button
+                                  className={classes.button}
+                                  variant="contained"
+                                  color="primary"
+                                  onClick={e => {
+                                    this.handleDeleteOpen();
+                                  }}
+                                >
+                                  KUSTUTA JUHTUM
+                                </Button> : null}
 
                                 {this.state.editingEnabled ?
                                     <Button
@@ -748,7 +774,8 @@ class Incident extends React.Component {
                           sessions={this.state.sessions}/>
 
 
-
+          <ConfirmDelete open={this.state.isDeleteOpen} object="intsidenti" onClose={this.handleDeleteClose}
+                         onContinue={this.handleDeleteContinue}/>
         </Layout>;
     }
 }

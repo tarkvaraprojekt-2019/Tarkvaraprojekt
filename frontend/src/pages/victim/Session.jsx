@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import classNames from 'classnames';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -24,7 +24,9 @@ import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout/index';
-import {navigate} from 'gatsby';
+import { navigate } from 'gatsby';
+import ConfirmDelete from '../../components/ConfirmDelete';
+import { isAdmin } from '../../auth';
 
 
 const styles = theme => ({
@@ -105,6 +107,20 @@ class Session extends React.Component {
 
     }
 
+  handleDeleteOpen = () => {
+    this.setState({ isDeleteOpen: true });
+  };
+  handleDeleteClose = () => {
+    this.setState({ isDeleteOpen: false });
+  };
+  handleDeleteContinue = () => {
+    this.axios.post('delete_session.php', { id: this.props.sessionID })
+      .then(res => {
+        console.log('delete: ', res);
+        navigate('/victim/' + this.props.victimID + '/' + this.props.incidentID);
+      });
+  };
+
     updateSession = () => {
         this.axios.post("update_session.php", this.state.formValues).then(res => {
             console.log(res)
@@ -147,6 +163,7 @@ class Session extends React.Component {
     };
 
     state = {
+      isDeleteOpen: false,
         editingEnabled: false,
         formValues: {
             incident_id: this.props.incidentID,
@@ -426,6 +443,17 @@ class Session extends React.Component {
                                             >
                                                 MUUDA SESSIOONI ANDMEID
                                             </Button> : null}
+                                      {!this.state.editingEnabled && isAdmin() ?
+                                        <Button
+                                          className={classes.button}
+                                          variant="contained"
+                                          color="primary"
+                                          onClick={e => {
+                                            this.handleDeleteOpen();
+                                          }}
+                                        >
+                                          KUSTUTA SESSIOON
+                                        </Button> : null}
 
                                         {this.state.editingEnabled ?
                                             <Button
@@ -465,7 +493,8 @@ class Session extends React.Component {
 
             </Paper>
 
-
+          <ConfirmDelete open={this.state.isDeleteOpen} object="sessiooni" onClose={this.handleDeleteClose}
+                         onContinue={this.handleDeleteContinue}/>
         </Layout>
     }
 }
