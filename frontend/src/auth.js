@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { navigate } from 'gatsby';
+import { b64DecodeUnicode, b64EncodeUnicode } from './util';
 
 const getToken = () =>
   window.localStorage.authToken || ""
@@ -23,8 +24,8 @@ export const getBaseUrl = () => {
 export function handleLogin({ username, password }) {
   if (!isBrowser) return false
 
-  const user = btoa(username);
-  const pass = btoa(password);
+  const user = b64EncodeUnicode(username);
+  const pass = b64EncodeUnicode(password);
 
   const auth = user + ':' + pass;
 
@@ -58,7 +59,7 @@ export const getName = () => {
   //console.log('name: ', nameString);
   //console.log('atob: ', atob(nameString));
 
-  return atob(nameString);
+  return b64DecodeUnicode(nameString);
 };
 
 export const getCurrentToken = () => isBrowser && getToken()
