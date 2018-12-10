@@ -87,3 +87,8 @@ export const piirkonnad = [
 export const letterPattern = '[a-zA-ZüõöäÜÕÖÄžŽšŠ\\- ]*';
 
 export const uniqueArr = (arr) => arr.filter((v, i, a) => a.indexOf(v) === i);
+
+export const shallowCompare = (obj1, obj2) =>
+  obj1 != null && obj2 != null &&
+  Object.keys(obj1).length === Object.keys(obj2).length &&
+  Object.keys(obj1).every(key => obj1[key] === obj2[key]);

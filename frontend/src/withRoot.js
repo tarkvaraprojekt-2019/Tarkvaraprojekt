@@ -31,6 +31,7 @@ function withRoot(Component) {
         }
         return Promise.reject(error)
       })
+
       Date.prototype.toDateInputValue = (function () {
         const local = new Date(this);
         local.setMinutes(this.getMinutes() - this.getTimezoneOffset());

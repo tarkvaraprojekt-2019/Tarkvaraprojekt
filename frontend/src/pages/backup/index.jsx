@@ -110,18 +110,20 @@ class DatabaseBackup extends React.Component {
                                 <SaveIcon className={ classes.leftIcon }/>
                                 Lae alla
                             </Button>
+                          <form action="db_restore.php" method="post" encType="multipart/form-data">
                             <input
-                                accept="*"
-                                className={classes.input}
-                                id="button-file"
-                                type="file"
+                              accept="*"
+                              className={classes.input}
+                              id="button-file"
+                              type="file"
                             />
                             <label htmlFor="button-file">
-                                <Button className={classes.button} component="span" variant="outlined" size="small">
-                                    <CloudUploadIcon className={ classes.leftIcon }/>
-                                    Lae üles
-                                </Button>
+                              <Button className={classes.button} component="span" variant="text" size="small">
+                                <CloudUploadIcon className={classes.leftIcon}/>
+                                Taasta koopiast
+                              </Button>
                             </label>
+                          </form>
                             
                         </div>
                         
