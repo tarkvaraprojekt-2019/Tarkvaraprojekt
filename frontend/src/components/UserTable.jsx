@@ -66,7 +66,6 @@ class UserTable extends React.Component {
         
                       <DeleteIcon
                         color="action"
-
                         onClick={() => this.props.handleDelete(n.name)}
                       />
                     

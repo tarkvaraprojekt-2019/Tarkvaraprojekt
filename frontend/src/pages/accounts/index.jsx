@@ -16,6 +16,7 @@ import Dialog from '@material-ui/core/Dialog/Dialog';
 import { getName } from '../../auth';
 import DoublePassword from '../../components/DoublePassword';
 import FormHelperText from '@material-ui/core/es/FormHelperText/FormHelperText';
+import ConfirmDelete from '../../components/ConfirmDelete';
 
 const styles = theme => ({
   root: {
@@ -61,6 +62,25 @@ class Accounts extends React.Component {
   handleClose = () => {
     this.setState({ dialogOpen: false });
   };
+  handleDeleteOpen = (user) => {
+    this.setState({ isDeleteOpen: true, userToDelete: user });
+  };
+  handleDeleteClose = () => {
+    this.setState({ isDeleteOpen: false, userToDelete: '' });
+  };
+  handleDeleteContinue = () => {
+    const username = this.state.userToDelete;
+    if (username === getName()) {
+      this.setState({ error: 'Viga. Proovisid kustutada ennast.' });
+      setTimeout(() => this.setState({ error: '' }), 6000);
+      return;
+    }
+    this.manageUsers({
+      action: 'delete',
+      name: username,
+    });
+    this.handleDeleteClose();
+  };
 
   componentWillMount() {
     this.getUsers();
@@ -71,6 +91,8 @@ class Accounts extends React.Component {
     passwordSelectedName: '',
     password: '',
     dialogOpen: false,
+    isDeleteOpen: false,
+    userToDelete: '',
     error: '',
     passwordError: '',
   };
@@ -104,17 +126,6 @@ class Accounts extends React.Component {
     });
   };
 
-  handleDelete = (username) => {
-    if (username === getName()) {
-      this.setState({ error: 'Viga. Proovisid kustutada ennast.' });
-      setTimeout(() => this.setState({ error: '' }), 6000);
-      return;
-    }
-    this.manageUsers({
-      action: 'delete',
-      name: username,
-    });
-  };
   manageUsers = params => {
     this.props.axios.post('manage_users.php', params)
       .then(res => {
@@ -144,7 +155,7 @@ class Accounts extends React.Component {
           <UserTable
             classes={classes}
             users={this.state.users}
-            handleDelete={this.handleDelete}
+            handleDelete={this.handleDeleteOpen}
             handleAdmin={this.handleAdmin}
             handlePassword={this.handlePassword}
           />
@@ -180,6 +191,8 @@ class Accounts extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
+        <ConfirmDelete open={this.state.isDeleteOpen} object="kasutajat" onClose={this.handleDeleteClose}
+                       onContinue={this.handleDeleteContinue}/>
       </Layout>
     );
   }

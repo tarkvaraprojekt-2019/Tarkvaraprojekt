@@ -84,6 +84,6 @@ export const piirkonnad = [
 , "Teadmata"
 ]
 
-export const letterPattern = '[a-zA-ZüõöäÜÕÖÄžŽšŠ\- ]*';
+export const letterPattern = '[a-zA-ZüõöäÜÕÖÄžŽšŠ\\- ]*';
 
 export const uniqueArr = (arr) => arr.filter((v, i, a) => a.indexOf(v) === i);
