@@ -50,7 +50,7 @@ class UserTable extends React.Component {
                       Muuda
                       </Button>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="adminNupp">
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -62,10 +62,11 @@ class UserTable extends React.Component {
                       }
                     />
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="kustutaNupp">
         
                       <DeleteIcon
                         color="action"
+
                         onClick={() => this.props.handleDelete(n.name)}
                       />
                     
