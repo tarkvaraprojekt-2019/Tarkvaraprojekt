@@ -111,6 +111,9 @@ class ReportPanel extends Component {
     'cause': 'Vägivallatseja',
     'other': 'Muu',
     'type': 'Vägivalla tüüp',
+    'language': 'Keel',
+    'age': 'Vanus',
+    'people': 'Inimese tüüp',
   };
   checkboxChange = field => {
     const checkboxValues = this.state.checkboxValues;

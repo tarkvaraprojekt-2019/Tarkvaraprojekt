@@ -68,16 +68,6 @@ class Graphs extends React.Component {
       'topic': 'service-hours',
     },
       {
-        'id': 'kriisinoustamine_paeval',
-        'label': 'Kriisinõustamisi päeval',
-        'topic': 'service-hours',
-      },
-      {
-        'id': 'kriisinoustamine_oosel',
-        'label': 'Kriisinõustamisi öösel',
-        'topic': 'service-hours',
-      },
-      {
         'id': 'sidevahendid',
         'label': 'Nõustamisi sidevahenditega',
         'topic': 'service-hours',
@@ -109,14 +99,13 @@ class Graphs extends React.Component {
       },
       { 'id': 'tugiteenused', 'label': 'Tugiteenuste aeg', 'topic': 'service-hours' },
       {
-        'id': 'vagivallatseja_sugu_mees',
-        'label': 'Mees vägivallatseja',
-        'subtopic': 'general',
-        'topic': 'violence',
+        'id': 'kriisinoustamise_aeg',
+        'label': 'Kriisinõustamisi päeval ja öösel',
+        'topic': 'service-hours',
       },
       {
-        'id': 'vagivallatseja_sugu_naine',
-        'label': 'Naine vägivallatseja',
+        'id': 'vagivallatseja_sugu',
+        'label': 'Vägivallatseja sugu',
         'subtopic': 'general',
         'topic': 'violence',
       },
@@ -139,30 +128,6 @@ class Graphs extends React.Component {
         'topic': 'violence',
       },
       {
-        'id': 'vagivallatseja_vanus_18',
-        'label': 'Vägivallatseja alla 18',
-        'subtopic': 'general',
-        'topic': 'violence',
-      },
-      {
-        'id': 'vagivallatseja_vanus_24',
-        'label': 'Vägivallatseja 18-24',
-        'subtopic': 'general',
-        'topic': 'violence',
-      },
-      {
-        'id': 'vagivallatseja_vanus_49',
-        'label': 'Vägivallatseja 25-49',
-        'subtopic': 'general',
-        'topic': 'violence',
-      },
-      {
-        'id': 'vagivallatseja_vanus_64',
-        'label': 'Vägivallatseja vanus 50-64',
-        'subtopic': 'general',
-        'topic': 'violence',
-      },
-      {
         'id': 'laps_ohver',
         'label': 'Alaealine lisaohvriks',
         'subtopic': 'general',
@@ -173,6 +138,83 @@ class Graphs extends React.Component {
         'label': 'Politsei kaasatud',
         'subtopic': 'general',
         'topic': 'violence',
+      },
+      {
+        'id': 'perearst_kaasatud',
+        'label': 'Perearst',
+        'subtopic': 'medical',
+        'topic': 'participants',
+      },
+      {
+        'id': 'naistearst_kaasatud',
+        'label': 'Naistearst',
+        'subtopic': 'medical',
+        'topic': 'participants',
+      },
+      {
+        'id': 'emo_kaasatud',
+        'label': 'EMO',
+        'subtopic': 'medical',
+        'topic': 'participants',
+      },
+      {
+        'id': 'session_id',
+        'label': 'Sessioonide arv',
+        'subtopic': 'general',
+        'topic': 'unique',
+      },
+      {
+        'id': 'kliendi_nr',
+        'label': 'Klientide arv',
+        'subtopic': 'general',
+        'topic': 'unique',
+      },
+      {
+        'id': 'rahastus',
+        'label': 'NTK rahastus',
+        'subtopic': 'general',
+        'topic': 'unique',
+      },
+      {
+        'id': 'incident_id',
+        'label': 'Juhtumite arv',
+        'subtopic': 'general',
+        'topic': 'unique',
+      },
+      { 'id': 'laste_arv', 'label': 'Laste arv majutuses', 'topic': 'hosting' },
+      {
+        'id': 'laste_majutus',
+        'label': 'Laste majutuspäevade arv',
+        'topic': 'hosting',
+      },
+      {
+        'id': 'naise_majutus',
+        'label': 'Naise majutuspäevade arv',
+        'topic': 'hosting',
+      },
+      {
+        'id': 'muu_keel',
+        'label': 'Muukeelseid',
+        'subtopic': 'language',
+        'topic': 'unique',
+      },
+      {
+        'id': 'eesti_keel',
+        'label': 'Eestikeelseid',
+        'subtopic': 'language',
+        'topic': 'unique',
+      },
+      {
+        'id': 'vene_keel',
+        'label': 'Venekeelseid',
+        'subtopic': 'language',
+        'topic': 'unique',
+      },
+      {
+        'id': 'inglise_keel',
+        'label': 'Ingliskeelseid',
+        'subtopic': 'language',
+        'topic': 'unique',
       },
       {
         'id': 'politsei_kaasatud',
@@ -214,24 +256,6 @@ class Graphs extends React.Component {
         'id': 'tsiviilkohus_kaasatud',
         'label': 'Kohus (tsiviilasjas)',
         'subtopic': 'gov',
-        'topic': 'participants',
-      },
-      {
-        'id': 'perearst_kaasatud',
-        'label': 'Perearst',
-        'subtopic': 'medical',
-        'topic': 'participants',
-      },
-      {
-        'id': 'naistearst_kaasatud',
-        'label': 'Naistearst',
-        'subtopic': 'medical',
-        'topic': 'participants',
-      },
-      {
-        'id': 'emo_kaasatud',
-        'label': 'EMO',
-        'subtopic': 'medical',
         'topic': 'participants',
       },
       {
@@ -277,6 +301,85 @@ class Graphs extends React.Component {
         'topic': 'violence',
       },
       {
+        'id': 'vanus_18',
+        'label': 'Klient alla 18',
+        'subtopic': 'age',
+        'topic': 'unique',
+      },
+      {
+        'id': 'vanus_24',
+        'label': 'Klient 18-24',
+        'subtopic': 'age',
+        'topic': 'unique',
+      },
+      {
+        'id': 'vanus_49',
+        'label': 'Klient 25-49',
+        'subtopic': 'age',
+        'topic': 'unique',
+      },
+      {
+        'id': 'vanus_99',
+        'label': 'Klient 65+',
+        'subtopic': 'age',
+        'topic': 'unique',
+      },
+      {
+        'id': 'vanus_64',
+        'label': 'Klient 50-64',
+        'subtopic': 'age',
+        'topic': 'unique',
+      },
+      {
+        'id': 'rasedus',
+        'label': 'Rasedaid',
+        'subtopic': 'people',
+        'topic': 'unique',
+      },
+      { 'id': 'puue', 'label': 'Puudega', 'subtopic': 'people', 'topic': 'unique' },
+      {
+        'id': 'lapsed',
+        'label': 'Alaealisi lapsi',
+        'subtopic': 'people',
+        'topic': 'unique',
+      },
+      {
+        'id': 'teadmata_vagivald',
+        'label': 'Teadmata vägivald',
+        'subtopic': 'type',
+        'topic': 'violence',
+      },
+      {
+        'id': 'majanduslik_vagivald',
+        'label': 'Füüsiline vägivald',
+        'subtopic': 'type',
+        'topic': 'violence',
+      },
+      {
+        'id': 'vaimne_vagivald',
+        'label': 'Vaimne vägivald',
+        'subtopic': 'type',
+        'topic': 'violence',
+      },
+      {
+        'id': 'fuusiline_vagivald',
+        'label': 'Füüsiline vägivald',
+        'subtopic': 'type',
+        'topic': 'violence',
+      },
+      {
+        'id': 'seksuaalne_vagivald',
+        'label': 'Füüsiline vägivald',
+        'subtopic': 'type',
+        'topic': 'violence',
+      },
+      {
+        'id': 'inimkaubandus',
+        'label': 'Inimkaubandus',
+        'subtopic': 'type',
+        'topic': 'violence',
+      },
+      {
         'id': 'umarlaud',
         'label': 'Ümarlauad',
         'subtopic': 'other',
@@ -305,57 +408,6 @@ class Graphs extends React.Component {
         'label': 'MTÜ-d',
         'subtopic': 'other',
         'topic': 'participants',
-      },
-      { 'id': 'session_id', 'label': 'Sessioonide arv', 'topic': 'unique' },
-      { 'id': 'kliendi_nr', 'label': 'Klientide arv', 'topic': 'unique' },
-      { 'id': 'rahastus', 'label': 'NTK rahastus', 'topic': 'unique' },
-      { 'id': 'incident_id', 'label': 'Juhtumite arv', 'topic': 'unique' },
-      {
-        'id': 'teadmata_vagivald',
-        'label': 'Teadmata vägivald',
-        'subtopic': 'type',
-        'topic': 'violence',
-      },
-      {
-        'id': 'majanduslik_vagivald',
-        'label': 'Füüsiline vägivald',
-        'subtopic': 'type',
-        'topic': 'violence',
-      },
-      {
-        'id': 'vaimne_vagivald',
-        'label': 'Vaimne vägivald',
-        'subtopic': 'type',
-        'topic': 'violence',
-      },
-      {
-        'id': 'fuusiline_vagivald',
-        'label': 'Füüsiline vägivald',
-        'subtopic': 'type',
-        'topic': 'violence',
-      },
-      {
-        'id': 'seksuaalne_vagivald',
-        'label': 'Seksuaalne vägivald',
-        'subtopic': 'type',
-        'topic': 'violence',
-      },
-      {
-        'id': 'inimkaubandus',
-        'label': 'Inimkaubandus',
-        'subtopic': 'type',
-        'topic': 'violence',
-      },
-      { 'id': 'laste_arv', 'label': 'Laste arv majutuses', 'topic': 'hosting' },
-      {
-        'id': 'laste_majutus',
-        'label': 'Laste majutuspäevade arv',
-        'topic': 'hosting',
-      },
-      {
-        'id': 'naise_majutus',
-        'label': 'Naise majutuspäevade arv',
-        'topic': 'hosting',
       }];
 
   state = {
@@ -367,8 +419,8 @@ class Graphs extends React.Component {
     data: {},
   };
 
-  componentWillMount() {
-    this.getReport();
+  componentDidMount() {
+    //this.getReport();
 
     const algus = new Date();
     const lopp = new Date();
