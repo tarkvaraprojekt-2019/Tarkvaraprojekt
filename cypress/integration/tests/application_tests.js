@@ -1,6 +1,6 @@
 describe('Basic info', function() {
 	it('Finds and retrieves basic info', function() {
-		cy.visit('http://localhost')
+		cy.visit('http://127.0.0.1')
 		cy.get('#email').type('asdf')
 		cy.get('#password').type('asdf')
 		cy.get('span:contains("Sisene")').click()
@@ -13,7 +13,7 @@ describe('Basic info', function() {
 
 describe('Info modification', function() {
 	it('Changes information', function() {
-		cy.visit('http://localhost')
+		cy.visit('http://127.0.0.1')
 		cy.get('#email').type('asdf')
 		cy.get('#password').type('asdf')
 		cy.get('span:contains("Sisene")').click()
@@ -25,7 +25,7 @@ describe('Info modification', function() {
 		cy.get('#phone').type('{selectall}').type('12345')
 		cy.get('span:contains("SALVESTA")').click()
 		cy.get('p:contains(" Logi välja ")').click()
-		cy.visit('http://localhost')
+		cy.visit('http://127.0.0.1')
 		cy.get('#email').type('asdf')
 		cy.get('#password').type('asdf')
 		cy.get('span:contains("Sisene")').click()
