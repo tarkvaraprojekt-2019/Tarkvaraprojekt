@@ -130,7 +130,7 @@ class Overview extends React.Component {
 
           <form onSubmit={this.handleSearch}>
             {field('id', 'ID', '\\d*')}
-            {field('first_name', 'Eesnimi', letterPattern)} { /*can't use unicode groups. bug in FF, check up on https://bugzilla.mozilla.org/show_bug.cgi?id=1361876*/}
+            {field('first_name', 'Eesnimi', letterPattern)} { /*can't use unicode groups. bug in FF, check up on https://bugzilla.mozilla.org/show_bug.cgi?id=1361876 */}
             {field('last_name', 'Perenimi', letterPattern)}
             {field('national_id', 'Isikukood', '([1-6]\\d\\d(0[1-9]|1[0-2])(0[1-9]|1\\d|2\\d|30|31)\\d{4})?')}
             {field('phone', 'Telefoninumber', '([+]\\d+)?\\d*')}

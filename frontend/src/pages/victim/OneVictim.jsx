@@ -204,7 +204,7 @@ class Victim extends React.Component {
                                 // placeholder="Mari"
                               onChange={this.handleChange}
                               value={this.state.formValues.first_name}
-                              inputProps={{ pattern: letterPattern }} // bug in FF: https://bugzilla.mozilla.org/show_bug.cgi?id=1367105
+                              inputProps={{ pattern: letterPattern }} // bug in FF: https://bugzilla.mozilla.org/show_bug.cgi?id=1361876
                             />
                             <TextField
                               id="last_name"
@@ -215,7 +215,7 @@ class Victim extends React.Component {
                                 // placeholder="Maasikas"
                               onChange={this.handleChange}
                               value={this.state.formValues.last_name}
-                              inputProps={{ pattern: letterPattern }}  /*bug in FF: https://bugzilla.mozilla.org/show_bug.cgi?id=1367105*/
+                              inputProps={{ pattern: letterPattern }}  /*bug in FF: https://bugzilla.mozilla.org/show_bug.cgi?id=1361876*/
 
                             />
                             <TextField

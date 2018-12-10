@@ -6,7 +6,7 @@ import FileSaver from 'file-saver';
 import withRoot from '../../withRoot';
 
 import Typography from '@material-ui/core/Typography';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -61,28 +61,25 @@ class CSVBackup extends React.Component {
     constructor(props) {
         super(props);
         this.axios = this.props.axios;
+      const algus = new Date();
+      const lopp = new Date();
 
-    }
-    componentWillMount() {
-        const algus = new Date();
-        const lopp = new Date();
+      algus.setMonth(algus.getMonth() - 1);
+      algus.setDate(1);
+      lopp.setMonth(lopp.getMonth());
+      lopp.setDate(0);
+      let formValues = { ...this.state.formValues };
+      formValues.alates = algus.toDateInputValue();
+      formValues.kuni = lopp.toDateInputValue();
 
-        algus.setMonth(algus.getMonth()-1);
-        algus.setDate(1);
-        lopp.setMonth(lopp.getMonth());
-        lopp.setDate(0);
-        let formValues = {...this.state.formValues};
-        formValues.alates = algus.toDateInputValue()
-        formValues.kuni = lopp.toDateInputValue()
-
-        this.setState({formValues})
+      this.setState({ formValues });
     }
 
     state = {
         open: false,
         formValues: {
             alates: "",
-            kuni: new Date().toDateInputValue(),
+          kuni: '',
         },
         results: {}
 
