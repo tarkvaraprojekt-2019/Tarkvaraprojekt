@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -11,13 +11,26 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox/Checkbox';
+import Tab from '@material-ui/core/Tab/Tab';
+import Tabs from '@material-ui/core/Tabs/Tabs';
+import SwipeableViews from 'react-swipeable-views';
 
 import withRoot from '../../withRoot';
 import Layout from '../../components/Layout';
-import SimpleLineChart from '../../components/SimpleLineChart';
 import { isBrowser } from '../../auth';
-import FormControlLabel from '@material-ui/core/FormControlLabel/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox/Checkbox';
+
+
+import { uniqueArr } from '../../util';
+import ResponsiveContainer from 'recharts/lib/component/ResponsiveContainer';
+import XAxis from 'recharts/lib/cartesian/XAxis';
+import YAxis from 'recharts/lib/cartesian/YAxis';
+import Tooltip from 'recharts/lib/component/Tooltip';
+import Legend from 'recharts/lib/component/Legend';
+import { Bar, BarChart, Label } from 'recharts';
+
+import CSVParser from 'papaparse';
 
 const styles = theme => ({
   root: {
@@ -35,17 +48,195 @@ const styles = theme => ({
     margin: theme.spacing.unit,
   },
   formControl: {
-    margin: theme.spacing.unit * 3,
+    margin: theme.spacing.unit * 2,
   },
   heading: {
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
   },
-  chips: {
-    display: 'flex',
+  panel: {
     flexDirection: 'column',
   },
+  chart: {
+    paddingDown: theme.spacing.unit * 4,
+  },
 });
+
+function Chart(props) {
+  const colors = ['#82ca9d', '#7FDBFF', '#39CCCC', '#3D9970', '#2ECC40', '#01FF70', '#FFDC00', '#FF851B', '#FF4136', '#85144b', '#F012BE', '#B10DC9', '#001f3f', '#111111', '#AAAAAA'];
+  return <ResponsiveContainer width="99%" height={320}>
+    <BarChart data={props.data}>
+
+      <Tooltip/>
+      <Legend/>
+      {/*<Bar dataKey="Tartumaa" stroke={colors[0 % colors.length]} activeDot={{ r: 8 }}/>*/}
+      {props.states.map((s, i) => (
+        <Bar dataKey={s} fill={colors[i % colors.length]}/>
+      ))
+      }
+      <XAxis dataKey="name" interval={0} angle={-90} textAnchor="begin">
+        <Label value="kategooria" fontSize={8} offset={50}/>
+      </XAxis>
+      <YAxis/>
+
+    </BarChart>
+  </ResponsiveContainer>;
+}
+
+Chart.propTypes = { data: PropTypes.any.isRequired, states: PropTypes.array.isRequired };
+
+class ReportPanel extends Component {
+  constructor(props) {
+    super(props);
+    const ids = {};
+    for (let c of this.props.columns) {
+      ids[c.id] = true;
+    }
+    //const ids = {...this.props.columns.map(c => { return { [c.id]: true}; })}
+    this.state = { checkboxValues: ids, selectedTab: 0 };
+  }
+
+  handleChange = (event, newTab) => {
+    this.setState({ selectedTab: newTab });
+  };
+  handleChangeIndex = index => {
+    this.setState({ selectedTab: index });
+  };
+  componentDidMount = () => {
+    this.getReport();
+  };
+
+
+  getReport = () => {
+    if (!isBrowser) {
+      return false;
+    }
+    const paramValues = Object.assign(
+      {},
+      this.props.formValues,
+      this.state.checkboxValues,
+    );
+
+    this.props.axios
+      .get('generate_report.php', {
+        params: paramValues,
+      })
+      .then(res => {
+        const csv = CSVParser.parse(res.data, { dynamicTyping: true, delimiter: '\t' });
+        console.log('report: ', csv);
+        this.data = csv.data;
+        this.forceUpdate();
+      })
+      .catch(err => console.log('report err: ', err));
+  };
+  topicMap = {
+    'unique': 'Unikaalseid kliente',
+    'service-hours': 'Osutatud teenused',
+    'violence': 'Vägivald',
+    'participants': 'Võrgustikutöö teiste organisatsioonidega',
+    'hosting': 'Turvaline ajutine majutus',
+  };
+  subTopicMap = {
+    'general': 'Üldine',
+    'gov': 'Riigiasutused',
+    'medical': 'Meditsiinitöötajad',
+    'cause': 'Vägivallatseja',
+    'other': 'Muu',
+    'type': 'Vägivalla tüüp',
+  };
+  checkboxChange = field => {
+    const checkboxValues = this.state.checkboxValues;
+    checkboxValues[field] = !checkboxValues[field];
+    this.setState({ checkboxValues });
+  };
+  processData = (data) => {
+    if (!data || data[0].length === 1) {
+      return [null, null];
+    }
+    console.log('process: ', data);
+    const nonEmpty = [...data.filter(e => e != '')];
+    const longData = [];
+    // headers
+    for (let name of nonEmpty[0].slice(1)) {
+      longData.push({ name });
+    }
+    // data
+    nonEmpty.slice(1).forEach(([piirkond, ...values], i) => {
+      values.forEach((e, ii) => longData[ii][piirkond] = values[ii]);
+    });
+    const piirkonnad = nonEmpty.slice(1).map(p => p[0]);
+
+    // filter out unchecked
+    //const outData = longData.filter(({name}) => this.state.checkboxValues[name])
+    return [longData, piirkonnad];
+  };
+
+  render() {
+
+    const checkbox = (id, statename, label) => (
+      <FormControlLabel key={id} control={
+        <Checkbox
+          checked={statename[id]}
+          onClick={() => {
+            this.checkboxChange(id);
+          }}
+        />
+      } label={label}/>
+    );
+    const topic = this.props.columns[0].topic;
+
+    const getSubSelectors = (subtopic) => {
+      const curColumns = this.props.columns.filter(c => c.subtopic === subtopic);
+      const checkboxes = curColumns.map(({ id, topic, label }) => (
+        checkbox(id, this.state.checkboxValues, label)
+      ));
+      return <div> {checkboxes} </div>;
+    };
+    const subTopics = uniqueArr(this.props.columns.map(c => c.subtopic));
+    const subTitles = subTopics.map(st => this.subTopicMap[st]);
+    const title = this.topicMap[topic];
+    const selectors = subTopics.map(t => getSubSelectors(t));
+    //console.log("DEBUG: ",selectors)
+    //debugger;
+    const [data, piirkonnad] = this.processData(this.data);
+    console.log('prev: ', this.data);
+    console.log('data ', data, 'piirkonnad: ', piirkonnad);
+    return <ExpansionPanel>
+      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+        <Typography className={this.props.classes.heading}>
+          {title}
+        </Typography>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails className={this.props.classes.panel}>
+        {subTitles.length > 1 && <Tabs
+          value={this.state.selectedTab}
+          onChange={this.handleChange}
+          indicatorColor="primary"
+          textColor="primary"
+          fullWidth
+        >
+          {subTitles.map(t => <Tab label={t} key={t}/>)}
+        </Tabs>
+        }
+        <SwipeableViews
+          index={this.state.selectedTab}
+          onChangeIndex={this.handleChangeIndex}
+        >
+          {selectors}
+          {/*{subTopics.map(t => <Typography component="div" style={{padding: 8*3}}>{t}</Typography>)}*/}
+
+        </SwipeableViews>
+        {!!data && <Chart data={data} states={piirkonnad} className={this.props.classes.chart}/>}
+      </ExpansionPanelDetails>
+    </ExpansionPanel>;
+  }
+}
+
+ReportPanel.propTypes = {
+  classes: PropTypes.any,
+  columns: PropTypes.array.isRequired,
+  formValues: PropTypes.any.isRequired,
+};
 
 class Graphs extends React.Component {
   static propTypes = {
@@ -59,70 +250,267 @@ class Graphs extends React.Component {
     console.log(this.state);
   };
 
-  defaultChips = {
-    unique: {
-        'incident_id': 'Juhtumite arv',
-         'session_id': 'Sessioonide arv',
-          'kliendi_nr': 'Klientide arv',
-           'rahastus': 'NTK rahastus',
-        },
-    service_hours: {
-        "sidevahendid" :'Nõustamisi sidevahenditega',
-         "kriisinoustamine" :'Kriisinõustamiste aeg',
-         "kriisinoustamise_aeg": 'Kriisinõustamisi päeval ja öösel',
-         "juhtuminoustamine" :'Juhtuminõustamiste aeg',
-         "vorgustikutoo" :'Võrgustikutöö aeg',
-         "psuhhonoustamine" :'Psühhonõustamiste aeg',
-         "juuranoustamine" :'Juuranõustamiste aeg',
-         "tegevused_lapsega" :'Lastega tegevuste aeg',
-         "tugiteenused" :'Tugiteenuste aeg', 
-     },
-    violence: {
-        "fuusiline_vagivald" :'Füüsiline vägivald',
-        "vaimne_vagivald" :'Vaimne vägivald',
-        "majanduslik_vagivald" :'Füüsiline vägivald',
-        "seksuaalne_vagivald" :'Füüsiline vägivald',
-        "inimkaubandus" :'Inimkaubandus',
-        "teadmata_vagivald" :'Teadmata vägivald',
-        "partner_vagivallatseja" :'Partner vägivallatseja',
-        "ekspartner_vagivallatseja" :'Ekspartner vägivallatseja',
-        "vanem_vagivallatseja" :'Vanem vägivallatseja',
-        "laps_vagivallatseja" :'Laps vägivallatseja',
-        "sugulane_vagivallatseja" :'Sugulane vagivallatseja',
-        "tookaaslane_vagivallatseja" :'Töökaaslane vägivallatseja',
-        "muu_vagivallatseja" :'Muu vägivallatseja',
-        "vagivallatseja_vanus": 'Vägivallatseja vanus',
-        "vagivallatseja_sugu": 'Vägivallatseja sugu',
-        "laps_ohver" :'Alaealine lisaohvriks',
-        "vana_ohver" :'Eakas lisaohvriks',
-        "muu_ohver" :'Muu lisaohver',
-        "politsei" :'Politsei kaasatud',
+  columns =
+    [{
+      'id': 'kriisinoustamine',
+      'label': 'Kriisinõustamiste aeg',
+      'topic': 'service-hours',
     },
-    hosting: {
-        "naise_majutus" :'Naise majutuspäevade arv',
-        "laste_arv" :'Laste arv majutuses',
-        "laste_majutus" :'Laste majutuspäevade arv',
-    },
-    participants: {
-        "umarlaud" :'Ümarlauad',
-        "marac" :'MARAC',
-        "perearst_kaasatud" :'Perearst',
-        "emo_kaasatud" :'EMO',
-        "naistearst_kaasatud" :'Naistearst',
-        "politsei_kaasatud" :'Politsei',
-        "prokuratuur_kaasatud" :'Prokuratuur',
-        "ohvriabi_kaasatud" :'Riiklik ohvriabi',
-        "lastekaitse_kaasatud" :'Lastekaitse',
-        "kov_kaasatud" :'KOV sotsiaalabi',
-        "tsiviilkohus_kaasatud" :'Kohus (tsiviilasjas)',
-        "kriminaalkohus_kaasatud" :'Kohus (kriminaalasjas)',
-        "haridusasutus_kaasatud" :'Haridusasutus',
-        "mtu_kaasatud" :'MTÜ-d',
-        "tuttavad_kaasatud" :'Sõbrad, sugulased',
-    }}
-
-
-
+      {
+        'id': 'sidevahendid',
+        'label': 'Nõustamisi sidevahenditega',
+        'topic': 'service-hours',
+      },
+      {
+        'id': 'tegevused_lapsega',
+        'label': 'Lastega tegevuste aeg',
+        'topic': 'service-hours',
+      },
+      {
+        'id': 'psuhhonoustamine',
+        'label': 'Psühhonõustamiste aeg',
+        'topic': 'service-hours',
+      },
+      {
+        'id': 'vorgustikutoo',
+        'label': 'Võrgustikutöö aeg',
+        'topic': 'service-hours',
+      },
+      {
+        'id': 'juhtuminoustamine',
+        'label': 'Juhtuminõustamiste aeg',
+        'topic': 'service-hours',
+      },
+      {
+        'id': 'juuranoustamine',
+        'label': 'Juuranõustamiste aeg',
+        'topic': 'service-hours',
+      },
+      { 'id': 'tugiteenused', 'label': 'Tugiteenuste aeg', 'topic': 'service-hours' },
+      {
+        'id': 'kriisinoustamise_aeg',
+        'label': 'Kriisinõustamisi päeval ja öösel',
+        'topic': 'service-hours',
+      },
+      {
+        'id': 'vagivallatseja_sugu',
+        'label': 'Vägivallatseja sugu',
+        'subtopic': 'general',
+        'topic': 'violence',
+      },
+      {
+        'id': 'vana_ohver',
+        'label': 'Eakas lisaohvriks',
+        'subtopic': 'general',
+        'topic': 'violence',
+      },
+      {
+        'id': 'muu_ohver',
+        'label': 'Muu lisaohver',
+        'subtopic': 'general',
+        'topic': 'violence',
+      },
+      {
+        'id': 'vagivallatseja_vanus',
+        'label': 'Vägivallatseja vanus',
+        'subtopic': 'general',
+        'topic': 'violence',
+      },
+      {
+        'id': 'laps_ohver',
+        'label': 'Alaealine lisaohvriks',
+        'subtopic': 'general',
+        'topic': 'violence',
+      },
+      {
+        'id': 'politsei',
+        'label': 'Politsei kaasatud',
+        'subtopic': 'general',
+        'topic': 'violence',
+      },
+      {
+        'id': 'politsei_kaasatud',
+        'label': 'Politsei',
+        'subtopic': 'gov',
+        'topic': 'participants',
+      },
+      {
+        'id': 'prokuratuur_kaasatud',
+        'label': 'Prokuratuur',
+        'subtopic': 'gov',
+        'topic': 'participants',
+      },
+      {
+        'id': 'lastekaitse_kaasatud',
+        'label': 'Lastekaitse',
+        'subtopic': 'gov',
+        'topic': 'participants',
+      },
+      {
+        'id': 'ohvriabi_kaasatud',
+        'label': 'Riiklik ohvriabi',
+        'subtopic': 'gov',
+        'topic': 'participants',
+      },
+      {
+        'id': 'kriminaalkohus_kaasatud',
+        'label': 'Kohus (kriminaalasjas)',
+        'subtopic': 'gov',
+        'topic': 'participants',
+      },
+      {
+        'id': 'kov_kaasatud',
+        'label': 'KOV sotsiaalabi',
+        'subtopic': 'gov',
+        'topic': 'participants',
+      },
+      {
+        'id': 'tsiviilkohus_kaasatud',
+        'label': 'Kohus (tsiviilasjas)',
+        'subtopic': 'gov',
+        'topic': 'participants',
+      },
+      {
+        'id': 'perearst_kaasatud',
+        'label': 'Perearst',
+        'subtopic': 'medical',
+        'topic': 'participants',
+      },
+      {
+        'id': 'naistearst_kaasatud',
+        'label': 'Naistearst',
+        'subtopic': 'medical',
+        'topic': 'participants',
+      },
+      {
+        'id': 'emo_kaasatud',
+        'label': 'EMO',
+        'subtopic': 'medical',
+        'topic': 'participants',
+      },
+      {
+        'id': 'partner_vagivallatseja',
+        'label': 'Partner vägivallatseja',
+        'subtopic': 'cause',
+        'topic': 'violence',
+      },
+      {
+        'id': 'ekspartner_vagivallatseja',
+        'label': 'Ekspartner vägivallatseja',
+        'subtopic': 'cause',
+        'topic': 'violence',
+      },
+      {
+        'id': 'sugulane_vagivallatseja',
+        'label': 'Sugulane vagivallatseja',
+        'subtopic': 'cause',
+        'topic': 'violence',
+      },
+      {
+        'id': 'tookaaslane_vagivallatseja',
+        'label': 'Töökaaslane vägivallatseja',
+        'subtopic': 'cause',
+        'topic': 'violence',
+      },
+      {
+        'id': 'muu_vagivallatseja',
+        'label': 'Muu vägivallatseja',
+        'subtopic': 'cause',
+        'topic': 'violence',
+      },
+      {
+        'id': 'laps_vagivallatseja',
+        'label': 'Laps vägivallatseja',
+        'subtopic': 'cause',
+        'topic': 'violence',
+      },
+      {
+        'id': 'vanem_vagivallatseja',
+        'label': 'Vanem vägivallatseja',
+        'subtopic': 'cause',
+        'topic': 'violence',
+      },
+      {
+        'id': 'umarlaud',
+        'label': 'Ümarlauad',
+        'subtopic': 'other',
+        'topic': 'participants',
+      },
+      {
+        'id': 'haridusasutus_kaasatud',
+        'label': 'Haridusasutus',
+        'subtopic': 'other',
+        'topic': 'participants',
+      },
+      {
+        'id': 'tuttavad_kaasatud',
+        'label': 'Sõbrad, sugulased',
+        'subtopic': 'other',
+        'topic': 'participants',
+      },
+      {
+        'id': 'marac',
+        'label': 'MARAC',
+        'subtopic': 'other',
+        'topic': 'participants',
+      },
+      {
+        'id': 'mtu_kaasatud',
+        'label': 'MTÜ-d',
+        'subtopic': 'other',
+        'topic': 'participants',
+      },
+      { 'id': 'session_id', 'label': 'Sessioonide arv', 'topic': 'unique' },
+      { 'id': 'kliendi_nr', 'label': 'Klientide arv', 'topic': 'unique' },
+      { 'id': 'rahastus', 'label': 'NTK rahastus', 'topic': 'unique' },
+      { 'id': 'incident_id', 'label': 'Juhtumite arv', 'topic': 'unique' },
+      {
+        'id': 'teadmata_vagivald',
+        'label': 'Teadmata vägivald',
+        'subtopic': 'type',
+        'topic': 'violence',
+      },
+      {
+        'id': 'majanduslik_vagivald',
+        'label': 'Füüsiline vägivald',
+        'subtopic': 'type',
+        'topic': 'violence',
+      },
+      {
+        'id': 'vaimne_vagivald',
+        'label': 'Vaimne vägivald',
+        'subtopic': 'type',
+        'topic': 'violence',
+      },
+      {
+        'id': 'fuusiline_vagivald',
+        'label': 'Füüsiline vägivald',
+        'subtopic': 'type',
+        'topic': 'violence',
+      },
+      {
+        'id': 'seksuaalne_vagivald',
+        'label': 'Füüsiline vägivald',
+        'subtopic': 'type',
+        'topic': 'violence',
+      },
+      {
+        'id': 'inimkaubandus',
+        'label': 'Inimkaubandus',
+        'subtopic': 'type',
+        'topic': 'violence',
+      },
+      { 'id': 'laste_arv', 'label': 'Laste arv majutuses', 'topic': 'hosting' },
+      {
+        'id': 'laste_majutus',
+        'label': 'Laste majutuspäevade arv',
+        'topic': 'hosting',
+      },
+      {
+        'id': 'naise_majutus',
+        'label': 'Naise majutuspäevade arv',
+        'topic': 'hosting',
+      }];
 
   state = {
     formValues: {
@@ -131,24 +519,23 @@ class Graphs extends React.Component {
       piirkond: 'all',
     },
     data: {},
-    chipData: this.defaultChips.unique, 
   };
 
   componentWillMount() {
     this.getReport();
 
-      const algus = new Date();
-      const lopp = new Date();
+    const algus = new Date();
+    const lopp = new Date();
 
-      algus.setMonth(algus.getMonth()-1);
-      algus.setDate(1);
-      lopp.setMonth(lopp.getMonth());
-      lopp.setDate(0);
-      let formValues = {...this.state.formValues};
-      formValues.alates = algus.toDateInputValue()
-      formValues.kuni = lopp.toDateInputValue()
+    algus.setMonth(algus.getMonth() - 1);
+    algus.setDate(1);
+    lopp.setMonth(lopp.getMonth());
+    lopp.setDate(0);
+    let formValues = { ...this.state.formValues };
+    formValues.alates = algus.toDateInputValue();
+    formValues.kuni = lopp.toDateInputValue();
 
-      this.setState({formValues})
+    this.setState({ formValues });
   }
 
   getReport() {
@@ -175,12 +562,6 @@ class Graphs extends React.Component {
       .catch(err => console.log('report err: ', err));
   }
 
-  checkboxChange = field => {
-    const formValues = this.state.formValues;
-    formValues[field] = (formValues[field] === 0 || formValues[field] === '') ? 1 : 0;
-    this.setState({ formValues });
-  };
-
   render() {
     const { classes } = this.props;
     const { alates, kuni, piirkond } = this.state.formValues;
@@ -203,113 +584,39 @@ class Graphs extends React.Component {
 
     const error = alates && kuni;
 
-    const checkbox = (id, statename, label) => (
-      <FormControlLabel control={
-        <Checkbox
-          checked={statename === 1}
-          onClick={() => {
-            this.checkboxChange(id);
-          }}
-        />
-      } label={label}/>
-    );
 
-    /*const checkboxes = Object.entries(this.state.chipData).map(([key, label]) => (
-      checkbox(key, this.state.)
-            <Chip
-              key={key}
-              label={label}
-              onDelete={this.handleDelete(key)}
-              className={classes.input}
-            />
-    ))*/
+    const topics = uniqueArr(this.columns.map(c => c.topic));
+
+
+    // const panelSelectors = checkboxes;
 
 
     return (
       <Layout title="Aruandlus" error="">
         <div>
-          <Paper className={classes.formControl}>
+          <Paper>
             <form>
               {makeDateField('alates', 'Alates')}
               {makeDateField('kuni', 'Kuni')}
               <Button
-                            type="submit"
-                            variant="outlined"
-                            color="primary"
-                            className={classes.formControl}
-                        >
-                            Lae valitud andmed alla csv'na
-                        </Button>
+                type="submit"
+                variant="outlined"
+                color="primary"
+                className={classes.formControl}
+              >
+                Lae valitud andmed alla csv'na
+              </Button>
             </form>
           </Paper>
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>
-                Unikaalseid kliente
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-                <div className={classes.chips}>
-                  { /*chips*/}
-                </div>
-              <SimpleLineChart/>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>
-                Osutatud teenused
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                eget.
-              </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>Vägivald</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                eget.
-              </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>
-                Turvaline ajutine majutus
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                eget.
-              </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography className={classes.heading}>
-                Võrgustikutöö teiste organisatsioonidega
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
-              <Typography>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                eget.
-              </Typography>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
+          {
+            topics.map(topic => {
+              const columns = this.columns.filter(e => e.topic === topic);
+              return <ReportPanel classes={classes} columns={columns} formValues={this.state.formValues}
+                                  axios={this.props.axios}/>;
+            })
+          }
         </div>
+        1
       </Layout>
     );
   }
