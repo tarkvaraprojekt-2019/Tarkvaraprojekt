@@ -18,6 +18,8 @@ import IncidentTable from '../../components/IncidentTable';
 import Layout from '../../components/Layout';
 import { navigate } from 'gatsby';
 import { letterPattern } from '../../util';
+import ConfirmDelete from '../../components/ConfirmDelete';
+import { isAdmin } from '../../auth';
 
 const styles = theme => ({
     root: {
@@ -86,6 +88,7 @@ class Victim extends React.Component {
             piirkond: "teadmata"
         }],
         editingEnabled: false,
+      isDeleteOpen: false,
         formValues: {
             id: this.props.victimID,
             first_name: "",
@@ -135,8 +138,21 @@ class Victim extends React.Component {
                 editingEnabled: !this.state.editingEnabled
             });
         });
-
     };
+  handleDeleteOpen = () => {
+    this.setState({ isDeleteOpen: true });
+  };
+  handleDeleteClose = () => {
+    this.setState({ isDeleteOpen: false });
+  };
+  handleDeleteContinue = () => {
+    this.axios.post('delete_victim.php', { id: this.props.victimID })
+      .then(res => {
+        console.log('delete: ', res);
+        navigate('/overview');
+      });
+  };
+
 
     handleUpdate = event => {
         event.preventDefault()
@@ -266,6 +282,18 @@ class Victim extends React.Component {
                                         MUUDA ISIKUANDMEID
                                     </Button> : null}
 
+                              {!this.state.editingEnabled && isAdmin() ?
+                                <Button
+                                  className={classes.button}
+                                  variant="contained"
+                                  color="primary"
+                                  onClick={e => {
+                                    this.handleDeleteOpen();
+                                  }}
+                                >
+                                  KUSTUTA ISIK
+                                </Button> : null}
+
                                 {this.state.editingEnabled ?
                                     <Button
                                         className={classes.button}
@@ -300,7 +328,8 @@ class Victim extends React.Component {
                 <IncidentTable classes={classes} uid={this.props.victimID} incidents={this.state.incidents}/>
 
 
-
+              <ConfirmDelete open={this.state.isDeleteOpen} object="klienti" onClose={this.handleDeleteClose}
+                             onContinue={this.handleDeleteContinue}/>
             </Layout>
         );
     }
