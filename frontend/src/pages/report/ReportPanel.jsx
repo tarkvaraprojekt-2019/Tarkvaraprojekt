@@ -16,7 +16,7 @@ import PropTypes from 'prop-types';
 import Chart from './Chart';
 import axios from 'axios';
 
-export class ReportPanel extends Component {
+class ReportPanel extends Component {
   state = {
     selectedTab: 0,
     data: null,
@@ -227,3 +227,4 @@ ReportPanel.propTypes = {
   columns: PropTypes.array.isRequired,
   formValues: PropTypes.any.isRequired,
 };
+export default ReportPanel;
