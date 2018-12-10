@@ -80,7 +80,7 @@ function Chart(props) {
       ))
       }
       <XAxis dataKey="name" interval={0} angle={-90} textAnchor="begin">
-        <Label value="kategooria" fontSize={8} offset={50}/>
+        <Label value="piirkond"/>
       </XAxis>
       <YAxis/>
 
@@ -95,11 +95,13 @@ class ReportPanel extends Component {
   constructor(props) {
     super(props);
     const ids = {};
+    const labels = {};
     for (let c of this.props.columns) {
       ids[c.id] = true;
+      labels[c.label] = c.id;
     }
     //const ids = {...this.props.columns.map(c => { return { [c.id]: true}; })}
-    this.state = { checkboxValues: ids, selectedTab: 0 };
+    this.state = { labels: labels, checkboxValues: ids, selectedTab: 0 };
   }
 
   handleChange = (event, newTab) => {
@@ -134,7 +136,8 @@ class ReportPanel extends Component {
       .then(res => {
         const csv = CSVParser.parse(res.data, { dynamicTyping: true, delimiter: '\t' });
         console.log('report: ', csv);
-        this.data = csv.data;
+        this.setState({ data: csv.data });
+        //this.data = csv.data;
         this.forceUpdate();
       })
       .catch(err => console.log('report err: ', err));
@@ -166,7 +169,8 @@ class ReportPanel extends Component {
     console.log('process: ', data);
     let nonEmpty = [...data.filter(e => e != '')];
     const longData = [];
-    if (nonEmpty[0][0] === 'piirkonnad') {
+
+    if (nonEmpty[0][0] === 'piirkond') {
       // headers
       for (let name of nonEmpty[0].slice(1)) {
         longData.push({ name });
@@ -178,8 +182,8 @@ class ReportPanel extends Component {
       const piirkonnad = nonEmpty.slice(1).map(p => p[0]);
 
       // filter out unchecked
-      //const outData = longData.filter(({name}) => this.state.checkboxValues[name])
-      return [longData, piirkonnad];
+      const outData = longData.filter(({ name }) => this.state.checkboxValues[this.state.labels[name]]);
+      return [outData, piirkonnad];
     } else {
       // headers
       for (let name of nonEmpty[0].slice(0)) {
@@ -192,8 +196,8 @@ class ReportPanel extends Component {
       const piirkonnad = ['summa'];
 
       // filter out unchecked
-      //const outData = longData.filter(({name}) => this.state.checkboxValues[name])
-      return [longData, piirkonnad];
+      const outData = longData.filter(({ name }) => this.state.checkboxValues[this.state.labels[name]]);
+      return [outData, piirkonnad];
     }
   };
 
@@ -235,8 +239,8 @@ class ReportPanel extends Component {
     const selectors = subTopics.map(t => getSubSelectors(t));
     //console.log("DEBUG: ",selectors)
     //debugger;
-    const [data, piirkonnad] = this.processData(this.data);
-    console.log('prev: ', this.data);
+    const [data, piirkonnad] = this.processData(this.state.data);
+    console.log('prev: ', this.state.data);
     console.log('data ', data, 'piirkonnad: ', piirkonnad);
     return <ExpansionPanel>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
@@ -296,12 +300,12 @@ class Graphs extends React.Component {
     },
       {
         'id': 'kriisinoustamine_paeval',
-        'label': 'Kriisinõustamistse aeg päeval',
+        'label': 'Kriisinõustamisi päeval',
         'topic': 'service-hours',
       },
       {
         'id': 'kriisinoustamine_oosel',
-        'label': 'Kriisinõustamiste aeg öösel',
+        'label': 'Kriisinõustamisi öösel',
         'topic': 'service-hours',
       },
       {
@@ -335,11 +339,6 @@ class Graphs extends React.Component {
         'topic': 'service-hours',
       },
       { 'id': 'tugiteenused', 'label': 'Tugiteenuste aeg', 'topic': 'service-hours' },
-      {
-        'id': 'kriisinoustamise_aeg',
-        'label': 'Kriisinõustamisi päeval ja öösel',
-        'topic': 'service-hours',
-      },
       {
         'id': 'vagivallatseja_sugu_mees',
         'label': 'Mees vägivallatseja',
@@ -568,7 +567,7 @@ class Graphs extends React.Component {
       },
       {
         'id': 'seksuaalne_vagivald',
-        'label': 'Füüsiline vägivald',
+        'label': 'Seksuaalne vägivald',
         'subtopic': 'type',
         'topic': 'violence',
       },
@@ -594,7 +593,7 @@ class Graphs extends React.Component {
     formValues: {
       alates: '2017-01-01',
       kuni: '2018-01-01',
-      piirkond: 'koos',
+      piirkond: 'all',
     },
     data: {},
   };

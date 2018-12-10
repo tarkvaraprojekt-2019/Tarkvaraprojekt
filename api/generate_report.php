@@ -33,8 +33,8 @@ for ($i = 0; $i < $c; $i++) {
 //Construct incident query
 $incident_params = array(
 "piirkond" => "piirkond",
-"incident_id" => "COUNT(id) AS 'Juhtumeid'",
-"kliendi_nr" => "COUNT(DISTINCT(kliendi_nr)) AS 'Unikaalseid kliente'",
+"incident_id" => "COUNT(id) AS 'Juhtumite arv'",
+"kliendi_nr" => "COUNT(DISTINCT(kliendi_nr)) AS 'Klientide arv'",
 "keel" => "COUNT(IF(keel='eesti', 1, NULL)) AS 'Eestikeelseid', COUNT(IF(keel='vene', 1, NULL)) AS 'Venekeelseid', COUNT(IF(keel='inglise', 1, NULL)) AS 'Ingliskeelseid', COUNT(IF(keel='muu', 1, NULL)) AS 'Muukeelseid'",
 "vanus" => "COUNT(IF(vanus='alla 18', 1, NULL)) AS 'Klient alla 18', COUNT(IF(vanus='18-24', 1, NULL)) AS 'Klient 18-24', COUNT(IF(vanus='25-49', 1, NULL)) AS 'Klient 25-49', COUNT(IF(vanus='50-64', 1, NULL)) AS 'Klient 50-64', COUNT(IF(vanus='65+', 1, NULL)) AS 'Klient 65+'",
 "puue" => "SUM(puue) AS 'Puudega'",
@@ -58,8 +58,8 @@ $incident_params = array(
 "vagivallatseja_vanus_49" => "COUNT(IF(vagivallatseja_vanus='25-49', 1, NULL)) AS 'Vägivallatseja 25-49'",
 "vagivallatseja_vanus_64" => "COUNT(IF(vagivallatseja_vanus='50-64', 1, NULL)) AS 'Vägivallatseja 50-64'",
 "vagivallatseja_vanus_99" => "COUNT(IF(vagivallatseja_vanus='65+', 1, NULL)) AS 'Vägivallatseja 65+'",
-"vagivallatseja_sugu_mees" => "COUNT(IF(vagivallatseja_sugu='Mees', 1, NULL)) AS 'Vägivallatseja mees'",
-"vagivallatseja_sugu_naine" => "COUNT(IF(vagivallatseja_sugu='Naine', 1, NULL)) AS 'Vägivallatseja naine'",
+"vagivallatseja_sugu_mees" => "COUNT(IF(vagivallatseja_sugu='Mees', 1, NULL)) AS 'Mees vägivallatseja'",
+"vagivallatseja_sugu_naine" => "COUNT(IF(vagivallatseja_sugu='Naine', 1, NULL)) AS 'Naine vägivallatseja'",
 "laps_ohver" => "SUM(laps_ohver) AS 'Alaealine lisaohvriks'",
 "vana_ohver" => "SUM(vana_ohver) AS 'Eakas lisaohvriks'",
 "muu_ohver" => "SUM(muu_ohver) AS 'Muu lisaohver'",
@@ -110,7 +110,7 @@ $session_params = array(
 "kriminaalkohus_kaasatud" => "SUM(kriminaalkohus_kaasatud) AS 'Kohus (kriminaalasjas)'",
 "haridusasutus_kaasatud" => "SUM(haridusasutus_kaasatud) AS 'Haridusasutus'",
 "mtu_kaasatud" => "SUM(mtu_kaasatud) AS 'MTÜ-d'",
-"tuttavad_kaasatud" => "SUM(tuttavad_kaasatud) AS 'Sõbrad sugulased'"
+"tuttavad_kaasatud" => "SUM(tuttavad_kaasatud) AS 'Sõbrad, sugulased'"
 );
 
 $session_query = "SELECT";
