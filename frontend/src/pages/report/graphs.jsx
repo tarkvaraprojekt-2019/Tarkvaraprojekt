@@ -31,6 +31,10 @@ import Legend from 'recharts/lib/component/Legend';
 import { Bar, BarChart, Label } from 'recharts';
 
 import CSVParser from 'papaparse';
+import InputLabel from '@material-ui/core/InputLabel/InputLabel';
+import Select from '@material-ui/core/Select/Select';
+import MenuItem from '@material-ui/core/MenuItem/MenuItem';
+import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
 
 const styles = theme => ({
   root: {
@@ -67,6 +71,7 @@ function Chart(props) {
   return <ResponsiveContainer width="99%" height={320}>
     <BarChart data={props.data}>
 
+      <CartesianGrid vertical={false} strokeDasharray="3 3"/>
       <Tooltip/>
       <Legend/>
       {/*<Bar dataKey="Tartumaa" stroke={colors[0 % colors.length]} activeDot={{ r: 8 }}/>*/}
@@ -78,6 +83,7 @@ function Chart(props) {
         <Label value="kategooria" fontSize={8} offset={50}/>
       </XAxis>
       <YAxis/>
+
 
     </BarChart>
   </ResponsiveContainer>;
@@ -111,11 +117,15 @@ class ReportPanel extends Component {
     if (!isBrowser) {
       return false;
     }
+
     const paramValues = Object.assign(
       {},
       this.props.formValues,
       this.state.checkboxValues,
     );
+    if (this.props.formValues.piirkond === 'koos') {
+      delete paramValues.piirkond;
+    }
 
     this.props.axios
       .get('generate_report.php', {
@@ -154,22 +164,49 @@ class ReportPanel extends Component {
       return [null, null];
     }
     console.log('process: ', data);
-    const nonEmpty = [...data.filter(e => e != '')];
+    let nonEmpty = [...data.filter(e => e != '')];
     const longData = [];
-    // headers
-    for (let name of nonEmpty[0].slice(1)) {
-      longData.push({ name });
-    }
-    // data
-    nonEmpty.slice(1).forEach(([piirkond, ...values], i) => {
-      values.forEach((e, ii) => longData[ii][piirkond] = values[ii]);
-    });
-    const piirkonnad = nonEmpty.slice(1).map(p => p[0]);
+    if (nonEmpty[0][0] === 'piirkonnad') {
+      // headers
+      for (let name of nonEmpty[0].slice(1)) {
+        longData.push({ name });
+      }
+      // data
+      nonEmpty.slice(1).forEach(([piirkond, ...values], i) => {
+        values.forEach((e, ii) => longData[ii][piirkond] = values[ii]);
+      });
+      const piirkonnad = nonEmpty.slice(1).map(p => p[0]);
 
-    // filter out unchecked
-    //const outData = longData.filter(({name}) => this.state.checkboxValues[name])
-    return [longData, piirkonnad];
+      // filter out unchecked
+      //const outData = longData.filter(({name}) => this.state.checkboxValues[name])
+      return [longData, piirkonnad];
+    } else {
+      // headers
+      for (let name of nonEmpty[0].slice(0)) {
+        longData.push({ name });
+      }
+      // data
+      nonEmpty.slice(1).forEach(([...values], i) => {
+        values.forEach((e, ii) => longData[ii]['summa'] = values[ii]);
+      });
+      const piirkonnad = ['summa'];
+
+      // filter out unchecked
+      //const outData = longData.filter(({name}) => this.state.checkboxValues[name])
+      return [longData, piirkonnad];
+    }
   };
+
+  // componentDidUpdate = (prevProps, prevState, snapshot) => {
+  //   console.log("got update", this.props.formValues)
+  //   if (this.props.formValues.alates !== prevProps.formValues.alates ||
+  //       this.props.formValues.kuni !== prevProps.formValues.kuni ||
+  //       this.props.formValues.piirkond !== prevProps.formValues.piirkond
+  //   ) {
+  //     console.log("calling getReport");
+  //     this.getReport();
+  //   }
+  // }
 
   render() {
 
@@ -245,9 +282,10 @@ class Graphs extends React.Component {
 
   handleChange = event => {
     const formValues = this.state.formValues;
-    formValues[event.target.id] = event.target.value;
+    const id = event.target.id || event.target.name;
+    formValues[id] = event.target.value;
     this.setState({ formValues });
-    console.log(this.state);
+    console.log('handleChange: ', this.state);
   };
 
   columns =
@@ -256,6 +294,16 @@ class Graphs extends React.Component {
       'label': 'Kriisinõustamiste aeg',
       'topic': 'service-hours',
     },
+      {
+        'id': 'kriisinoustamine_paeval',
+        'label': 'Kriisinõustamistse aeg päeval',
+        'topic': 'service-hours',
+      },
+      {
+        'id': 'kriisinoustamine_oosel',
+        'label': 'Kriisinõustamiste aeg öösel',
+        'topic': 'service-hours',
+      },
       {
         'id': 'sidevahendid',
         'label': 'Nõustamisi sidevahenditega',
@@ -293,8 +341,14 @@ class Graphs extends React.Component {
         'topic': 'service-hours',
       },
       {
-        'id': 'vagivallatseja_sugu',
-        'label': 'Vägivallatseja sugu',
+        'id': 'vagivallatseja_sugu_mees',
+        'label': 'Mees vägivallatseja',
+        'subtopic': 'general',
+        'topic': 'violence',
+      },
+      {
+        'id': 'vagivallatseja_sugu_naine',
+        'label': 'Naine vägivallatseja',
         'subtopic': 'general',
         'topic': 'violence',
       },
@@ -313,6 +367,30 @@ class Graphs extends React.Component {
       {
         'id': 'vagivallatseja_vanus',
         'label': 'Vägivallatseja vanus',
+        'subtopic': 'general',
+        'topic': 'violence',
+      },
+      {
+        'id': 'vagivallatseja_vanus_18',
+        'label': 'Vägivallatseja alla 18',
+        'subtopic': 'general',
+        'topic': 'violence',
+      },
+      {
+        'id': 'vagivallatseja_vanus_24',
+        'label': 'Vägivallatseja 18-24',
+        'subtopic': 'general',
+        'topic': 'violence',
+      },
+      {
+        'id': 'vagivallatseja_vanus_49',
+        'label': 'Vägivallatseja 25-49',
+        'subtopic': 'general',
+        'topic': 'violence',
+      },
+      {
+        'id': 'vagivallatseja_vanus_64',
+        'label': 'Vägivallatseja vanus 50-64',
         'subtopic': 'general',
         'topic': 'violence',
       },
@@ -516,7 +594,7 @@ class Graphs extends React.Component {
     formValues: {
       alates: '2017-01-01',
       kuni: '2018-01-01',
-      piirkond: 'all',
+      piirkond: 'koos',
     },
     data: {},
   };
@@ -546,7 +624,6 @@ class Graphs extends React.Component {
     const paramValues = Object.assign(
       {},
       this.state.formValues,
-      this.state.chipData,
     );
 
     this.props.axios
@@ -598,6 +675,37 @@ class Graphs extends React.Component {
             <form>
               {makeDateField('alates', 'Alates')}
               {makeDateField('kuni', 'Kuni')}
+
+              <FormControl margin="normal">
+                <InputLabel htmlFor="piirkond">Piirkond</InputLabel>
+                <Select
+                  value={this.state.formValues.piirkond}
+                  onChange={this.handleChange}
+                  id="piirkond"
+                  inputProps={{
+                    name: 'piirkond',
+                    id: 'piirkond',
+                  }}>
+                  <MenuItem value={'all'}>Kõik eraldi</MenuItem>
+                  <MenuItem value={'koos'}>Kõik koos</MenuItem>
+                  <MenuItem value={'Tartumaa'}>Tartumaa</MenuItem>
+                  <MenuItem value={'Harjumaa'}>Harjumaa</MenuItem>
+                  <MenuItem value={'Pärnumaa'}>Pärnumaa</MenuItem>
+                  <MenuItem value={'Saaremaa'}>Saaremaa</MenuItem>
+                  <MenuItem value={'Hiiumaa'}>Hiiumaa</MenuItem>
+                  <MenuItem value={'Võrumaa'}>Võrumaa</MenuItem>
+                  <MenuItem value={'Ida-Virumaa'}>Ida-Virumaa</MenuItem>
+                  <MenuItem value={'Lääne-Virumaa'}>Lääne-Virumaa</MenuItem>
+                  <MenuItem value={'Põlvamaa'}>Põlvamaa</MenuItem>
+                  <MenuItem value={'Viljandimaa'}>Viljandimaa</MenuItem>
+                  <MenuItem value={'Raplamaa'}>Raplamaa</MenuItem>
+                  <MenuItem value={'Jõgevamaa'}>Jõgevamaa</MenuItem>
+                  <MenuItem value={'Läänemaa'}>Läänemaa</MenuItem>
+                  <MenuItem value={'Järvamaa'}>Järvamaa</MenuItem>
+                  <MenuItem value={'Valgamaa'}>Valgamaa</MenuItem>
+
+                </Select>
+              </FormControl>
               <Button
                 type="submit"
                 variant="outlined"

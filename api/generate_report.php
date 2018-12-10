@@ -53,8 +53,13 @@ $incident_params = array(
 "sugulane_vagivallatseja" => "SUM(sugulane_vagivallatseja) AS 'Sugulane vagivallatseja'",
 "tookaaslane_vagivallatseja" => "SUM(tookaaslane_vagivallatseja) AS 'Töökaaslane vägivallatseja'",
 "muu_vagivallatseja" => "SUM(muu_vagivallatseja) AS 'Muu vägivallatseja'",
-"vagivallatseja_vanus" => "COUNT(IF(vagivallatseja_vanus='alla 18', 1, NULL)) AS 'Vägivallatseja alla 18', COUNT(IF(vagivallatseja_vanus='18-24', 1, NULL)) AS 'Vägivallatseja 18-24', COUNT(IF(vagivallatseja_vanus='25-49', 1, NULL)) AS 'Vägivallatseja 25-49', COUNT(IF(vagivallatseja_vanus='50-64', 1, NULL)) AS 'Vägivallatseja 50-64', COUNT(IF(vagivallatseja_vanus='65+', 1, NULL)) AS 'Vägivallatseja 65+'",
-"vagivallatseja_sugu" => "COUNT(IF(vagivallatseja_sugu='Mees', 1, NULL)) AS 'Vägivallatseja mees', COUNT(IF(vagivallatseja_sugu='Naine', 1, NULL)) AS 'Vägivallatseja naine'",
+"vagivallatseja_vanus_18" => "COUNT(IF(vagivallatseja_vanus='alla 18', 1, NULL)) AS 'Vägivallatseja alla 18'",
+"vagivallatseja_vanus_24" => "COUNT(IF(vagivallatseja_vanus='18-24', 1, NULL)) AS 'Vägivallatseja 18-24'",
+"vagivallatseja_vanus_49" => "COUNT(IF(vagivallatseja_vanus='25-49', 1, NULL)) AS 'Vägivallatseja 25-49'",
+"vagivallatseja_vanus_64" => "COUNT(IF(vagivallatseja_vanus='50-64', 1, NULL)) AS 'Vägivallatseja 50-64'",
+"vagivallatseja_vanus_99" => "COUNT(IF(vagivallatseja_vanus='65+', 1, NULL)) AS 'Vägivallatseja 65+'",
+"vagivallatseja_sugu_mees" => "COUNT(IF(vagivallatseja_sugu='Mees', 1, NULL)) AS 'Vägivallatseja mees'",
+"vagivallatseja_sugu_naine" => "COUNT(IF(vagivallatseja_sugu='Naine', 1, NULL)) AS 'Vägivallatseja naine'",
 "laps_ohver" => "SUM(laps_ohver) AS 'Alaealine lisaohvriks'",
 "vana_ohver" => "SUM(vana_ohver) AS 'Eakas lisaohvriks'",
 "muu_ohver" => "SUM(muu_ohver) AS 'Muu lisaohver'",
@@ -121,12 +126,15 @@ if (isset($_GET["piirkond"]) && $_GET["piirkond"] == "all") {
 }
 
 //Construct final query
+
 $final_query = "SELECT * FROM ";
 if ($use_incident_query) {
 	$final_query .= "({$incident_query}) AS inci";
 }
 if ($use_incident_query && $use_session_query) {
-	$final_query .= " JOIN ";
+    $final_query .= " JOIN ";
+    $c *= 2;
+    $where_params = array_merge($where_params, $where_params);
 }
 if ($use_session_query) {
 	$final_query .= "({$session_query}) AS sess";
@@ -144,10 +152,10 @@ $db = get_db();
 if ($c == 0) {
 	$query_res = mysqli_query($db, $final_query);
 } else {
-	$stmt = mysqli_prepare($db, $final_query);
-	mysqli_stmt_bind_param($stmt, str_repeat("s", $c * 2), ...array_merge($where_params, $where_params));
-	mysqli_stmt_execute($stmt);
-	$query_res = mysqli_stmt_get_result($stmt);
+    $stmt = mysqli_prepare($db, $final_query);
+    mysqli_stmt_bind_param($stmt, str_repeat("s", $c), ...$where_params);
+    mysqli_stmt_execute($stmt);
+    $query_res = mysqli_stmt_get_result($stmt);
 }
 $res = mysqli_fetch_all($query_res, MYSQLI_ASSOC);
 
