@@ -70,6 +70,11 @@ class DatabaseBackup extends React.Component {
         open: false,
     };
 
+    constructor(props) {
+        super(props);
+        this.axios = this.props.axios;
+    }
+
     handleClickOpen = () => {
       this.setState({ drawerOpen: true });
     }
@@ -77,9 +82,14 @@ class DatabaseBackup extends React.Component {
       this.setState({ drawerOpen: false });
     }
     downloadDatabase = () => {
-        console.log("Downloading database backup")
-        this.handleClose()
-    }
+                this.axios.post('db_dump.php').then(res => {
+                    console.log(res)
+
+                })
+                    .catch(err => {
+                        console.log("export err: ", err)
+                    })
+        };
 
 
     static propTypes = {
@@ -106,7 +116,7 @@ class DatabaseBackup extends React.Component {
                     </CardActionArea>
                     <CardActions>
                         <div className={classes.buttons} >
-                            <Button className={classes.button} variant="outlined" onClick={this.handleClickOpen} size="small" >
+                            <Button className={classes.button} variant="outlined" onClick={this.downloadDatabase} size="small" >
                                 <SaveIcon className={ classes.leftIcon }/>
                                 Lae alla
                             </Button>
@@ -124,7 +134,7 @@ class DatabaseBackup extends React.Component {
                               </Button>
                             </label>
                           </form>
-                            
+
                         </div>
                         
                     </CardActions>

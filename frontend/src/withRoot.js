@@ -18,13 +18,14 @@ function withRoot(Component) {
       this.muiPageContext = getPageContext();
       this.axios = axios.create({
         baseURL: getBaseUrl() + '/api/', 
-        timeout: 5000, 
+        timeout: 10000,
         headers: {
           'Auth-token': getCurrentToken()
         }
       })
       // Add general redirecting when auth fails
       this.axios.interceptors.response.use(null, (error) => {
+        console.log(error)
         if (error.response.status === 401) {
           logout();
           return

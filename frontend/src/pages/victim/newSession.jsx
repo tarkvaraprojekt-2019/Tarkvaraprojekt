@@ -120,7 +120,7 @@ class NewSession extends React.Component {
             kirjeldus: "",
             sidevahendid: 0,
             kriisinoustamine: 0,
-            kriisinoustamise_aeg: "teadmata",
+            kriisinoustamise_aeg: "",
             juhtuminoustamine: 0,
             vorgustikutoo: 0,
             psuhhonoustamine: 0,
@@ -250,27 +250,24 @@ class NewSession extends React.Component {
                                         <FormLabel>Osutatud teenused (tundide arv)</FormLabel>
                                     </FormControl>
                                     {textfield("kriisinoustamine", "Kriisinõustamine", this.state.formValues.kriisinoustamine, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
-
-                                    {parseInt(this.state.formValues.kriisinoustamine) > 0 ?
-                                        <FormControl>
+                                     <FormControl>
                                             <div
                                                 className={classes.input}
                                             >
-                                                <InputLabel htmlFor="kriisinoustamise_aeg">Kriisinõustamise
-                                                    aeg</InputLabel>
+                                                <InputLabel htmlFor="kriisinoustamise_aeg">Kriisinõus. aeg</InputLabel>
                                                 <Select
-                                                    value={this.state.formValues.kriisinoustamise_aeg}
+                                                    value={this.state.formValues.kriisinoustamise_aeg  === "" ? "Puudub" : this.state.formValues.kriisinoustamise_aeg}
                                                     onChange={this.handleSelectChange}
                                                     inputProps={{
                                                         name: 'kriisinoustamise_aeg',
                                                         id: 'kriisinoustamise_aeg',
                                                     }}>
+                                                    <MenuItem value={""}>Puudub</MenuItem>
                                                     <MenuItem value={"08:00-22:00"}>08:00-22:00</MenuItem>
                                                     <MenuItem value={"22:00-08:00"}>22:00-08:00</MenuItem>
-
-                                                    <MenuItem value={"teadmata"}>Teadmata   </MenuItem>
+                                                    <MenuItem value={"teadmata"}>Teadmata</MenuItem>
                                                 </Select></div>
-                                        </FormControl> : null}
+                                        </FormControl>
 
                                     {textfield("juhtuminoustamine", "Juhtumipõhine nõustamine", this.state.formValues.juhtuminoustamine, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
                                     {textfield("vorgustikutoo", "Võrgustikutöö", this.state.formValues.vorgustikutoo, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}

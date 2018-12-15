@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -24,9 +24,9 @@ import Grid from '@material-ui/core/Grid';
 import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout/index';
-import { navigate } from 'gatsby';
+import {navigate} from 'gatsby';
 import ConfirmDelete from '../../components/ConfirmDelete';
-import { isAdmin } from '../../auth';
+import {isAdmin} from '../../auth';
 
 
 const styles = theme => ({
@@ -107,19 +107,19 @@ class Session extends React.Component {
 
     }
 
-  handleDeleteOpen = () => {
-    this.setState({ isDeleteOpen: true });
-  };
-  handleDeleteClose = () => {
-    this.setState({ isDeleteOpen: false });
-  };
-  handleDeleteContinue = () => {
-    this.axios.post('delete_session.php', { id: this.props.sessionID })
-      .then(res => {
-        console.log('delete: ', res);
-        navigate('/victim/' + this.props.victimID + '/' + this.props.incidentID);
-      });
-  };
+    handleDeleteOpen = () => {
+        this.setState({isDeleteOpen: true});
+    };
+    handleDeleteClose = () => {
+        this.setState({isDeleteOpen: false});
+    };
+    handleDeleteContinue = () => {
+        this.axios.post('delete_session.php', {id: this.props.sessionID})
+            .then(res => {
+                console.log('delete: ', res);
+                navigate('/victim/' + this.props.victimID + '/' + this.props.incidentID);
+            });
+    };
 
     updateSession = () => {
         this.axios.post("update_session.php", this.state.formValues).then(res => {
@@ -163,7 +163,7 @@ class Session extends React.Component {
     };
 
     state = {
-      isDeleteOpen: false,
+        isDeleteOpen: false,
         editingEnabled: false,
         formValues: {
             incident_id: this.props.incidentID,
@@ -172,7 +172,7 @@ class Session extends React.Component {
             kirjeldus: "",
             sidevahendid: "",
             kriisinoustamine: 0,
-            kriisinoustamise_aeg: "teadmata",
+            kriisinoustamise_aeg: "",
             juhtuminoustamine: 0,
             vorgustikutoo: 0,
             psuhhonoustamine: 0,
@@ -331,25 +331,24 @@ class Session extends React.Component {
                                         <FormLabel>Osutatud teenused (tundide arv)</FormLabel>
                                     </FormControl>
                                     {textfield("kriisinoustamine", "Kriisinõustamine", this.state.formValues.kriisinoustamine, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
-                                    {this.state.formValues.kriisinoustamine > 0 ?
-                                        <FormControl>
-                                            <div className={classes.input}>
-                                                <InputLabel htmlFor="kriisinoustamise_aeg">Kriisinõustamise
-                                                    aeg</InputLabel>
-                                                <Select
-                                                    disabled={!this.state.editingEnabled}
-                                                    value={this.state.formValues.kriisinoustamise_aeg}
-                                                    onChange={this.handleSelectChange}
-                                                    inputProps={{
-                                                        name: 'kriisinoustamise_aeg',
-                                                        id: 'kriisinoustamise_aeg',
-                                                    }}>
-                                                    <MenuItem value={"08:00-22:00"}>08:00-22:00</MenuItem>
-                                                    <MenuItem value={"22:00-08:00"}>22:00-08:00</MenuItem>
+                                    <FormControl>
+                                        <div className={classes.input}>
+                                            <InputLabel htmlFor="kriisinoustamise_aeg">Kriisinõus. aeg</InputLabel>
+                                            <Select
+                                                disabled={!this.state.editingEnabled}
 
-                                                    <MenuItem value={"teadmata"}>Teadmata</MenuItem>
-                                                </Select></div>
-                                        </FormControl> : null}
+                                                value={this.state.formValues.kriisinoustamise_aeg  === "" ? "Puudub" : this.state.formValues.kriisinoustamise_aeg}
+                                                onChange={this.handleSelectChange}
+                                                inputProps={{
+                                                    name: 'kriisinoustamise_aeg',
+                                                    id: 'kriisinoustamise_aeg',
+                                                }}>
+                                                <MenuItem value={""}>Puudub</MenuItem>
+                                                <MenuItem value={"08:00-22:00"}>08:00-22:00</MenuItem>
+                                                <MenuItem value={"22:00-08:00"}>22:00-08:00</MenuItem>
+                                                <MenuItem value={"teadmata"}>Teadmata</MenuItem>
+                                            </Select></div>
+                                    </FormControl>
                                     {textfield("juhtuminoustamine", "Juhtumipõhine nõustamine", this.state.formValues.juhtuminoustamine, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
                                     {textfield("vorgustikutoo", "Võrgustikutöö", this.state.formValues.vorgustikutoo, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
                                     {textfield("psuhhonoustamine", "Psüh. nõustamine", this.state.formValues.psuhhonoustamine, "\\d*|(\\d+([.,](00?|25|50?|75))?)")}
@@ -443,17 +442,17 @@ class Session extends React.Component {
                                             >
                                                 MUUDA SESSIOONI ANDMEID
                                             </Button> : null}
-                                      {!this.state.editingEnabled && isAdmin() ?
-                                        <Button
-                                          className={classes.button}
-                                          variant="contained"
-                                          color="primary"
-                                          onClick={e => {
-                                            this.handleDeleteOpen();
-                                          }}
-                                        >
-                                          KUSTUTA SESSIOON
-                                        </Button> : null}
+                                        {!this.state.editingEnabled && isAdmin() ?
+                                            <Button
+                                                className={classes.button}
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={e => {
+                                                    this.handleDeleteOpen();
+                                                }}
+                                            >
+                                                KUSTUTA SESSIOON
+                                            </Button> : null}
 
                                         {this.state.editingEnabled ?
                                             <Button
@@ -493,8 +492,8 @@ class Session extends React.Component {
 
             </Paper>
 
-          <ConfirmDelete open={this.state.isDeleteOpen} object="sessiooni" onClose={this.handleDeleteClose}
-                         onContinue={this.handleDeleteContinue}/>
+            <ConfirmDelete open={this.state.isDeleteOpen} object="sessiooni" onClose={this.handleDeleteClose}
+                           onContinue={this.handleDeleteContinue}/>
         </Layout>
     }
 }

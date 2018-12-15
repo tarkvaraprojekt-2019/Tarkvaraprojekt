@@ -72,14 +72,15 @@ class CSVBackup extends React.Component {
       formValues.alates = algus.toDateInputValue();
       formValues.kuni = lopp.toDateInputValue();
 
-      this.setState({ formValues });
+      this.state.formValues =  formValues;
+
     }
 
     state = {
         open: false,
         formValues: {
             alates: "",
-          kuni: '',
+            kuni: "",
         },
         results: {}
 
@@ -106,7 +107,6 @@ class CSVBackup extends React.Component {
                 params: {
                     alates: this.state.formValues.alates,
                     kuni: this.state.formValues.kuni,
-
                 }
             }).then(res => {
                     let data = res.data;
