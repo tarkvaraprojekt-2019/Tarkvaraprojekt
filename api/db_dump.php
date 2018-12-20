@@ -14,7 +14,8 @@ $conf = parse_ini_file("../.htconf");
 
 $dump = `mysqldump -h {$conf["DB_ADDR"]} -u {$conf["DB_USER"]} -p{$conf["DB_PASS"]} {$conf["DB_NAME"]} | grep -v "Using a password"`;
 $date = date("Y-m-d");
-$filename = "../dumps/dump_" . $date;
+$filename = "../dumps/dump_" . $date . "_manual";
 file_put_contents($filename, $dump);
+`../cleaner.sh`
 
 echo $dump;
