@@ -17,6 +17,7 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import Select from '@material-ui/core/Select/Select';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import ReportPanel from '../../components/ReportPanel';
+import FileSaver from 'file-saver';
 
 const styles = theme => ({
   root: {
@@ -417,6 +418,7 @@ class Graphs extends React.Component {
       piirkond: 'all',
     },
     data: {},
+    checkboxValues: {},
   };
 
   componentDidMount() {
@@ -444,7 +446,9 @@ class Graphs extends React.Component {
     const paramValues = Object.assign(
       {},
       this.state.formValues,
+      this.state.checkboxValues,
     );
+    console.log('csvparams: ', paramValues);
 
     this.props.axios
       .get('generate_report.php', {
@@ -455,9 +459,25 @@ class Graphs extends React.Component {
         this.setState({
           data: res.data,
         });
+        this.downloadCSV('aruandlus');
+
       })
       .catch(err => console.log('report err: ', err));
   }
+
+  downloadCSV = label => {
+    let csv = this.state.data;
+    //console.log(csv);
+
+    let filename = label + '-' + this.state.formValues.alates + '-' + this.state.formValues.kuni + '.xls';
+
+    const blob = new Blob([csv], { type: 'data:text/csv;charset=utf-8' });
+    FileSaver.saveAs(blob, filename);
+  };
+  handleDownload = (event) => {
+    event.preventDefault();
+    this.getReport();
+  };
 
   render() {
     const { classes } = this.props;
@@ -492,7 +512,7 @@ class Graphs extends React.Component {
       <Layout title="Aruandlus" error="">
         <div>
           <Paper>
-            <form>
+            <form onSubmit={this.handleDownload}>
               {makeDateField('alates', 'Alates')}
               {makeDateField('kuni', 'Kuni')}
 
@@ -540,7 +560,7 @@ class Graphs extends React.Component {
             topics.map(topic => {
               const columns = this.columns.filter(e => e.topic === topic);
               return <ReportPanel classes={classes} columns={columns} formValues={this.state.formValues}
-                                  axios={this.props.axios}/>;
+                                  axios={this.props.axios} checkboxValues={this.state.checkboxValues}/>;
             })
           }
         </div>

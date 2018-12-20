@@ -101,7 +101,7 @@ class CSVBackup extends React.Component {
         this.setState({formValues: formValues});
     };
 
-    getCSV = () => {
+  getJuhtumidCSV = () => {
         if (this.correctDates()) {
             this.axios.get('export_csv.php', {
                 params: {
@@ -111,7 +111,7 @@ class CSVBackup extends React.Component {
             }).then(res => {
                     let data = res.data;
                     this.setState({results: data});
-                    this.downloadCSV()
+              this.downloadCSV('juhtumid');
 
                 })
                 .catch(err => {
@@ -119,16 +119,42 @@ class CSVBackup extends React.Component {
                 })
         }
     };
+  getUserCSV = () => {
+    if (this.correctDates()) {
+      this.axios.get('export_victims.php', {
+        params: {
+          alates: this.state.formValues.alates,
+          kuni: this.state.formValues.kuni,
+        },
+      }).then(res => {
+        let data = res.data;
+        this.setState({ results: data });
+        this.downloadCSV('kliendid');
 
-    downloadCSV = () => {
+      })
+        .catch(err => {
+          console.log('export err: ', err);
+        });
+    }
+  };
+
+  downloadCSV = label => {
         let csv = this.state.results;
         console.log(csv);
 
-        let filename = 'export.txt';
+    let filename = label + '-' + this.state.formValues.alates + '-' + this.state.formValues.kuni + '.xls';
 
         const blob = new Blob([csv], {type: 'data:text/csv;charset=utf-8'});
         FileSaver.saveAs(blob, filename);
     };
+  handleJuhtumidDownload = event => {
+    event.preventDefault();
+    this.getJuhtumidCSV();
+  };
+  handleUserDownload = event => {
+    event.preventDefault();
+    this.getUserCSV();
+  };
 
     render() {
         const {classes} = this.props;
@@ -165,7 +191,7 @@ class CSVBackup extends React.Component {
                     </CardActionArea>
                     <CardActions>
 
-                            <form onSubmit={this.handleDownload}>
+                      <form>
 
                                 <Grid container
                                       direction="column"
@@ -178,13 +204,20 @@ class CSVBackup extends React.Component {
                                         {makeDateField('kuni', 'Kuni')}
                                     </Grid>
 
-                                    <Grid item>
-                                        <Button className={classes.button} variant="outlined" type="submit"
-                                                size="small">
-                                            <SaveIcon className={classes.leftIcon}/>
-                                            Lae alla
-                                        </Button>
-                                    </Grid>
+                                  <Grid item>
+                                    <Button className={classes.button} variant="outlined" type="submit"
+                                            size="small" onClick={this.handleJuhtumidDownload}>
+                                      <SaveIcon className={classes.leftIcon}/>
+                                      Lae alla juhtumid
+                                    </Button>
+                                  </Grid>
+                                  <Grid item>
+                                    <Button className={classes.button} variant="outlined" type="submit"
+                                            size="small" onClick={this.handleUserDownload}>
+                                      <SaveIcon className={classes.leftIcon}/>
+                                      Lae alla kliendid
+                                    </Button>
+                                  </Grid>
                                 </Grid>
 
                             </form>
@@ -205,10 +238,6 @@ class CSVBackup extends React.Component {
 
         return parseInt(start[0]) <= parseInt(end[0]) && parseInt(start[1]) <= parseInt(end[1]) && parseInt(start[2]) <= parseInt(end[2]);
 
-    }
-    handleDownload = event => {
-        event.preventDefault();
-        this.getCSV()
     }
 }
 

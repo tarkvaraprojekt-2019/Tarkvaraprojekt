@@ -29,6 +29,7 @@ class ReportPanel extends Component {
     for (let c of this.props.columns) {
       ids[c.id] = true;
       labels[c.label] = c.id;
+      this.props.checkboxValues[c.id] = true;
     }
     //const ids = {...this.props.columns.map(c => { return { [c.id]: true}; })}
     this.state = { labels: labels, checkboxValues: ids, selectedTab: 0 };
@@ -119,6 +120,11 @@ class ReportPanel extends Component {
     const checkboxValues = this.state.checkboxValues;
     checkboxValues[field] = !checkboxValues[field];
     this.setState({ checkboxValues });
+    if (!checkboxValues[field]) {
+      this.props.checkboxValues[field] = undefined;
+    } else {
+      this.props.checkboxValues[field] = true;
+    }
   };
   processData = (data) => {
     if (!data || data[0].length === 1) {
