@@ -24,176 +24,184 @@ import withRoot from '../../withRoot';
 
 import Layout from '../../components/Layout';
 import CSVBackup from './CSVBackup';
+import FileSaver from 'file-saver';
 
 
 const styles = theme => ({
-    root: {
-        textAlign: 'center',
-        paddingTop: theme.spacing.unit * 20,
-    },
+  root: {
+    textAlign: 'center',
+    paddingTop: theme.spacing.unit * 20,
+  },
 
-    cards: {
-        margin: theme.spacing.unit * 4,
-        display: 'flex',
-        flexDirection: 'row',
-        //justifyContent: '',
-        padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
-            .spacing.unit * 3}px`,
-    },
-    input: {
-        display: 'none',
-    },
-    card: {
-        maxWidth: 345,
-        margin: theme.spacing.unit*2,
-    },
-    leftIcon: {
-        marginRight: theme.spacing.unit,
-    }, 
-    buttons: {
-        display: 'flex', 
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        marginLeft: theme.spacing.unit, 
-        marginBottom: theme.spacing.unit, 
-    },
-    button: {
-        margin: theme.spacing.unit,
-    },
+  cards: {
+    margin: theme.spacing.unit * 4,
+    display: 'flex',
+    flexDirection: 'row',
+    //justifyContent: '',
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+      .spacing.unit * 3}px`,
+  },
+  input: {
+    display: 'none',
+  },
+  card: {
+    maxWidth: 345,
+    margin: theme.spacing.unit * 2,
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+  buttons: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    marginLeft: theme.spacing.unit,
+    marginBottom: theme.spacing.unit,
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
 });
 
 
-
-
 class DatabaseBackup extends React.Component {
-    state = {
-        open: false,
-    };
+  state = {
+    open: false,
+  };
 
-    constructor(props) {
-        super(props);
-        this.axios = this.props.axios;
-    }
+  constructor(props) {
+    super(props);
+    this.axios = this.props.axios;
+  }
 
-    handleClickOpen = () => {
-      this.setState({ drawerOpen: true });
-    }
-    handleClose = () => {
-      this.setState({ drawerOpen: false });
-    }
-    downloadDatabase = () => {
-                this.axios.post('db_dump.php').then(res => {
-                    console.log(res)
+  handleClickOpen = () => {
+    this.setState({ drawerOpen: true });
+  };
+  handleClose = () => {
+    this.setState({ drawerOpen: false });
+  };
+  downloadDatabase = () => {
+    this.axios.get('db_dump.php')
+      .then(res => {
 
-                })
-                    .catch(err => {
-                        console.log("export err: ", err)
-                    })
-        };
+        console.log(res);
+        const date = (new Date()).toDateInputValue();
+        const filename = 'database-backup-' + date + '.sql';
+        const blob = new Blob([res.data], { type: 'data:plain;charset=utf-8' });
+        FileSaver.saveAs(blob, filename);
+      })
+      .catch(err => {
+        console.log('export err: ', err);
+      });
+  };
 
 
-    static propTypes = {
-        classes: PropTypes.object.isRequired,
-    };
+  static propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
 
 
-    render() {
-        const { classes } = this.props;
+  render() {
+    const { classes } = this.props;
 
-        return (
-            <React.Fragment>
-                <Card className={classes.card}>
-                    <CardActionArea onClick={this.handleClickOpen}>
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                                Andmebaasi varukoopia
-                            </Typography>
-                            <Typography component="p">
-                                Andmebaasi varukoopia on suur fail, millega saab kogu 
-                                andmebaasi, koos struktuuri ja terve sisuga, uuesti luua. 
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                    <CardActions>
-                        <div className={classes.buttons} >
-                            <Button className={classes.button} variant="outlined" onClick={this.downloadDatabase} size="small" >
-                                <SaveIcon className={ classes.leftIcon }/>
-                                Lae alla
-                            </Button>
-                          <form action="db_restore.php" method="post" encType="multipart/form-data">
-                            <input
-                              accept="*"
-                              className={classes.input}
-                              id="button-file"
-                              type="file"
-                            />
-                            <label htmlFor="button-file">
-                              <Button className={classes.button} component="span" variant="text" size="small">
-                                <CloudUploadIcon className={classes.leftIcon}/>
-                                Taasta koopiast
-                              </Button>
-                            </label>
-                          </form>
+    return (
+      <React.Fragment>
+        <Card className={classes.card}>
+          <CardActionArea onClick={this.handleClickOpen}>
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                Andmebaasi varukoopia
+              </Typography>
+              <Typography component="p">
+                Andmebaasi varukoopia on suur fail, millega saab kogu
+                andmebaasi, koos struktuuri ja terve sisuga, uuesti luua.
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+          <CardActions>
 
-                        </div>
-                        
-                    </CardActions>
-                </Card>
-                <Dialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                >
-                    <DialogTitle>
-                        Lae varukoopia alla?
-                    </DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            See fail on väga suur. Suurem kui 2GB. Kui sa ei tea, mida selle varukoopiaga
-                            peale hakata, siis pole vaja serverit ja enda ühendust koormata.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={ this.handleClose } color="primary">
-                            Tagasi
-                        </Button>
-                        <Button onClick={ this.downloadDatabase } color="secondary">
-                            Lae alla
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </React.Fragment>
-        );
-    }
+            <div className={classes.buttons}>
+              <Button className={classes.button} variant="outlined" onClick={this.downloadDatabase} size="small">
+                <SaveIcon className={classes.leftIcon}/>
+                Lae alla
+              </Button>
+              <form action="db_restore.php" method="post" encType="multipart/form-data">
+                <input
+                  accept="*"
+                  className={classes.input}
+                  id="button-file"
+                  type="file"
+                />
+                <label htmlFor="button-file">
+                  <Button className={classes.button} component="span" variant="text" size="small">
+                    <CloudUploadIcon className={classes.leftIcon}/>
+                    Taasta koopiast
+                  </Button>
+                </label>
+              </form>
+
+            </div>
+
+          </CardActions>
+        </Card>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          <DialogTitle>
+            Lae varukoopia alla?
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              See fail on väga suur. Suurem kui 2GB. Kui sa ei tea, mida selle varukoopiaga
+              peale hakata, siis pole vaja serverit ja enda ühendust koormata.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Tagasi
+            </Button>
+            <Button onClick={this.downloadDatabase} color="secondary">
+              Lae alla
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </React.Fragment>
+    );
+  }
 }
 
 class Backup extends React.Component {
-    static propTypes = {
-        classes: PropTypes.object.isRequired,
-    };
-    constructor(props) {
-        super(props)
-        this.axios = this.props.axios
-    }
-    state = {
-        id: '',
-        users: [],
-    };
-
-    render() {
-        const { classes } = this.props;
-
-        return (
-            <Layout title="Varundus">
-                <div  className={classes.cards}>
-
-                    <DatabaseBackup classes={classes}/>
-                    <CSVBackup classes={classes}/>
-                </div>
-            </Layout>
-        );
-    }
-}
-Backup.propTypes = {
+  static propTypes = {
     classes: PropTypes.object.isRequired,
+  };
+
+  constructor(props) {
+    super(props);
+    this.axios = this.props.axios;
+  }
+
+  state = {
+    id: '',
+    users: [],
+  };
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <Layout title="Varundus">
+        <div className={classes.cards}>
+
+          <DatabaseBackup axios={this.props.axios} classes={classes}/>
+          <CSVBackup classes={classes}/>
+        </div>
+      </Layout>
+    );
+  }
+}
+
+Backup.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
 export default withRoot(withStyles(styles)(Backup));
