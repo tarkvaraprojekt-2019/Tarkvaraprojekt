@@ -29,7 +29,7 @@ for ($i = 0; $i < $c; $i++) {
 }
 
 //Construct victim query
-$victim_query = "SELECT clients.id, national_id FROM incidents, sessions, clients WHERE sessions.incident_id=incidents.id AND kliendi_nr=clients.id {$where_query} GROUP BY clients.id";
+$victim_query = "SELECT clients.id, first_name, last_name, national_id FROM incidents, sessions, clients WHERE sessions.incident_id=incidents.id AND kliendi_nr=clients.id {$where_query} GROUP BY clients.id";
 
 if ($c == 0) {
 	$query_res = mysqli_query($db, $victim_query);
@@ -42,9 +42,9 @@ if ($c == 0) {
 $victim_res = mysqli_fetch_all($query_res, MYSQLI_ASSOC);
 
 //Construct CSV line by line
-$csv = "Kliendi nr.	Isikukood\n";
+$csv = "Kliendi nr.	Eesnimi	Perenimi	Isikukood\n";
 foreach ($victim_res as $victim) {
-	$csv .= $victim["id"] . "\t" . $victim["national_id"] . "\n";
+	$csv .= $victim["id"] . "\t" . $victim["first_name"] . "\t" . $victim["last_name"] . "\t" . $victim["national_id"] . "\n";
 }
 
 echo $csv;
